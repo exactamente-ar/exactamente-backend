@@ -47,7 +47,8 @@ export const careers = pgTable('careers', {
   slug:      varchar('slug', { length: 100 }).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (t) => ({
-  facultyIdx: index('careers_faculty_idx').on(t.facultyId),
+  uniqueSlugPerFaculty: unique().on(t.facultyId, t.slug),
+  facultyIdx:           index('careers_faculty_idx').on(t.facultyId),
 }));
 
 export const subjects = pgTable('subjects', {
