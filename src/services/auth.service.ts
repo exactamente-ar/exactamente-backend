@@ -16,6 +16,7 @@ export async function signToken(
   return sign(
     { ...payload, iat: now, exp: now + 60 * 60 * 24 * 7 },
     process.env.JWT_SECRET!,
+    'HS256',
   );
 }
 
