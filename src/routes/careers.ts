@@ -10,7 +10,7 @@ app.get('/', async (c) => {
 
   const data = await db.query.careers.findMany({
     where: facultyId ? eq(careers.facultyId, facultyId) : undefined,
-    orderBy: (c, { asc }) => [asc(c.name)],
+    orderBy: (t, { asc }) => [asc(t.name)],
   });
 
   return c.json({ data });

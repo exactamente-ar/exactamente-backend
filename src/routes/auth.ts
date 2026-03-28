@@ -3,23 +3,12 @@ import { zValidator } from '@hono/zod-validator';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { hashPassword, verifyPassword, signToken } from '@/services/auth.service';
+import { hashPassword, verifyPassword, signToken, toPublicUser } from '@/services/auth.service';
 import { registerSchema, loginSchema } from '@/validators/auth.validators';
 import { verifyToken } from '@/middleware/auth';
-import type { AppContext, PublicUser } from '@/types';
+import type { AppContext } from '@/types';
 
 const auth = new Hono<AppContext>();
-
-function toPublicUser(user: typeof users.$inferSelect): PublicUser {
-  return {
-    id: user.id,
-    email: user.email,
-    displayName: user.displayName,
-    role: user.role,
-    emailVerified: user.emailVerified,
-    createdAt: user.createdAt.toISOString(),
-  };
-}
 
 auth.post('/register', zValidator('json', registerSchema), async (c) => {
   const { email, password, displayName } = c.req.valid('json');

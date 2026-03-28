@@ -1,5 +1,17 @@
 import { sign, verify } from 'hono/jwt';
-import type { JwtPayload } from '@/types';
+import type { JwtPayload, PublicUser } from '@/types';
+import type { users } from '@/db/schema';
+
+export function toPublicUser(user: typeof users.$inferSelect): PublicUser {
+  return {
+    id: user.id,
+    email: user.email,
+    displayName: user.displayName,
+    role: user.role,
+    emailVerified: user.emailVerified,
+    createdAt: user.createdAt.toISOString(),
+  };
+}
 
 export async function hashPassword(password: string): Promise<string> {
   return Bun.password.hash(password);
