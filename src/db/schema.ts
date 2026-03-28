@@ -156,6 +156,11 @@ export const subjectsRelations = relations(subjects, ({ one, many }) => ({
   resources:      many(resources),
 }));
 
+export const careerSubjectsRelations = relations(careerSubjects, ({ one }) => ({
+  career:  one(careers,  { fields: [careerSubjects.careerId],  references: [careers.id] }),
+  subject: one(subjects, { fields: [careerSubjects.subjectId], references: [subjects.id] }),
+}));
+
 export const subjectPrerequisitesRelations = relations(subjectPrerequisites, ({ one }) => ({
   subject:  one(subjects, { fields: [subjectPrerequisites.subjectId],  references: [subjects.id], relationName: 'subject' }),
   required: one(subjects, { fields: [subjectPrerequisites.requiredId], references: [subjects.id], relationName: 'required' }),
