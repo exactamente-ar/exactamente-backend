@@ -51,6 +51,16 @@ export const careers = pgTable('careers', {
   facultyIdx:           index('careers_faculty_idx').on(t.facultyId),
 }));
 
+export const careerPlans = pgTable('career_plans', {
+  id:        text('id').primaryKey(),
+  careerId:  text('career_id').notNull().references(() => careers.id),
+  name:      varchar('name', { length: 100 }).notNull(),
+  year:      smallint('year').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (t) => ({
+  careerIdx: index('career_plans_career_idx').on(t.careerId),
+}));
+
 export const subjects = pgTable('subjects', {
   id:          text('id').primaryKey(),
   facultyId:   text('faculty_id').notNull().references(() => faculties.id),
@@ -70,12 +80,14 @@ export const subjects = pgTable('subjects', {
 
 export const careerSubjects = pgTable('career_subjects', {
   careerId:   text('career_id').notNull().references(() => careers.id, { onDelete: 'cascade' }),
+  planId:     text('plan_id').notNull().references(() => careerPlans.id, { onDelete: 'cascade' }),
   subjectId:  text('subject_id').notNull().references(() => subjects.id, { onDelete: 'cascade' }),
   year:       smallint('year').notNull(),
   quadmester: smallint('quadmester').notNull(),
 }, (t) => ({
-  pk:         primaryKey({ columns: [t.careerId, t.subjectId] }),
+  pk:         primaryKey({ columns: [t.careerId, t.planId, t.subjectId] }),
   subjectIdx: index('career_subjects_subject_idx').on(t.subjectId),
+  planIdx:    index('career_subjects_plan_idx').on(t.planId),
 }));
 
 export const subjectPrerequisites = pgTable('subject_prerequisites', {
@@ -145,6 +157,12 @@ export const facultiesRelations = relations(faculties, ({ one, many }) => ({
 
 export const careersRelations = relations(careers, ({ one, many }) => ({
   faculty:        one(faculties, { fields: [careers.facultyId], references: [faculties.id] }),
+  careerPlans:    many(careerPlans),
+  careerSubjects: many(careerSubjects),
+}));
+
+export const careerPlansRelations = relations(careerPlans, ({ one, many }) => ({
+  career:         one(careers, { fields: [careerPlans.careerId], references: [careers.id] }),
   careerSubjects: many(careerSubjects),
 }));
 
@@ -157,8 +175,9 @@ export const subjectsRelations = relations(subjects, ({ one, many }) => ({
 }));
 
 export const careerSubjectsRelations = relations(careerSubjects, ({ one }) => ({
-  career:  one(careers,  { fields: [careerSubjects.careerId],  references: [careers.id] }),
-  subject: one(subjects, { fields: [careerSubjects.subjectId], references: [subjects.id] }),
+  career:  one(careers,      { fields: [careerSubjects.careerId],  references: [careers.id] }),
+  plan:    one(careerPlans,  { fields: [careerSubjects.planId],    references: [careerPlans.id] }),
+  subject: one(subjects,     { fields: [careerSubjects.subjectId], references: [subjects.id] }),
 }));
 
 export const subjectPrerequisitesRelations = relations(subjectPrerequisites, ({ one }) => ({

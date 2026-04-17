@@ -3,16 +3,38 @@ import {
   universities,
   faculties,
   careers,
+  careerPlans,
   subjects,
   careerSubjects,
   subjectPrerequisites,
+  users,
+  resources,
 } from '../src/db/schema';
 import { MATERIAS_SISTEMAS } from './data/materias';
 import { carreras } from './data/carreras';
+import { planes } from './data/planes';
 import { slugify } from '../src/utils/slugify';
+import { hashPassword } from '../src/services/auth.service';
+
+let RESOURCES: typeof import('./data/resources').RESOURCES = [];
+try {
+  RESOURCES = (await import('./data/resources')).RESOURCES;
+} catch {
+  // archivo no generado todavía, se saltea el seed de resources
+}
 
 async function seed() {
   console.log('🌱 Iniciando seed...');
+
+  // 0. Seed admin user
+  await db.insert(users).values({
+    id: 'SEED_ADMIN',
+    email: 'admin@exactamente.app',
+    passwordHash: await hashPassword('seed-admin-password'),
+    displayName: 'Admin Seed',
+    role: 'superadmin',
+  }).onConflictDoNothing();
+  console.log('✓ Usuario admin insertado');
 
   // 1. Universidad
   await db.insert(universities).values({
@@ -42,6 +64,12 @@ async function seed() {
   }
   console.log(`✓ ${carreras.length} carreras insertadas`);
 
+  // 3.5. Planes de carrera
+  for (const plan of planes) {
+    await db.insert(careerPlans).values(plan).onConflictDoNothing();
+  }
+  console.log(`✓ ${planes.length} planes insertados`);
+
   // 4. Materias (deduplicar por ID — la misma materia no se repite aunque
   //    aparezca en múltiples carreras)
   const uniqueSubjects = new Map<string, typeof MATERIAS_SISTEMAS[number]>();
@@ -64,16 +92,17 @@ async function seed() {
   }
   console.log(`✓ ${uniqueSubjects.size} materias insertadas`);
 
-  // 5. career_subjects — cada materia con su carrera
+  // 5. career_subjects — cada materia con su carrera y plan
   for (const materia of MATERIAS_SISTEMAS) {
     await db.insert(careerSubjects).values({
       careerId: materia.idCarrer,
+      planId: materia.planId,
       subjectId: materia.id,
       year: materia.year,
       quadmester: materia.quadmester,
     }).onConflictDoNothing();
   }
-  console.log(`✓ ${MATERIAS_SISTEMAS.length} relaciones carrera-materia insertadas`);
+  console.log(`✓ ${MATERIAS_SISTEMAS.length} relaciones carrera-plan-materia insertadas`);
 
   // 6. Prerequisitos
   let prereqCount = 0;
@@ -87,6 +116,23 @@ async function seed() {
     }
   }
   console.log(`✓ ${prereqCount} prerequisitos insertados`);
+
+  // 7. Resources — solo los que tienen un subjectId que existe en la BD
+  if (RESOURCES.length > 0) {
+    const knownSubjectIds = new Set(uniqueSubjects.keys());
+    const validResources = RESOURCES.filter(r => knownSubjectIds.has(r.subjectId));
+    const skippedCount = RESOURCES.length - validResources.length;
+
+    for (const resource of validResources) {
+      await db.insert(resources).values(resource).onConflictDoNothing();
+    }
+    console.log(`✓ ${validResources.length} resources insertados`);
+    if (skippedCount > 0) {
+      console.log(`⚠️  ${skippedCount} resources ignorados (subjectId no existe — plan anterior pendiente)`);
+    }
+  } else {
+    console.log('⚠️  Sin resources (ejecutá xlsx-to-ts primero si tenés el Excel)');
+  }
 
   console.log('✅ Seed completo');
   process.exit(0);
