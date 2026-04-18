@@ -12171,5 +12171,137 @@ export const RESOURCES = [
     status: 'published' as const,
     driveFileId: '1NJrlRQZAvRVObRJ3vcC8dq1tCt-uJsQI',
     publishedAt: new Date('2024-01-01'),
-  }
+  },
+
+  // ─── TUDAI ────────────────────────────────────────────────────────────────
+
+  // TD1C1M1 — Introducción a la Programación
+  {
+    id: 'b1a20001-0000-4000-a000-000000000001',
+    subjectId: 'TD1C1M1',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Parcial 1er Cuatrimestre 2024.pdf',
+    type: 'parcial' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD1C1M1_parcial_2024',
+    publishedAt: new Date('2024-07-01'),
+  },
+  {
+    id: 'b1a20001-0000-4000-a000-000000000002',
+    subjectId: 'TD1C1M1',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Parcial 1er Cuatrimestre 2023.pdf',
+    type: 'parcial' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD1C1M1_parcial_2023',
+    publishedAt: new Date('2024-01-01'),
+  },
+  {
+    id: 'b1a20001-0000-4000-a000-000000000003',
+    subjectId: 'TD1C1M1',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Resumen teórico - Unidades 1 a 4.pdf',
+    type: 'resumen' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD1C1M1_resumen_u1_u4',
+    publishedAt: new Date('2024-01-01'),
+  },
+
+  // TD1C2M2 — Bases de Datos 1
+  {
+    id: 'b1a20002-0000-4000-a000-000000000001',
+    subjectId: 'TD1C2M2',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Parcial 2do Cuatrimestre 2024.pdf',
+    type: 'parcial' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD1C2M2_parcial_2024',
+    publishedAt: new Date('2024-12-01'),
+  },
+  {
+    id: 'b1a20002-0000-4000-a000-000000000002',
+    subjectId: 'TD1C2M2',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Guía de ejercicios SQL - Selects y Joins.pdf',
+    type: 'resumen' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD1C2M2_guia_sql',
+    publishedAt: new Date('2024-01-01'),
+  },
+  {
+    id: 'b1a20002-0000-4000-a000-000000000003',
+    subjectId: 'TD1C2M2',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Apunte Modelo Entidad-Relación y Normalización.pdf',
+    type: 'resumen' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD1C2M2_apunte_er_normalizacion',
+    publishedAt: new Date('2024-01-01'),
+  },
+
+  // TD2C1M1 — Desarrollo Web Backend
+  {
+    id: 'b1a20003-0000-4000-a000-000000000001',
+    subjectId: 'TD2C1M1',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Parcial 1er Cuatrimestre 2024.pdf',
+    type: 'parcial' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD2C1M1_parcial_2024',
+    publishedAt: new Date('2024-07-01'),
+  },
+  {
+    id: 'b1a20003-0000-4000-a000-000000000002',
+    subjectId: 'TD2C1M1',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Guía de ejercicios REST APIs con Express.pdf',
+    type: 'resumen' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD2C1M1_guia_rest',
+    publishedAt: new Date('2024-01-01'),
+  },
+
+  // TD2C1M2 — Estructuras de Datos y Algoritmos
+  {
+    id: 'b1a20004-0000-4000-a000-000000000001',
+    subjectId: 'TD2C1M2',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Parcial 2024 - Algoritmos de ordenamiento y grafos.pdf',
+    type: 'parcial' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD2C1M2_parcial_2024',
+    publishedAt: new Date('2024-07-01'),
+  },
+  {
+    id: 'b1a20004-0000-4000-a000-000000000002',
+    subjectId: 'TD2C1M2',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Resumen Big-O y técnicas de diseño de algoritmos.pdf',
+    type: 'resumen' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD2C1M2_resumen_bigO',
+    publishedAt: new Date('2024-01-01'),
+  },
+
+  // TD3C1M3 — Testing y Aseguramiento de la Calidad
+  {
+    id: 'b1a20005-0000-4000-a000-000000000001',
+    subjectId: 'TD3C1M3',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Parcial 2024 - TDD y tipos de pruebas.pdf',
+    type: 'parcial' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD3C1M3_parcial_2024',
+    publishedAt: new Date('2024-07-01'),
+  },
+  {
+    id: 'b1a20005-0000-4000-a000-000000000002',
+    subjectId: 'TD3C1M3',
+    uploadedBy: 'SEED_ADMIN',
+    title: 'Guía práctica de Jest para pruebas unitarias.pdf',
+    type: 'resumen' as const,
+    status: 'published' as const,
+    driveFileId: '1TUDAI_TD3C1M3_guia_jest',
+    publishedAt: new Date('2024-01-01'),
+  },
 ];

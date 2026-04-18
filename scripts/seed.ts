@@ -10,7 +10,7 @@ import {
   users,
   resources,
 } from '../src/db/schema';
-import { MATERIAS_SISTEMAS } from './data/materias';
+import { MATERIAS_SISTEMAS, MATERIAS_TUDAI } from './data/materias';
 import { carreras } from './data/carreras';
 import { planes } from './data/planes';
 import { slugify } from '../src/utils/slugify';
@@ -72,8 +72,9 @@ async function seed() {
 
   // 4. Materias (deduplicar por ID — la misma materia no se repite aunque
   //    aparezca en múltiples carreras)
-  const uniqueSubjects = new Map<string, typeof MATERIAS_SISTEMAS[number]>();
-  for (const m of MATERIAS_SISTEMAS) {
+  const ALL_MATERIAS = [...MATERIAS_SISTEMAS, ...MATERIAS_TUDAI];
+  const uniqueSubjects = new Map<string, typeof ALL_MATERIAS[number]>();
+  for (const m of ALL_MATERIAS) {
     if (!uniqueSubjects.has(m.id)) uniqueSubjects.set(m.id, m);
   }
 
@@ -93,7 +94,7 @@ async function seed() {
   console.log(`✓ ${uniqueSubjects.size} materias insertadas`);
 
   // 5. career_subjects — cada materia con su carrera y plan
-  for (const materia of MATERIAS_SISTEMAS) {
+  for (const materia of ALL_MATERIAS) {
     await db.insert(careerSubjects).values({
       careerId: materia.idCarrer,
       planId: materia.planId,
@@ -102,11 +103,11 @@ async function seed() {
       quadmester: materia.quadmester,
     }).onConflictDoNothing();
   }
-  console.log(`✓ ${MATERIAS_SISTEMAS.length} relaciones carrera-plan-materia insertadas`);
+  console.log(`✓ ${ALL_MATERIAS.length} relaciones carrera-plan-materia insertadas`);
 
   // 6. Prerequisitos
   let prereqCount = 0;
-  for (const materia of MATERIAS_SISTEMAS) {
+  for (const materia of ALL_MATERIAS) {
     for (const requiredId of materia.required) {
       await db.insert(subjectPrerequisites).values({
         subjectId: materia.id,

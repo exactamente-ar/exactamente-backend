@@ -1103,4 +1103,226 @@ export const MATERIAS_SISTEMAS = [
   },
 ];
 
-export const MATERIAS_TUDAI = [];
+export const MATERIAS_TUDAI = [
+  // ─── TUDAI — PLAN 2024 ────────────────────────────────────────────────────
+
+  // Año 1 — Cuatrimestre 1
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD1C1M1',
+    title: 'Introducción a la Programación',
+    description:
+      'Conceptos de algoritmo, proceso y programa. Programación imperativa: secuencia, selección e iteración. Variables, tipos de datos simples y estructurados. Arreglos y matrices. Procedimientos y funciones. Parámetros formales y actuales. Algoritmos básicos de búsqueda y ordenamiento. Herramientas de desarrollo y entornos de programación.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: [],
+    quadmester: 1,
+    year: 1,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD1C1M2',
+    title: 'Matemática para Computación',
+    description:
+      'Lógica proposicional y de predicados. Conjuntos y relaciones. Números enteros y aritmética modular. Combinatoria y conteo. Funciones. Grafos: definiciones, representaciones, recorridos. Árboles. Fundamentos de álgebra booleana. Aplicaciones a la programación y el diseño de algoritmos.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: [],
+    quadmester: 1,
+    year: 1,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD1C1M3',
+    title: 'Laboratorio de Hardware y Redes',
+    description:
+      'Componentes de una computadora personal: motherboard, CPU, memoria RAM, almacenamiento, periféricos. Ensamblado y mantenimiento de equipos. Sistemas operativos: instalación y configuración básica de Windows y Linux. Fundamentos de redes: topologías, medios de transmisión, modelo TCP/IP, configuración de redes domésticas y pequeñas oficinas.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: [],
+    quadmester: 1,
+    year: 1,
+  },
+
+  // Año 1 — Cuatrimestre 2
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD1C2M1',
+    title: 'Programación Orientada a Objetos',
+    description:
+      'Paradigma orientado a objetos: clases, objetos, atributos y métodos. Encapsulamiento, herencia y polimorfismo. Interfaces y clases abstractas. Excepciones. Colecciones y genéricos. Introducción al diseño con UML (diagrama de clases). Desarrollo de aplicaciones medianas con Java o Python orientado a objetos.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C1M1'],
+    quadmester: 2,
+    year: 1,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD1C2M2',
+    title: 'Bases de Datos 1',
+    description:
+      'Conceptos de bases de datos y sistemas gestores (DBMS). Modelo entidad-relación y modelo relacional. Normalización hasta tercera forma normal. Álgebra relacional. SQL: DDL, DML y consultas SELECT. Claves primarias y foráneas. Integridad referencial. Introducción a transacciones. Práctica con PostgreSQL o MySQL.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C1M2'],
+    quadmester: 2,
+    year: 1,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD1C2M3',
+    title: 'Diseño Web y Experiencia de Usuario',
+    description:
+      'Fundamentos de HTML5 y CSS3. Maquetación responsiva con Flexbox y Grid. Accesibilidad web. Principios de diseño de interfaces de usuario (UI) y experiencia de usuario (UX). Wireframes y prototipos con Figma. Introducción a JavaScript: variables, funciones, DOM y eventos. Publicación de sitios estáticos.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: [],
+    quadmester: 2,
+    year: 1,
+  },
+
+  // Año 2 — Cuatrimestre 1
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD2C1M1',
+    title: 'Desarrollo Web Backend',
+    description:
+      'Arquitectura cliente-servidor y protocolo HTTP. Desarrollo de APIs RESTful. Frameworks backend (Node.js con Express o Python con FastAPI). Autenticación y autorización: JWT, sesiones y OAuth 2.0. Integración con bases de datos relacionales mediante ORM. Despliegue en servicios en la nube (Heroku, Railway o similar). Fundamentos de Docker.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C1M1', 'TD1C2M1', 'TD1C2M2', 'TD1C2M3'],
+    quadmester: 1,
+    year: 2,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD2C1M2',
+    title: 'Estructuras de Datos y Algoritmos',
+    description:
+      'Análisis de complejidad temporal y espacial. Notación O. Listas enlazadas, pilas, colas. Árboles binarios de búsqueda. Tablas hash. Algoritmos de ordenamiento avanzados: mergesort, quicksort, heapsort. Algoritmos sobre grafos: BFS, DFS, Dijkstra. Técnicas de diseño: divide y vencerás, programación dinámica y algoritmos voraces.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C1M1', 'TD1C1M2', 'TD1C2M1'],
+    quadmester: 1,
+    year: 2,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD2C1M3',
+    title: 'Sistemas Operativos y Redes',
+    description:
+      'Funciones y estructura de los sistemas operativos. Gestión de procesos e hilos. Planificación de CPU. Memoria virtual y paginación. Sistema de archivos. Comandos avanzados de Linux y scripting bash. Modelo OSI y TCP/IP en profundidad. Protocolo IP, TCP, UDP. Servicios: DNS, DHCP, HTTP, SSH. Administración básica de redes.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C1M3'],
+    quadmester: 1,
+    year: 2,
+  },
+
+  // Año 2 — Cuatrimestre 2
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD2C2M1',
+    title: 'Desarrollo de Aplicaciones Móviles',
+    description:
+      'Plataformas móviles Android e iOS. Desarrollo multiplataforma con React Native o Flutter. Componentes de interfaz, navegación y estado. Consumo de APIs REST desde aplicaciones móviles. Almacenamiento local. Notificaciones push. Publicación en tiendas de aplicaciones. Buenas prácticas de rendimiento y usabilidad en mobile.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C2M3', 'TD2C1M1'],
+    quadmester: 2,
+    year: 2,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD2C2M2',
+    title: 'Bases de Datos 2 y NoSQL',
+    description:
+      'SQL avanzado: subconsultas, vistas, funciones almacenadas y triggers. Optimización de consultas e índices. Introducción a bases de datos NoSQL: tipos (documental, clave-valor, columnar, grafos). MongoDB: modelo de documentos, consultas y agregaciones. Redis como caché. Comparación de modelos relacionales y NoSQL según casos de uso.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C2M2', 'TD2C1M1'],
+    quadmester: 2,
+    year: 2,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD2C2M3',
+    title: 'Metodologías Ágiles y Gestión de Proyectos',
+    description:
+      'Ciclo de vida del software. Metodologías ágiles: Scrum, Kanban y XP. Roles en Scrum: Product Owner, Scrum Master y equipo. Ceremonias: sprint planning, daily, review y retrospectiva. Gestión del backlog y estimación con story points. Herramientas de gestión: Jira, Trello. Control de versiones con Git: flujos de trabajo con ramas (Git Flow).',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C2M1'],
+    quadmester: 2,
+    year: 2,
+  },
+
+  // Año 3 — Cuatrimestre 1
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD3C1M1',
+    title: 'Arquitectura y Patrones de Software',
+    description:
+      'Principios SOLID. Patrones de diseño GoF: creacionales, estructurales y de comportamiento. Arquitecturas de aplicaciones: monolítica, capas, MVC, microservicios y serverless. Comunicación entre servicios: REST, GraphQL, mensajería. Introducción a Domain-Driven Design (DDD). Revisión de código y refactoring.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C2M1', 'TD2C1M1', 'TD2C2M3'],
+    quadmester: 1,
+    year: 3,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD3C1M2',
+    title: 'Seguridad en Aplicaciones Web',
+    description:
+      'Principios de seguridad: confidencialidad, integridad, disponibilidad. OWASP Top 10: inyección SQL, XSS, CSRF, insecure deserialization, entre otros. Autenticación segura: OAuth 2.0, OpenID Connect, MFA. HTTPS y certificados TLS. Análisis de vulnerabilidades con herramientas básicas. Buenas prácticas de desarrollo seguro. Legislación de protección de datos personales en Argentina.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD2C1M1', 'TD2C1M3'],
+    quadmester: 1,
+    year: 3,
+  },
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD3C1M3',
+    title: 'Testing y Aseguramiento de la Calidad',
+    description:
+      'Concepto de calidad en software. Tipos de pruebas: unitarias, integración, funcionales, de rendimiento y de aceptación. TDD (Test-Driven Development) y BDD. Herramientas: Jest, JUnit, Pytest, Cypress o Selenium. Cobertura de código. Integración continua (CI) con GitHub Actions. Introducción a métricas de calidad y herramientas de análisis estático.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD1C2M1', 'TD2C2M3'],
+    quadmester: 1,
+    year: 3,
+  },
+
+  // Año 3 — Cuatrimestre 2
+  {
+    idCarrer: 'C2',
+    planId: 'C2P2024',
+    id: 'TD3C2M1',
+    title: 'Proyecto Final Integrador',
+    description:
+      'Desarrollo integral de un proyecto de software real que integre las competencias adquiridas durante la tecnicatura. El proyecto incluye análisis de requerimientos, diseño de arquitectura, implementación full-stack, pruebas, despliegue y documentación técnica. Trabajo en equipo con metodología ágil. Presentación y defensa ante tribunal evaluador.',
+    urlMoodle: '',
+    urlPrograma: '',
+    required: ['TD3C1M1', 'TD3C1M2', 'TD3C1M3', 'TD2C2M1', 'TD2C2M2'],
+    quadmester: 2,
+    year: 3,
+  },
+];
