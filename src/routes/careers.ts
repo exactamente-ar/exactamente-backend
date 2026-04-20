@@ -1,12 +1,18 @@
 import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
+import { z } from 'zod';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { careers } from '@/db/schema';
 
 const app = new Hono();
 
-app.get('/', async (c) => {
-  const facultyId = c.req.query('facultyId');
+const careersQuerySchema = z.object({
+  facultyId: z.string().optional(),
+});
+
+app.get('/', zValidator('query', careersQuerySchema), async (c) => {
+  const { facultyId } = c.req.valid('query');
 
   const data = await db.query.careers.findMany({
     where: facultyId ? eq(careers.facultyId, facultyId) : undefined,
