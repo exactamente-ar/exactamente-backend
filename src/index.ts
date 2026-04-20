@@ -1,9 +1,10 @@
+import './env'; // valida variables al arrancar
 import app from './app';
+import { env } from './env';
 
-const port = parseInt(process.env.PORT ?? '3000');
-console.log(`🚀 Server running on http://localhost:${port}`);
+console.log(`🚀 Server running on http://localhost:${env.PORT}`);
 
 export default {
-  port,
+  port: env.PORT,
   fetch: app.fetch,
 };

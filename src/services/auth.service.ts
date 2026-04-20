@@ -1,6 +1,7 @@
 import { sign, verify } from 'hono/jwt';
 import type { JwtPayload, PublicUser } from '@/types';
 import type { users } from '@/db/schema';
+import { env } from '@/env';
 
 export function toPublicUser(user: typeof users.$inferSelect): PublicUser {
   return {
@@ -27,11 +28,11 @@ export async function signToken(
   const now = Math.floor(Date.now() / 1000);
   return sign(
     { ...payload, iat: now, exp: now + 60 * 60 * 24 * 7 },
-    process.env.JWT_SECRET!,
+    env.JWT_SECRET,
     'HS256',
   );
 }
 
 export async function verifyTokenPayload(token: string): Promise<JwtPayload> {
-  return verify(token, process.env.JWT_SECRET!, 'HS256') as Promise<JwtPayload>;
+  return verify(token, env.JWT_SECRET, 'HS256') as Promise<JwtPayload>;
 }
