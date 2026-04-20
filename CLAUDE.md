@@ -117,6 +117,7 @@ Copiar `.env.example` a `.env` y completar:
 | `PORT` | Puerto en el que escucha el servidor HTTP (default: `3000`) |
 | `NODE_ENV` | Entorno de ejecución: `development` o `production` |
 | `CORS_ORIGIN` | Origen permitido para CORS (e.g., URL del frontend) |
+| `SEED_ADMIN_PASSWORD` | Contraseña del usuario superadmin creado por `bun seed`. Mínimo 12 caracteres. Solo se necesita al correr el seed. |
 
 ---
 

@@ -27,10 +27,16 @@ async function seed() {
   console.log('🌱 Iniciando seed...');
 
   // 0. Seed admin user
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+  if (!adminPassword || adminPassword.length < 12) {
+    console.error('❌ SEED_ADMIN_PASSWORD debe estar definida y tener al menos 12 caracteres.');
+    process.exit(1);
+  }
+
   await db.insert(users).values({
     id: 'SEED_ADMIN',
     email: 'admin@exactamente.app',
-    passwordHash: await hashPassword('seed-admin-password'),
+    passwordHash: await hashPassword(adminPassword),
     displayName: 'Admin Seed',
     role: 'superadmin',
   }).onConflictDoNothing();
