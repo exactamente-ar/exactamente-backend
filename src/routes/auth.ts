@@ -6,11 +6,15 @@ import { users } from '@/db/schema';
 import { hashPassword, verifyPassword, signToken, toPublicUser } from '@/services/auth.service';
 import { registerSchema, loginSchema } from '@/validators/auth.validators';
 import { verifyToken } from '@/middleware/auth';
+import { rateLimit } from '@/middleware/rateLimit';
 import type { AppContext } from '@/types';
+
+const loginRateLimit    = rateLimit({ limit: 10, windowMs: 15 * 60 * 1000 });  // 10 / 15 min
+const registerRateLimit = rateLimit({ limit: 5,  windowMs: 60 * 60 * 1000 });  // 5 / 1 hora
 
 const auth = new Hono<AppContext>();
 
-auth.post('/register', zValidator('json', registerSchema), async (c) => {
+auth.post('/register', registerRateLimit, zValidator('json', registerSchema), async (c) => {
   const { email, password, displayName } = c.req.valid('json');
 
   const existing = await db.query.users.findFirst({
@@ -38,7 +42,7 @@ auth.post('/register', zValidator('json', registerSchema), async (c) => {
   return c.json({ user: toPublicUser(user), token }, 201);
 });
 
-auth.post('/login', zValidator('json', loginSchema), async (c) => {
+auth.post('/login', loginRateLimit, zValidator('json', loginSchema), async (c) => {
   const { email, password } = c.req.valid('json');
 
   const user = await db.query.users.findFirst({

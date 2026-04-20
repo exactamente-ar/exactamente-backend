@@ -109,6 +109,7 @@ export interface JwtPayload {
 export type AppContext = {
   Variables: {
     user: JwtPayload;
+    requestId: string;
   };
 };
 
