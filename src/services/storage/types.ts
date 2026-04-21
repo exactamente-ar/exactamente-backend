@@ -1,20 +1,21 @@
 export interface StagingResult {
-  fileId: string;
-  filename: string;
+  path: string;
   mimeType: string;
   size: number;
-  url: string;
 }
 
 export interface PublishResult {
-  resourceId: number;
   fileId: string;
-  url: string;
-  message: string;
+  mimeType: string;
+  size: number;
+  previewUrl: string;
+  downloadUrl: string;
 }
 
 export interface StorageProvider {
-  stage(file: File, metadata?: Record<string, string>): Promise<StagingResult>;
-  publish(fileId: string, resourceId: number): Promise<PublishResult>;
-  delete(fileId: string): Promise<void>;
+  saveToStaging(file: File, resourceId: string): Promise<StagingResult>;
+  publishFile(stagingPath: string, targetPath: string, fileName: string): Promise<PublishResult>;
+  deleteFile(fileId: string): Promise<void>;
+  getPreviewUrl(fileId: string): string;
+  getDownloadUrl(fileId: string): string;
 }

@@ -1,15 +1,27 @@
+import { buildPreviewUrl, buildDownloadUrl } from '@/utils/drive-urls';
+import { LocalStorageProvider } from './local.provider';
 import type { StorageProvider, StagingResult, PublishResult } from './types';
 
 export class DriveStorageProvider implements StorageProvider {
-  async stage(file: File, metadata?: Record<string, string>): Promise<StagingResult> {
-    throw new Error('DriveStorageProvider.stage not yet implemented');
+  private local = new LocalStorageProvider();
+
+  async saveToStaging(file: File, resourceId: string): Promise<StagingResult> {
+    return this.local.saveToStaging(file, resourceId);
   }
 
-  async publish(fileId: string, resourceId: number): Promise<PublishResult> {
-    throw new Error('DriveStorageProvider.publish not yet implemented');
+  async publishFile(_stagingPath: string, _targetPath: string, _fileName: string): Promise<PublishResult> {
+    throw new Error('DriveStorageProvider.publishFile: no implementado. Instalar @googleapis/drive primero.');
   }
 
-  async delete(fileId: string): Promise<void> {
-    throw new Error('DriveStorageProvider.delete not yet implemented');
+  async deleteFile(_fileId: string): Promise<void> {
+    throw new Error('DriveStorageProvider.deleteFile: no implementado.');
+  }
+
+  getPreviewUrl(fileId: string): string {
+    return buildPreviewUrl(fileId);
+  }
+
+  getDownloadUrl(fileId: string): string {
+    return buildDownloadUrl(fileId);
   }
 }
