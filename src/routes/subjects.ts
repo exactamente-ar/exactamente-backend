@@ -58,8 +58,6 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
       offset,
       with: {
         careerSubjects: true,
-        prerequisites: true,
-        dependents: true,
       },
       orderBy: (s, { asc }) => [asc(s.year), asc(s.quadmester), asc(s.title)],
     }),
@@ -74,11 +72,10 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
     ...rowToSubject(s),
     careers: s.careerSubjects.map(cs => ({
       careerId: cs.careerId,
+      planId: cs.planId,
       year: cs.year,
       quadmester: cs.quadmester,
     })),
-    prerequisites: s.prerequisites.map(p => p.requiredId),
-    correlatives: s.dependents.map(d => d.subjectId),
   }));
 
   return c.json(buildPaginatedResponse(data, total, safePage, safeLimit));
@@ -91,8 +88,6 @@ app.get('/:id', async (c) => {
     where: eq(subjects.id, id),
     with: {
       careerSubjects: true,
-      prerequisites: { with: { required: true } },
-      dependents:    { with: { subject: true } },
     },
   });
 
@@ -103,13 +98,10 @@ app.get('/:id', async (c) => {
       ...rowToSubject(subject),
       careers: subject.careerSubjects.map(cs => ({
         careerId: cs.careerId,
+        planId: cs.planId,
         year: cs.year,
         quadmester: cs.quadmester,
       })),
-      prerequisites: subject.prerequisites.map(p => p.requiredId),
-      correlatives:  subject.dependents.map(d => d.subjectId),
-      prerequisiteSubjects: subject.prerequisites.map(p => rowToSubject(p.required)),
-      correlativeSubjects:  subject.dependents.map(d => rowToSubject(d.subject)),
     },
   });
 });

@@ -43,15 +43,8 @@ export interface Subject {
   updatedAt: string;
 }
 
-export interface SubjectWithCorrelatives extends Subject {
-  careers: Array<{ careerId: string; year: number; quadmester: number }>;
-  prerequisites: string[];
-  correlatives: string[];
-}
-
-export interface SubjectDetail extends SubjectWithCorrelatives {
-  prerequisiteSubjects: Subject[];
-  correlativeSubjects: Subject[];
+export interface SubjectWithCareers extends Subject {
+  careers: Array<{ careerId: string; planId: string; year: number; quadmester: number }>;
 }
 
 // ─── USUARIOS ─────────────────────────────────────────────────────────────────
