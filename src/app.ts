@@ -7,6 +7,13 @@ import facultiesRoutes    from '@/routes/faculties';
 import careersRoutes      from '@/routes/careers';
 import subjectsRoutes     from '@/routes/subjects';
 import resourcesRoutes    from '@/routes/resources';
+import adminResourcesRoutes  from '@/routes/admin/resources';
+import adminDriveRoutes      from '@/routes/admin/drive';
+import adminUniversitiesRoutes from '@/routes/admin/universities';
+import adminFacultiesRoutes  from '@/routes/admin/faculties';
+import adminCareersRoutes    from '@/routes/admin/careers';
+import adminCareerPlansRoutes from '@/routes/admin/career-plans';
+import adminSubjectsRoutes   from '@/routes/admin/subjects';
 import { env } from '@/env';
 import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
@@ -30,7 +37,7 @@ app.onError((err, c) => {
 app.use('*', requestId);
 app.use('*', httpLogger);
 app.use('*', cors({
-  origin: env.CORS_ORIGIN,
+  origin: [env.CORS_ORIGIN, env.ADMIN_ORIGIN],
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
 }));
@@ -46,5 +53,12 @@ api.route('/faculties',    facultiesRoutes);
 api.route('/careers',      careersRoutes);
 api.route('/subjects',     subjectsRoutes);
 api.route('/resources',    resourcesRoutes);
+api.route('/admin/resources',    adminResourcesRoutes);
+api.route('/admin/drive',         adminDriveRoutes);
+api.route('/admin/universities',  adminUniversitiesRoutes);
+api.route('/admin/faculties',     adminFacultiesRoutes);
+api.route('/admin/careers',       adminCareersRoutes);
+api.route('/admin/career-plans',  adminCareerPlansRoutes);
+api.route('/admin/subjects',      adminSubjectsRoutes);
 
 export default app;
