@@ -30,7 +30,7 @@ app.onError((err, c) => {
 app.use('*', requestId);
 app.use('*', httpLogger);
 app.use('*', cors({
-  origin: env.CORS_ORIGIN,
+  origin: [env.CORS_ORIGIN, env.ADMIN_ORIGIN],
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
 }));
