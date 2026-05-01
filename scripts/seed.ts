@@ -10,7 +10,7 @@ import {
   users,
   resources,
 } from '../src/db/schema';
-import { MATERIAS_SISTEMAS, MATERIAS_TUDAI } from './data/materias';
+import { MATERIAS_SISTEMAS, MATERIAS_TUDAI, MATERIAS_TUARI } from './data/materias';
 import { carreras } from './data/carreras';
 import { planes } from './data/planes';
 import { slugify } from '../src/utils/slugify';
@@ -46,6 +46,7 @@ async function seed() {
   await db.insert(universities).values({
     id: 'UNICEN',
     name: 'Universidad Nacional del Centro de la Provincia de Buenos Aires',
+    shortName: 'UNICEN',
     slug: 'unicen',
   }).onConflictDoNothing();
   console.log('✓ Universidad insertada');
@@ -55,6 +56,7 @@ async function seed() {
     id: 'FACET',
     universityId: 'UNICEN',
     name: 'Facultad de Ciencias Exactas',
+    shortName: 'Exactas',
     slug: 'exactas',
   }).onConflictDoNothing();
   console.log('✓ Facultad insertada');
@@ -65,6 +67,7 @@ async function seed() {
       id: carrera.id,
       facultyId: 'FACET',
       name: carrera.name,
+      shortName: carrera.shortName,
       slug: slugify(carrera.name),
     }).onConflictDoNothing();
   }
@@ -76,9 +79,16 @@ async function seed() {
   }
   console.log(`✓ ${planes.length} planes insertados`);
 
-  // 4. Materias (deduplicar por ID — la misma materia no se repite aunque
+  // 4. Limpiar datos dinámicos antes de reinsertar (para que el seed sea idempotente)
+  await db.delete(subjectPrerequisites);
+  await db.delete(resources);
+  await db.delete(careerSubjects);
+  await db.delete(subjects);
+  console.log('✓ Datos previos de materias limpiados');
+
+  // 5. Materias (deduplicar por ID — la misma materia no se repite aunque
   //    aparezca en múltiples carreras)
-  const ALL_MATERIAS = [...MATERIAS_SISTEMAS, ...MATERIAS_TUDAI];
+  const ALL_MATERIAS = [...MATERIAS_SISTEMAS, ...MATERIAS_TUDAI, ...MATERIAS_TUARI];
   const uniqueSubjects = new Map<string, typeof ALL_MATERIAS[number]>();
   for (const m of ALL_MATERIAS) {
     if (!uniqueSubjects.has(m.id)) uniqueSubjects.set(m.id, m);
@@ -99,7 +109,7 @@ async function seed() {
   }
   console.log(`✓ ${uniqueSubjects.size} materias insertadas`);
 
-  // 5. career_subjects — cada materia con su carrera y plan
+  // 6. career_subjects — cada materia con su carrera y plan
   for (const materia of ALL_MATERIAS) {
     await db.insert(careerSubjects).values({
       careerId: materia.idCarrer,
@@ -111,7 +121,7 @@ async function seed() {
   }
   console.log(`✓ ${ALL_MATERIAS.length} relaciones carrera-plan-materia insertadas`);
 
-  // 6. Prerequisitos
+  // 7. Prerequisitos
   let prereqCount = 0;
   for (const materia of ALL_MATERIAS) {
     for (const requiredId of materia.required) {
@@ -124,7 +134,7 @@ async function seed() {
   }
   console.log(`✓ ${prereqCount} prerequisitos insertados`);
 
-  // 7. Resources — solo los que tienen un subjectId que existe en la BD
+  // 8. Resources — solo los que tienen un subjectId que existe en la BD
   if (RESOURCES.length > 0) {
     const knownSubjectIds = new Set(uniqueSubjects.keys());
     const validResources = RESOURCES.filter(r => knownSubjectIds.has(r.subjectId));
