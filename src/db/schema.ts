@@ -25,6 +25,7 @@ export const resourceTypeEnum = pgEnum('resource_type', [
 export const universities = pgTable('universities', {
   id:        text('id').primaryKey(),
   name:      varchar('name', { length: 255 }).notNull().unique(),
+  shortName: varchar('short_name', { length: 50 }),
   slug:      varchar('slug', { length: 100 }).notNull().unique(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
@@ -33,6 +34,7 @@ export const faculties = pgTable('faculties', {
   id:           text('id').primaryKey(),
   universityId: text('university_id').notNull().references(() => universities.id),
   name:         varchar('name', { length: 255 }).notNull(),
+  shortName:    varchar('short_name', { length: 50 }),
   slug:         varchar('slug', { length: 100 }).notNull(),
   createdAt:    timestamp('created_at').notNull().defaultNow(),
 }, (t) => ({
@@ -44,6 +46,7 @@ export const careers = pgTable('careers', {
   id:        text('id').primaryKey(),
   facultyId: text('faculty_id').notNull().references(() => faculties.id),
   name:      varchar('name', { length: 255 }).notNull(),
+  shortName: varchar('short_name', { length: 50 }),
   slug:      varchar('slug', { length: 100 }).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (t) => ({
