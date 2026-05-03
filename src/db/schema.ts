@@ -1,6 +1,6 @@
 import {
   pgTable, text, varchar, integer, smallint, boolean,
-  timestamp, pgEnum, primaryKey, index, unique,
+  timestamp, date, pgEnum, primaryKey, index, unique,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -127,12 +127,10 @@ export const resources = pgTable('resources', {
   title:           varchar('title', { length: 255 }).notNull(),
   type:            resourceTypeEnum('type').notNull(),
   status:          resourceStatusEnum('status').notNull().default('pending'),
-  stagingPath:     text('staging_path'),
-  stagingMimeType: varchar('staging_mime_type', { length: 100 }),
-  stagingSize:     integer('staging_size'),
-  driveFileId:     text('drive_file_id'),
-  driveMimeType:   varchar('drive_mime_type', { length: 100 }),
-  driveSize:       integer('drive_size'),
+  r2Key:           text('r2_key'),
+  examDate:        date('exam_date', { mode: 'string' }),
+  period:          varchar('period', { length: 20 }),
+  notes:           text('notes'),
   rejectionReason: text('rejection_reason'),
   downloadCount:   integer('download_count').notNull().default(0),
   createdAt:       timestamp('created_at').notNull().defaultNow(),

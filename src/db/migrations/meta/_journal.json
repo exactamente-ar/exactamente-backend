@@ -22,6 +22,13 @@
       "when": 1777663930139,
       "tag": "0002_cold_anita_blake",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1777842222157,
+      "tag": "0003_medical_white_tiger",
+      "breakpoints": true
     }
   ]
 }
