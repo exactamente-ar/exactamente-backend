@@ -11,7 +11,6 @@ import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
 import type { AppContext } from '@/types';
 
 const app = new Hono<AppContext>();
-
 const adminGuard = [verifyToken, requireRole('admin')] as const;
 
 // ─── GET / — listar recursos (todos los estados) ──────────────────────────────
@@ -48,25 +47,39 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
   return c.json(buildPaginatedResponse(rows.map(rowToAdminResource), total, safePage, safeLimit));
 });
 
-// ─── POST / — subir recurso a staging ────────────────────────────────────────
+// ─── POST / — subir recurso (admin) ──────────────────────────────────────────
 
 const uploadBodySchema = z.object({
   subjectId: z.string().min(1),
-  title:     z.string().min(1).max(255),
   type:      z.enum(['resumen', 'parcial', 'final']),
+  examDate:  z.string().date().optional(),
+  period:    z.string().max(20).optional(),
+  notes:     z.string().optional(),
 });
 
 app.post('/', ...adminGuard, async (c) => {
   const formData = await c.req.formData();
   const file      = formData.get('file');
-  const subjectId = formData.get('subjectId');
-  const title     = formData.get('title');
-  const type      = formData.get('type');
+  const subjectId = formData.get('subjectId') as string | null;
+  const type      = formData.get('type') as string | null;
+  const examDate  = formData.get('examDate') as string | null;
+  const period    = formData.get('period') as string | null;
+  const notes     = formData.get('notes') as string | null;
 
   if (!(file instanceof File))
     return c.json({ error: 'El campo file es requerido y debe ser un archivo' }, 400);
+  if (file.type !== 'application/pdf')
+    return c.json({ error: 'Solo se aceptan archivos PDF' }, 400);
+  if (file.size > 20 * 1024 * 1024)
+    return c.json({ error: 'El archivo no puede superar los 20MB' }, 400);
 
-  const parsed = uploadBodySchema.safeParse({ subjectId, title, type });
+  const parsed = uploadBodySchema.safeParse({
+    subjectId,
+    type,
+    examDate:  examDate  ?? undefined,
+    period:    period    ?? undefined,
+    notes:     notes     ?? undefined,
+  });
   if (!parsed.success)
     return c.json({ error: parsed.error.issues[0].message }, 400);
 
@@ -76,55 +89,66 @@ app.post('/', ...adminGuard, async (c) => {
   if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
 
   const resourceId = crypto.randomUUID();
-  const { path, mimeType, size } = await storage.saveToStaging(file, resourceId);
+  const key = `pending/${resourceId}.pdf`;
+  const buffer = Buffer.from(await file.arrayBuffer());
+  await storage.uploadFile(key, buffer, 'application/pdf');
 
   const user = c.get('user');
+  const title = buildTitle(parsed.data.type, subject.title, parsed.data.period);
+
   const [resource] = await db.insert(resources).values({
-    id:              resourceId,
-    subjectId:       parsed.data.subjectId,
-    uploadedBy:      user.sub,
-    title:           parsed.data.title,
-    type:            parsed.data.type,
-    status:          'pending',
-    stagingPath:     path,
-    stagingMimeType: mimeType,
-    stagingSize:     size,
+    id:        resourceId,
+    subjectId: parsed.data.subjectId,
+    uploadedBy: user.sub,
+    title,
+    type:      parsed.data.type,
+    status:    'pending',
+    r2Key:     key,
+    examDate:  parsed.data.examDate ?? null,
+    period:    parsed.data.period   ?? null,
+    notes:     parsed.data.notes    ?? null,
   }).returning();
 
   return c.json(rowToAdminResource(resource), 201);
 });
 
-// ─── POST /:id/publish — publicar recurso pendiente ───────────────────────────
+// ─── GET /:id/preview — signed URL para previsualizar ────────────────────────
 
-app.post('/:id/publish', ...adminGuard, async (c) => {
+app.get('/:id/preview', ...adminGuard, async (c) => {
+  const id = c.req.param('id');
+  const resource = await db.query.resources.findFirst({ where: eq(resources.id, id) });
+
+  if (!resource)    return c.json({ error: 'Recurso no encontrado' }, 404);
+  if (!resource.r2Key) return c.json({ error: 'El recurso no tiene archivo' }, 409);
+
+  const signedUrl = await storage.getSignedUrl(resource.r2Key);
+  return c.json({ signedUrl });
+});
+
+// ─── PATCH /:id/approve — aprobar recurso pendiente ──────────────────────────
+
+app.patch('/:id/approve', ...adminGuard, async (c) => {
   const id = c.req.param('id');
   const resource = await db.query.resources.findFirst({ where: eq(resources.id, id) });
 
   if (!resource)
     return c.json({ error: 'Recurso no encontrado' }, 404);
   if (resource.status !== 'pending')
-    return c.json({ error: 'Solo se pueden publicar recursos en estado pendiente' }, 409);
-  if (!resource.stagingPath)
-    return c.json({ error: 'El recurso no tiene archivo en staging' }, 409);
+    return c.json({ error: 'Solo se pueden aprobar recursos en estado pendiente' }, 409);
+  if (!resource.r2Key)
+    return c.json({ error: 'El recurso no tiene archivo' }, 409);
 
-  const targetPath = `subjects/${resource.subjectId}`;
-  const fileName = resource.stagingPath.split('/').at(-1) ?? `${id}.bin`;
-
-  const result = await storage.publishFile(resource.stagingPath, targetPath, fileName);
+  const destKey = `public/${resource.subjectId}/${id}.pdf`;
+  await storage.moveFile(resource.r2Key, destKey);
 
   const user = c.get('user');
   const [updated] = await db.update(resources)
     .set({
-      status:          'published',
-      driveFileId:     result.fileId,
-      driveMimeType:   result.mimeType,
-      driveSize:       result.size,
-      reviewedBy:      user.sub,
-      publishedAt:     new Date(),
-      updatedAt:       new Date(),
-      stagingPath:     null,
-      stagingMimeType: null,
-      stagingSize:     null,
+      status:      'published',
+      r2Key:       destKey,
+      reviewedBy:  user.sub,
+      publishedAt: new Date(),
+      updatedAt:   new Date(),
     })
     .where(eq(resources.id, id))
     .returning();
@@ -132,11 +156,11 @@ app.post('/:id/publish', ...adminGuard, async (c) => {
   return c.json(rowToAdminResource(updated));
 });
 
-// ─── POST /:id/reject — rechazar recurso pendiente ────────────────────────────
+// ─── PATCH /:id/reject — rechazar recurso pendiente ──────────────────────────
 
 const rejectSchema = z.object({ reason: z.string().min(1) });
 
-app.post('/:id/reject', ...adminGuard, zValidator('json', rejectSchema), async (c) => {
+app.patch('/:id/reject', ...adminGuard, zValidator('json', rejectSchema), async (c) => {
   const id = c.req.param('id');
   const { reason } = c.req.valid('json');
 
@@ -147,8 +171,8 @@ app.post('/:id/reject', ...adminGuard, zValidator('json', rejectSchema), async (
   if (resource.status !== 'pending')
     return c.json({ error: 'Solo se pueden rechazar recursos en estado pendiente' }, 409);
 
-  if (resource.stagingPath) {
-    await storage.deleteFile(resource.stagingPath);
+  if (resource.r2Key) {
+    await storage.deleteFile(resource.r2Key);
   }
 
   const user = c.get('user');
@@ -157,10 +181,8 @@ app.post('/:id/reject', ...adminGuard, zValidator('json', rejectSchema), async (
       status:          'rejected',
       rejectionReason: reason,
       reviewedBy:      user.sub,
+      r2Key:           null,
       updatedAt:       new Date(),
-      stagingPath:     null,
-      stagingMimeType: null,
-      stagingSize:     null,
     })
     .where(eq(resources.id, id))
     .returning();
@@ -168,7 +190,14 @@ app.post('/:id/reject', ...adminGuard, zValidator('json', rejectSchema), async (
   return c.json(rowToAdminResource(updated));
 });
 
-// ─── Row mapper ───────────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function buildTitle(type: string, subjectTitle: string, period?: string): string {
+  const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+  return period
+    ? `${typeLabel} - ${subjectTitle} - ${period}`
+    : `${typeLabel} - ${subjectTitle}`;
+}
 
 function rowToAdminResource(row: typeof resources.$inferSelect) {
   return {
@@ -179,17 +208,18 @@ function rowToAdminResource(row: typeof resources.$inferSelect) {
     title:           row.title,
     type:            row.type,
     status:          row.status,
-    stagingPath:     row.stagingPath,
-    stagingSize:     row.stagingSize,
-    driveFileId:     row.driveFileId,
-    driveSize:       row.driveSize,
+    r2Key:           row.r2Key,
+    examDate:        row.examDate ?? null,
+    period:          row.period   ?? null,
+    notes:           row.notes    ?? null,
     rejectionReason: row.rejectionReason,
     downloadCount:   row.downloadCount,
     publishedAt:     row.publishedAt?.toISOString() ?? null,
     createdAt:       row.createdAt.toISOString(),
     updatedAt:       row.updatedAt.toISOString(),
-    previewUrl:      row.driveFileId ? storage.getPreviewUrl(row.driveFileId) : null,
-    downloadUrl:     row.driveFileId ? storage.getDownloadUrl(row.driveFileId) : null,
+    fileUrl:         row.r2Key && row.status === 'published'
+      ? storage.getPublicUrl(row.r2Key)
+      : null,
   };
 }
 

@@ -4,7 +4,6 @@ import adminFacultiesApp    from '@/routes/admin/faculties';
 import adminCareersApp      from '@/routes/admin/careers';
 import adminCareerPlansApp  from '@/routes/admin/career-plans';
 import adminSubjectsApp     from '@/routes/admin/subjects';
-import adminDriveApp        from '@/routes/admin/drive';
 import { signToken } from '@/services/auth.service';
 
 async function token(role: 'user' | 'admin') {
@@ -132,30 +131,3 @@ describe('admin/subjects', () => {
   });
 });
 
-// ─── Drive ────────────────────────────────────────────────────────────────────
-
-describe('admin/drive', () => {
-  test('GET /tree returns 401 without token', async () => {
-    const res = await req(adminDriveApp, '/tree');
-    expect(res.status).toBe(401);
-  });
-
-  test('GET /tree returns 403 with user role', async () => {
-    const res = await req(adminDriveApp, '/tree', { authRole: 'user' });
-    expect(res.status).toBe(403);
-  });
-
-  test('POST /folder returns 400 when name is missing', async () => {
-    const res = await req(adminDriveApp, '/folder', {
-      method: 'POST', authRole: 'admin', body: { parentId: 'root' },
-    });
-    expect(res.status).toBe(400);
-  });
-
-  test('PATCH /folder/:id returns 400 when name is missing', async () => {
-    const res = await req(adminDriveApp, '/folder/some-id', {
-      method: 'PATCH', authRole: 'admin', body: {},
-    });
-    expect(res.status).toBe(400);
-  });
-});
