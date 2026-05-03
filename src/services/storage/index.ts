@@ -1,11 +1,6 @@
-import { env } from '@/env';
-import { LocalStorageProvider } from './local.provider';
-import { DriveStorageProvider } from './drive.provider';
-import type { StorageProvider } from './types';
+import { R2StorageProvider } from './r2.provider';
+import type { StorageService } from './types';
 
-export const storage: StorageProvider =
-  env.STORAGE_PROVIDER === 'drive'
-    ? new DriveStorageProvider()
-    : new LocalStorageProvider();
+export const storage: StorageService = new R2StorageProvider();
 
-export type { StorageProvider, StagingResult, PublishResult } from './types';
+export type { StorageService } from './types';

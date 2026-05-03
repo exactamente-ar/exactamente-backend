@@ -12,6 +12,8 @@
     "xlsx-to-ts": "bun scripts/xlsx-to-ts.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1041.0",
+    "@aws-sdk/s3-request-presigner": "^3.1041.0",
     "@hono/zod-validator": "^0.4.1",
     "drizzle-orm": "^0.38.0",
     "googleapis": "^171.4.0",
