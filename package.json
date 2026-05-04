@@ -9,7 +9,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "seed": "bun scripts/seed.ts",
-    "xlsx-to-ts": "bun scripts/xlsx-to-ts.ts"
+    "xlsx-to-ts": "bun scripts/xlsx-to-ts.ts",
+    "migrate-drive": "bun scripts/migrate-drive-to-r2.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1041.0",
