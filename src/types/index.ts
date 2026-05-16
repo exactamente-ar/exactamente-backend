@@ -71,13 +71,10 @@ export interface ResourcePublic {
   title: string;
   type: ResourceType;
   status: ResourceStatus;
-  driveFileId: string | null;
-  driveSize: number | null;
   downloadCount: number;
   publishedAt: string | null;
   createdAt: string;
-  previewUrl: string | null;
-  downloadUrl: string | null;
+  fileUrl: string | null;
 }
 
 export interface ResourceDetail extends ResourcePublic {

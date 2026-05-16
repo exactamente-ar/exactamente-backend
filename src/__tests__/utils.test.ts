@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'bun:test';
 import { slugify } from '@/utils/slugify';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
-import { buildPreviewUrl, buildDownloadUrl } from '@/utils/drive-urls';
 
 describe('slugify', () => {
   it('convierte a minúsculas con guiones', () => {
@@ -47,17 +46,5 @@ describe('buildPaginatedResponse', () => {
   it('calcula totalPages correctamente', () => {
     const result = buildPaginatedResponse(['a', 'b'], 25, 2, 10);
     expect(result).toEqual({ data: ['a', 'b'], total: 25, page: 2, totalPages: 3 });
-  });
-});
-
-describe('buildPreviewUrl', () => {
-  it('construye la URL de preview de Drive', () => {
-    expect(buildPreviewUrl('abc123')).toBe('https://drive.google.com/file/d/abc123/preview');
-  });
-});
-
-describe('buildDownloadUrl', () => {
-  it('construye la URL de descarga de Drive', () => {
-    expect(buildDownloadUrl('abc123')).toBe('https://drive.google.com/uc?export=download&id=abc123');
   });
 });
