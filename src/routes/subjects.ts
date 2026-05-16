@@ -57,7 +57,17 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
       limit: safeLimit,
       offset,
       with: {
-        careerSubjects: true,
+        careerSubjects: {
+          with: {
+            career: {
+              with: {
+                faculty: {
+                  with: { university: true },
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: (s, { asc }) => [asc(s.year), asc(s.quadmester), asc(s.title)],
     }),
@@ -72,6 +82,11 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
     ...rowToSubject(s),
     careers: s.careerSubjects.map(cs => ({
       careerId: cs.careerId,
+      careerName: cs.career.shortName ?? cs.career.name,
+      facultyId: cs.career.facultyId,
+      facultyName: cs.career.faculty.shortName ?? cs.career.faculty.name,
+      universityId: cs.career.faculty.universityId,
+      universityName: cs.career.faculty.university.shortName ?? cs.career.faculty.university.name,
       planId: cs.planId,
       year: cs.year,
       quadmester: cs.quadmester,
@@ -87,7 +102,17 @@ app.get('/:id', async (c) => {
   const subject = await db.query.subjects.findFirst({
     where: eq(subjects.id, id),
     with: {
-      careerSubjects: true,
+      careerSubjects: {
+        with: {
+          career: {
+            with: {
+              faculty: {
+                with: { university: true },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
@@ -98,6 +123,11 @@ app.get('/:id', async (c) => {
       ...rowToSubject(subject),
       careers: subject.careerSubjects.map(cs => ({
         careerId: cs.careerId,
+        careerName: cs.career.shortName ?? cs.career.name,
+        facultyId: cs.career.facultyId,
+        facultyName: cs.career.faculty.shortName ?? cs.career.faculty.name,
+        universityId: cs.career.faculty.universityId,
+        universityName: cs.career.faculty.university.shortName ?? cs.career.faculty.university.name,
         planId: cs.planId,
         year: cs.year,
         quadmester: cs.quadmester,

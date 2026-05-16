@@ -308,3 +308,111 @@ Lista recursos publicados con paginación y filtros.
   "pagination": { "total": 10, "page": 1, "limit": 20, "totalPages": 1 }
 }
 ```
+
+---
+
+### Admin Drive — `/api/v1/admin/drive` 🔒
+
+Todos los endpoints de esta sección requieren autenticación y rol `admin` (o superior).
+
+#### `GET /api/v1/admin/drive/tree`
+
+Devuelve el árbol de carpetas de Google Drive desde la raíz configurada.
+
+**Query params:**
+
+| Param   | Tipo   | Descripción                                  |
+|---------|--------|----------------------------------------------|
+| `depth` | number | (opcional) Profundidad del árbol (`1` a `5`, default: `2`) |
+
+**Respuesta `200`:**
+```json
+{
+  "id": "...",
+  "name": "exactamente",
+  "mimeType": "application/vnd.google-apps.folder",
+  "children": [
+    {
+      "id": "...",
+      "name": "FACET",
+      "mimeType": "application/vnd.google-apps.folder",
+      "children": []
+    }
+  ]
+}
+```
+
+---
+
+#### `GET /api/v1/admin/drive/folder/:folderId`
+
+Lista el contenido inmediato (1 nivel) de una carpeta.
+
+**Respuesta `200`:**
+```json
+[
+  {
+    "id": "...",
+    "name": "Parciales",
+    "mimeType": "application/vnd.google-apps.folder"
+  },
+  {
+    "id": "...",
+    "name": "resumen-unidad-1.pdf",
+    "mimeType": "application/pdf"
+  }
+]
+```
+
+---
+
+#### `POST /api/v1/admin/drive/folder`
+
+Crea una carpeta dentro de otra carpeta.
+
+**Body (JSON):**
+
+| Campo      | Tipo   | Requerido | Descripción |
+|------------|--------|-----------|-------------|
+| `parentId` | string | sí        | ID de la carpeta padre |
+| `name`     | string | sí        | Nombre de la carpeta (1-255 chars) |
+
+**Respuesta `201`:**
+```json
+{
+  "id": "...",
+  "name": "Nuevos apuntes",
+  "mimeType": "application/vnd.google-apps.folder"
+}
+```
+
+---
+
+#### `PATCH /api/v1/admin/drive/folder/:folderId`
+
+Renombra una carpeta existente.
+
+**Body (JSON):**
+
+| Campo  | Tipo   | Requerido | Descripción |
+|--------|--------|-----------|-------------|
+| `name` | string | sí        | Nuevo nombre de la carpeta (1-255 chars) |
+
+**Respuesta `200`:**
+```json
+{
+  "id": "...",
+  "name": "Parciales 2026",
+  "mimeType": "application/vnd.google-apps.folder"
+}
+```
+
+---
+
+#### `DELETE /api/v1/admin/drive/folder/:folderId`
+
+Elimina una carpeta de forma recursiva.
+
+**Respuesta `204`:** sin contenido.
+
+**Errores:** `400` si se intenta eliminar la carpeta raíz configurada.
