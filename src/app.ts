@@ -13,6 +13,7 @@ import adminFacultiesRoutes  from '@/routes/admin/faculties';
 import adminCareersRoutes    from '@/routes/admin/careers';
 import adminCareerPlansRoutes from '@/routes/admin/career-plans';
 import adminSubjectsRoutes   from '@/routes/admin/subjects';
+import adminStatsRoutes      from '@/routes/admin/stats';
 import { env } from '@/env';
 import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
@@ -58,5 +59,6 @@ api.route('/admin/faculties',     adminFacultiesRoutes);
 api.route('/admin/careers',       adminCareersRoutes);
 api.route('/admin/career-plans',  adminCareerPlansRoutes);
 api.route('/admin/subjects',      adminSubjectsRoutes);
+api.route('/admin/stats',         adminStatsRoutes);
 
 export default app;

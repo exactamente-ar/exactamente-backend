@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, asc, eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
 import { subjects, resources } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
@@ -13,7 +13,7 @@ import type { AppContext } from '@/types';
 const app = new Hono<AppContext>();
 const adminGuard = [verifyToken, requireRole('admin')] as const;
 
-// GET / — lista paginada, filtrable por facultad
+// GET / — lista paginada, filtrable por facultad, con resourceCount
 const listSchema = z.object({
   facultyId: z.string().optional(),
   page:      z.coerce.number().int().positive().default(1),
@@ -24,15 +24,32 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
   const { facultyId, page, limit } = c.req.valid('query');
   const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
   const whereClause = facultyId ? eq(subjects.facultyId, facultyId) : undefined;
+
   const [data, countResult] = await Promise.all([
-    db.query.subjects.findMany({
-      where: whereClause,
-      orderBy: (s, { asc }) => [asc(s.year), asc(s.quadmester), asc(s.title)],
-      limit: safeLimit,
-      offset,
-    }),
+    db.select({
+      id:            subjects.id,
+      facultyId:     subjects.facultyId,
+      title:         subjects.title,
+      slug:          subjects.slug,
+      description:   subjects.description,
+      urlMoodle:     subjects.urlMoodle,
+      urlPrograma:   subjects.urlPrograma,
+      year:          subjects.year,
+      quadmester:    subjects.quadmester,
+      createdAt:     subjects.createdAt,
+      updatedAt:     subjects.updatedAt,
+      resourceCount: sql<number>`count(case when ${resources.status} = 'published' then 1 end)::int`,
+    })
+    .from(subjects)
+    .leftJoin(resources, eq(resources.subjectId, subjects.id))
+    .where(whereClause)
+    .groupBy(subjects.id)
+    .orderBy(asc(subjects.year), asc(subjects.quadmester), asc(subjects.title))
+    .limit(safeLimit)
+    .offset(offset),
     db.select({ count: sql<number>`count(*)::int` }).from(subjects).where(whereClause),
   ]);
+
   return c.json(buildPaginatedResponse(data, countResult[0]?.count ?? 0, safePage, safeLimit));
 });
 
