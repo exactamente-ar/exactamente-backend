@@ -105,7 +105,8 @@ export const subjectPrerequisites = pgTable('subject_prerequisites', {
 export const users = pgTable('users', {
   id:             text('id').primaryKey(),
   email:          varchar('email', { length: 255 }).notNull().unique(),
-  passwordHash:   varchar('password_hash', { length: 255 }).notNull(),
+  passwordHash:   varchar('password_hash', { length: 255 }),
+  googleId:       varchar('google_id', { length: 255 }).unique(),
   displayName:    varchar('display_name', { length: 100 }).notNull(),
   role:           userRoleEnum('role').notNull().default('user'),
   adminFacultyId: text('admin_faculty_id').references(() => faculties.id),
@@ -113,8 +114,9 @@ export const users = pgTable('users', {
   createdAt:      timestamp('created_at').notNull().defaultNow(),
   updatedAt:      timestamp('updated_at').notNull().defaultNow(),
 }, (t) => ({
-  emailIdx:   index('users_email_idx').on(t.email),
-  facultyIdx: index('users_faculty_idx').on(t.adminFacultyId),
+  emailIdx:    index('users_email_idx').on(t.email),
+  facultyIdx:  index('users_faculty_idx').on(t.adminFacultyId),
+  googleIdIdx: index('users_google_id_idx').on(t.googleId),
 }));
 
 // ─── RECURSOS ─────────────────────────────────────────────────────────────────
