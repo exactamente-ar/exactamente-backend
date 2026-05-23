@@ -36,3 +36,49 @@ export async function signToken(
 export async function verifyTokenPayload(token: string): Promise<JwtPayload> {
   return verify(token, env.JWT_SECRET, 'HS256') as Promise<JwtPayload>;
 }
+
+export function getGoogleAuthUrl(): string {
+  const params = new URLSearchParams({
+    client_id:     env.GOOGLE_CLIENT_ID,
+    redirect_uri:  env.GOOGLE_REDIRECT_URI,
+    response_type: 'code',
+    scope:         'openid email profile',
+    access_type:   'offline',
+    prompt:        'select_account',
+  });
+  return `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+}
+
+export async function getGoogleUserInfo(
+  code: string,
+): Promise<{ googleId: string; email: string; displayName: string }> {
+  const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      code,
+      client_id:     env.GOOGLE_CLIENT_ID,
+      client_secret: env.GOOGLE_CLIENT_SECRET,
+      redirect_uri:  env.GOOGLE_REDIRECT_URI,
+      grant_type:    'authorization_code',
+    }),
+  });
+
+  if (!tokenRes.ok) throw new Error('google_token_exchange_failed');
+
+  const { access_token } = await tokenRes.json<{ access_token: string }>();
+
+  const userRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+    headers: { Authorization: `Bearer ${access_token}` },
+  });
+
+  if (!userRes.ok) throw new Error('google_userinfo_failed');
+
+  const { id, email, name } = await userRes.json<{
+    id: string;
+    email: string;
+    name: string;
+  }>();
+
+  return { googleId: id, email, displayName: name };
+}
