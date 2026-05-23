@@ -66,7 +66,7 @@ export async function getGoogleUserInfo(
 
   if (!tokenRes.ok) throw new Error('google_token_exchange_failed');
 
-  const { access_token } = await tokenRes.json<{ access_token: string }>();
+  const { access_token } = (await tokenRes.json()) as { access_token: string };
 
   const userRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
     headers: { Authorization: `Bearer ${access_token}` },
@@ -74,11 +74,11 @@ export async function getGoogleUserInfo(
 
   if (!userRes.ok) throw new Error('google_userinfo_failed');
 
-  const { id, email, name } = await userRes.json<{
+  const { id, email, name } = (await userRes.json()) as {
     id: string;
     email: string;
     name: string;
-  }>();
+  };
 
   return { googleId: id, email, displayName: name };
 }

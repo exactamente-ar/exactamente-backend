@@ -1,9 +1,10 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { eq } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
+import { env } from '@/env';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { hashPassword, verifyPassword, signToken, toPublicUser } from '@/services/auth.service';
+import { hashPassword, verifyPassword, signToken, toPublicUser, getGoogleAuthUrl, getGoogleUserInfo } from '@/services/auth.service';
 import { registerSchema, loginSchema } from '@/validators/auth.validators';
 import { verifyToken } from '@/middleware/auth';
 import { rateLimit } from '@/middleware/rateLimit';
@@ -11,6 +12,7 @@ import type { AppContext } from '@/types';
 
 const loginRateLimit    = rateLimit({ limit: 10, windowMs: 15 * 60 * 1000 });  // 10 / 15 min
 const registerRateLimit = rateLimit({ limit: 5,  windowMs: 60 * 60 * 1000 });  // 5 / 1 hora
+const oauthRateLimit    = rateLimit({ limit: 20, windowMs: 15 * 60 * 1000 }); // 20 / 15 min
 
 const auth = new Hono<AppContext>();
 
@@ -49,7 +51,7 @@ auth.post('/login', loginRateLimit, zValidator('json', loginSchema), async (c) =
     where: eq(users.email, email),
   });
 
-  if (!user || !(await verifyPassword(password, user.passwordHash))) {
+  if (!user || !user.passwordHash || !(await verifyPassword(password, user.passwordHash))) {
     return c.json({ error: 'Credenciales inválidas' }, 401);
   }
 
@@ -72,6 +74,55 @@ auth.get('/me', verifyToken, async (c) => {
   if (!user) return c.json({ error: 'Usuario no encontrado' }, 404);
 
   return c.json({ user: toPublicUser(user) });
+});
+
+auth.get('/google', oauthRateLimit, (c) => {
+  return c.redirect(getGoogleAuthUrl());
+});
+
+auth.get('/google/callback', oauthRateLimit, async (c) => {
+  const code  = c.req.query('code');
+  const error = c.req.query('error');
+
+  if (error || !code) {
+    return c.redirect(`${env.CORS_ORIGIN}/login?error=oauth_denied`);
+  }
+
+  try {
+    const { googleId, email, displayName } = await getGoogleUserInfo(code);
+
+    let user = await db.query.users.findFirst({
+      where: or(eq(users.googleId, googleId), eq(users.email, email)),
+    });
+
+    if (!user) {
+      const id = crypto.randomUUID();
+      [user] = await db.insert(users).values({
+        id,
+        email,
+        displayName,
+        googleId,
+        passwordHash: null,
+        role: 'user',
+        emailVerified: true,
+      }).returning();
+    } else if (!user.googleId) {
+      [user] = await db.update(users)
+        .set({ googleId, emailVerified: true, updatedAt: new Date() })
+        .where(eq(users.id, user.id))
+        .returning();
+    }
+
+    const token = await signToken({
+      sub:       user.id,
+      role:      user.role,
+      facultyId: user.adminFacultyId ?? null,
+    });
+
+    return c.redirect(`${env.CORS_ORIGIN}/auth/callback?token=${token}`);
+  } catch {
+    return c.redirect(`${env.CORS_ORIGIN}/login?error=oauth_failed`);
+  }
 });
 
 export default auth;
