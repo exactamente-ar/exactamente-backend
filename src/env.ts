@@ -7,6 +7,10 @@ const envSchema = z.object({
   NODE_ENV:     z.enum(['development', 'production', 'test']).default('development'),
   CORS_ORIGIN:  z.string().min(1, 'CORS_ORIGIN es requerida'),
   ADMIN_ORIGIN: z.string().min(1, 'ADMIN_ORIGIN es requerida'),
+  // Google OAuth
+  GOOGLE_CLIENT_ID:     z.string().min(1, 'GOOGLE_CLIENT_ID es requerida'),
+  GOOGLE_CLIENT_SECRET: z.string().min(1, 'GOOGLE_CLIENT_SECRET es requerida'),
+  GOOGLE_REDIRECT_URI:  z.string().url('GOOGLE_REDIRECT_URI debe ser una URL válida'),
   // Cloudflare R2
   R2_ACCOUNT_ID:       z.string().min(1, 'R2_ACCOUNT_ID es requerida'),
   R2_ACCESS_KEY_ID:    z.string().min(1, 'R2_ACCESS_KEY_ID es requerida'),

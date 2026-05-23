@@ -6,3 +6,6 @@ process.env.CORS_ORIGIN   = 'http://localhost:4321';
 process.env.ADMIN_ORIGIN  = 'http://localhost:5173';
 process.env.STORAGE_PROVIDER = 'local';
 process.env.STORAGE_PATH  = '/tmp/exactamente-test';
+process.env.GOOGLE_CLIENT_ID     = 'test-google-client-id';
+process.env.GOOGLE_CLIENT_SECRET = 'test-google-client-secret';
+process.env.GOOGLE_REDIRECT_URI  = 'http://localhost:3000/api/v1/auth/google/callback';
