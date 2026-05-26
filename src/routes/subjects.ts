@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
-import { eq, and, ilike, inArray, sql } from 'drizzle-orm';
+import { eq, and, inArray, sql } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { db } from '@/db';
-import { subjects, careerSubjects } from '@/db/schema';
+import { subjects, careerSubjects, resources } from '@/db/schema';
 import { subjectFiltersSchema } from '@/validators/subject.validators';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
 import type { Subject } from '@/types';
@@ -46,7 +46,7 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
   if (facultyId) conditions.push(eq(subjects.facultyId, facultyId));
   if (year) conditions.push(eq(subjects.year, year));
   if (quadmester) conditions.push(eq(subjects.quadmester, quadmester));
-  if (search) conditions.push(ilike(subjects.title, `%${search}%`));
+  if (search) conditions.push(sql`unaccent(${subjects.title}) ILIKE unaccent(${'%' + search + '%'})`);
   if (careerSubjectIds) conditions.push(inArray(subjects.id, careerSubjectIds));
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
@@ -78,6 +78,27 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
 
   const total = countResult[0]?.count ?? 0;
 
+  const subjectIds = rows.map(r => r.id);
+  const resourceCountsRows = subjectIds.length > 0
+    ? await db
+        .select({
+          subjectId: resources.subjectId,
+          type: resources.type,
+          count: sql<number>`count(*)::int`,
+        })
+        .from(resources)
+        .where(and(inArray(resources.subjectId, subjectIds), eq(resources.status, 'published')))
+        .groupBy(resources.subjectId, resources.type)
+    : [];
+
+  const countsMap = new Map<string, { resumen: number; parcial: number; final: number }>();
+  for (const row of resourceCountsRows) {
+    if (!countsMap.has(row.subjectId)) {
+      countsMap.set(row.subjectId, { resumen: 0, parcial: 0, final: 0 });
+    }
+    countsMap.get(row.subjectId)![row.type] = row.count;
+  }
+
   const data = rows.map(s => ({
     ...rowToSubject(s),
     careers: s.careerSubjects.map(cs => ({
@@ -91,6 +112,7 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
       year: cs.year,
       quadmester: cs.quadmester,
     })),
+    resourceCounts: countsMap.get(s.id) ?? { resumen: 0, parcial: 0, final: 0 },
   }));
 
   return c.json(buildPaginatedResponse(data, total, safePage, safeLimit));

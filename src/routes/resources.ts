@@ -103,8 +103,11 @@ app.post('/', verifyToken, async (c) => {
 
   const user = c.get('user');
   const typeLabel = parsed.data.type.charAt(0).toUpperCase() + parsed.data.type.slice(1);
-  const title = parsed.data.period
-    ? `${typeLabel} - ${subject.title} - ${parsed.data.period}`
+  const periodDisplay = parsed.data.period
+    ? parsed.data.period.replace(new RegExp(`^${typeLabel}\\s*`, 'i'), '').trim()
+    : undefined;
+  const title = periodDisplay
+    ? `${typeLabel} - ${subject.title} - ${periodDisplay}`
     : `${typeLabel} - ${subject.title}`;
 
   const [resource] = await db.insert(resources).values({

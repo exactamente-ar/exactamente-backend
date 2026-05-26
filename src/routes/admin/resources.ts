@@ -3,7 +3,7 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { eq, and, sql, inArray, desc } from 'drizzle-orm';
 import { db } from '@/db';
-import { resources, subjects, careerSubjects } from '@/db/schema';
+import { resources, subjects, careerSubjects, careers, careerPlans } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { storage } from '@/services/storage';
@@ -16,15 +16,16 @@ const adminGuard = [verifyToken, requireRole('admin')] as const;
 // ─── GET / — listar recursos (todos los estados) ──────────────────────────────
 
 const listSchema = z.object({
-  status:    z.enum(['pending', 'published', 'rejected']).optional(),
-  subjectId: z.string().optional(),
-  careerId:  z.string().optional(),
-  page:      z.coerce.number().int().positive().default(1),
-  limit:     z.coerce.number().int().positive().max(100).default(20),
+  status:       z.enum(['pending', 'published', 'rejected']).optional(),
+  subjectId:    z.string().optional(),
+  careerId:     z.string().optional(),
+  careerPlanId: z.string().optional(),
+  page:         z.coerce.number().int().positive().default(1),
+  limit:        z.coerce.number().int().positive().max(100).default(20),
 });
 
 app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
-  const { status, subjectId, careerId, page, limit } = c.req.valid('query');
+  const { status, subjectId, careerId, careerPlanId, page, limit } = c.req.valid('query');
   const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 
   const conditions = [];
@@ -34,6 +35,12 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
     const sub = db.select({ id: careerSubjects.subjectId })
       .from(careerSubjects)
       .where(eq(careerSubjects.careerId, careerId));
+    conditions.push(inArray(resources.subjectId, sub));
+  }
+  if (careerPlanId) {
+    const sub = db.select({ id: careerSubjects.subjectId })
+      .from(careerSubjects)
+      .where(eq(careerSubjects.planId, careerPlanId));
     conditions.push(inArray(resources.subjectId, sub));
   }
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
@@ -51,9 +58,30 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
       .where(whereClause),
   ]);
 
+  const subjectIds = [...new Set(rows.map(r => r.resource.subjectId))];
+  const csRows = subjectIds.length > 0
+    ? await db.select({
+        subjectId:  careerSubjects.subjectId,
+        careerName: careers.name,
+        planName:   careerPlans.name,
+        planYear:   careerPlans.year,
+      })
+      .from(careerSubjects)
+      .innerJoin(careers,     eq(careerSubjects.careerId, careers.id))
+      .innerJoin(careerPlans, eq(careerSubjects.planId,   careerPlans.id))
+      .where(inArray(careerSubjects.subjectId, subjectIds))
+    : [];
+
+  const subjectToCareer = new Map<string, { careerName: string; planName: string; planYear: number }>();
+  for (const cs of csRows) {
+    if (!subjectToCareer.has(cs.subjectId)) {
+      subjectToCareer.set(cs.subjectId, { careerName: cs.careerName, planName: cs.planName, planYear: cs.planYear });
+    }
+  }
+
   const total = countResult[0]?.count ?? 0;
   return c.json(buildPaginatedResponse(
-    rows.map(r => rowToAdminResource(r.resource, r.subjectTitle ?? undefined)),
+    rows.map(r => rowToAdminResource(r.resource, r.subjectTitle ?? undefined, subjectToCareer.get(r.resource.subjectId))),
     total, safePage, safeLimit,
   ));
 });
@@ -106,7 +134,7 @@ app.post('/', ...adminGuard, async (c) => {
   await storage.uploadFile(key, buffer, 'application/pdf');
 
   const user = c.get('user');
-  const title = buildTitle(parsed.data.type, subject.title, parsed.data.period);
+  const title = buildTitle(parsed.data.type, parsed.data.period);
 
   const [resource] = await db.insert(resources).values({
     id:          resourceId,
@@ -254,20 +282,72 @@ app.patch('/:id/reject', ...adminGuard, zValidator('json', rejectSchema), async 
   return c.json(rowToAdminResource(updated));
 });
 
+app.delete('/:id', ...adminGuard, async (c) => {
+  const id = c.req.param('id');
+
+  const resource = await db.query.resources.findFirst({ where: eq(resources.id, id) });
+
+  if (!resource)
+    return c.json({ error: 'Recurso no encontrado' }, 404);
+
+  if (resource.r2Key) await storage.deleteFile(resource.r2Key);
+
+  await db.delete(resources).where(eq(resources.id, id));
+
+  return c.body(null, 204);
+});
+
+// ─── PATCH /:id — editar campos de un recurso ────────────────────────────────
+
+const updateBodySchema = z.object({
+  type:     z.enum(['resumen', 'parcial', 'final']).optional(),
+  period:   z.string().max(20).optional(),
+  examDate: z.string().date().nullable().optional(),
+  notes:    z.string().nullable().optional(),
+});
+
+app.patch('/:id', ...adminGuard, zValidator('json', updateBodySchema), async (c) => {
+  const id = c.req.param('id');
+  const body = c.req.valid('json');
+
+  const resource = await db.query.resources.findFirst({ where: eq(resources.id, id) });
+  if (!resource) return c.json({ error: 'Recurso no encontrado' }, 404);
+
+  const newType   = body.type ?? resource.type;
+  const newPeriod = 'period' in body ? body.period : resource.period ?? undefined;
+  const newTitle  = buildTitle(newType, newPeriod ?? undefined);
+
+  const setFields: Partial<typeof resources.$inferInsert> = {
+    title: newTitle, type: newType, updatedAt: new Date(),
+  };
+  if ('period' in body)   setFields.period   = body.period   ?? null;
+  if ('examDate' in body) setFields.examDate  = body.examDate ?? null;
+  if ('notes' in body)    setFields.notes     = body.notes    ?? null;
+
+  const [updated] = await db.update(resources).set(setFields).where(eq(resources.id, id)).returning();
+  const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, updated.subjectId) });
+  return c.json(rowToAdminResource(updated, subject?.title ?? undefined));
+});
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function buildTitle(type: string, subjectTitle: string, period?: string): string {
-  const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
-  return period
-    ? `${typeLabel} - ${subjectTitle} - ${period}`
-    : `${typeLabel} - ${subjectTitle}`;
+function buildTitle(type: string, period?: string): string {
+  if (period) return period;
+  return type.charAt(0).toUpperCase() + type.slice(1);
 }
 
-function rowToAdminResource(row: typeof resources.$inferSelect, subjectTitle?: string) {
+function rowToAdminResource(
+  row: typeof resources.$inferSelect,
+  subjectTitle?: string,
+  careerInfo?: { careerName: string; planName: string; planYear: number },
+) {
   return {
     id:              row.id,
     subjectId:       row.subjectId,
     subjectTitle:    subjectTitle ?? null,
+    careerName:      careerInfo?.careerName ?? null,
+    planName:        careerInfo?.planName   ?? null,
+    planYear:        careerInfo?.planYear   ?? null,
     uploadedBy:      row.uploadedBy,
     reviewedBy:      row.reviewedBy,
     title:           row.title,
