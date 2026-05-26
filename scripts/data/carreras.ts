@@ -2,7 +2,7 @@ export const carreras = [
   {
     id: 'C1',
     name: 'Ingenieria en Sistemas',
-    shortName: 'Sistemas',
+    shortName: 'Ing. en Sistemas',
   },
   {
     id: 'C2',
