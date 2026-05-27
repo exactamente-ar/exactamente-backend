@@ -1,4 +1,4 @@
-// Generado por scripts/xlsx-to-ts.ts + scripts/migrate-drive-to-r2.ts
+// Generado por scripts/xlsx-to-ts.ts + scripts/migrate-drive-to-r2.ts + scripts/migrate-period.ts
 // No editar manualmente
 
 export const RESOURCES = [
@@ -10,6 +10,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/5d4fe326-1e0f-42dc-99e7-02410e57561d.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -20,6 +21,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/2d070fd6-ceab-4b5d-a5eb-1b936958bfeb.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -30,6 +32,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/781a19bc-21fa-4672-a16c-78be81578c4c.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -40,6 +43,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/14f8d405-4f5e-4f6c-b290-ba5e1ed06a43.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -50,6 +54,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/c2911896-e34b-4a9c-951d-56f7a947fc7a.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -60,6 +65,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/48cec809-4b32-44ca-b54e-ddfe8141eb3f.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -70,6 +76,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/4e0137a6-35bb-4242-8991-c1076cd27d5d.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -80,6 +87,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/0b74cb4b-0ba5-4c8c-b4b3-bc1698d2df63.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -90,6 +98,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/fcc5d582-4954-4d34-a079-9216fcb6190c.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -100,6 +109,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/53c72c9b-c0b5-4ca5-98de-9770c5940807.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -110,6 +120,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/1371c2ef-5897-496d-b76a-ac730a45daa2.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -120,6 +131,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/9fa856c6-d218-42f0-aae3-b96aa728711a.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -130,6 +142,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/a0735216-1a06-4d82-be16-a8edd0e10930.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -140,6 +153,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/d4ddf627-eb62-4755-afa3-1a030a4eaf8c.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -150,6 +164,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/3a295720-895a-48fc-b4ce-aeb30b44757e.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -160,6 +175,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/58fb35fa-8f13-4508-87e1-84ebfa5d1dfe.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -170,6 +186,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/0f9949f3-9d0f-4f64-9b45-b97bbe59fd02.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -180,6 +197,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/33cf1f66-1199-4396-a9cf-26e151cbf5df.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -190,6 +208,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/9a2ef341-7627-4f9d-b36a-60423c3d613f.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -200,6 +219,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/5f1b614a-b3a9-4911-bcb8-e93d502fdf77.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -210,6 +230,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/673fb3e7-33fe-4829-a574-c92fac15098f.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -220,6 +241,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/53637e8d-1238-484a-9aad-26052446f98e.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -230,6 +252,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/3ef66f15-1c34-440e-95fd-79803c9b81be.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -240,6 +263,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/a2c1b8be-5f69-4f1f-8556-75803ec6812b.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -250,6 +274,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/3a623b54-b4b1-4abd-91dd-d340b13e23e6.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -260,6 +285,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/10e6198b-98ab-4ee7-b293-d2e1d396ed5d.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -270,6 +296,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/bd921c5f-2cba-4888-96e2-232a5a3586bb.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -280,6 +307,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/ede89768-5bd6-44e1-b366-8ce5098fa548.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -290,6 +318,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/cc9d7233-df59-4269-add3-82a5b60f1c6e.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -300,6 +329,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/99452aee-b9ab-481a-a351-181163e6c69a.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -310,6 +340,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/e66161f4-5307-4f6d-9148-12c59c6944b1.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -320,6 +351,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/227a1791-c7cd-4b54-87e7-476faa165860.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -330,6 +362,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/22c6d8b9-f0a3-4a13-a9e5-d45e561f54dc.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -340,6 +373,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/fadc69bc-385a-468b-991c-9dbfade365c5.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -350,6 +384,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/d013ef81-8294-4274-91bc-601baeaf980c.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -360,6 +395,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/4a3b4261-9c45-46c9-bcff-31a298a0d2cc.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -370,6 +406,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/a61bba7b-79a0-479a-8337-3e01ec0ed744.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -380,6 +417,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/a4f82605-6270-4f39-a53c-d8a260a8d3ca.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -390,6 +428,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/bbade0d9-3099-473e-93f4-cc01ca36d87d.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -400,6 +439,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/c516582a-9e2d-46bc-a002-d0376dc29599.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -410,6 +450,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/d122a603-8435-4fbe-be8b-f07f90602ade.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -420,6 +461,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/64cff5f6-e39a-42c4-9386-559b8a04f349.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -430,6 +472,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/94088413-5c46-4fd3-b0f2-1c4cc76a8f14.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -440,6 +483,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/84270c02-d48e-4262-8af2-db1cddce0054.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -450,6 +494,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/c83f3438-05e6-47a9-84e2-d58434d1cc12.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -460,6 +505,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/457cff5f-b62d-4951-9f5f-71c2acd8dd50.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -470,6 +516,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/097527a7-0c70-4ffa-a162-9834ee7b3b19.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -480,6 +527,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/992047de-91a3-40e7-822a-74c32ce64d73.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -490,6 +538,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/ba72c4f8-1305-4457-8baf-d66c63e625f8.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -500,6 +549,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/c3b42248-5907-4c15-8043-a9d904bf0089.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -510,6 +560,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/81976269-d823-45ae-8545-8bafb576a2b3.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -520,6 +571,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/e8e6ef8d-2113-48b4-b5ad-6327ae80ffcd.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -530,6 +582,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/a8da7462-d80e-4e45-8456-d546acdbeab2.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -540,6 +593,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/da97b288-8738-4301-8b20-f3d45ae221bf.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -550,6 +604,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/c79d945e-f9be-4f3b-8a72-363b68640a3c.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -560,6 +615,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/8bd9e842-59f1-4be9-a13a-168cb4797852.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -570,6 +626,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/54466882-85ec-4cf9-8ac8-3c0bc44333e4.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -580,6 +637,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/580af68c-4c51-4797-89ed-83ff8a1d999e.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -590,6 +648,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/f8f94ccd-962d-4f60-84ec-8f4d072361ec.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -600,6 +659,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/5774cfec-8249-4506-b932-bd50de9fc4d9.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -610,6 +670,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/a3d80ed0-efdc-49b3-96cf-e6f093863a13.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -620,6 +681,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/58136109-09b3-4eb2-9cc8-4f6f6dd49b48.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -630,6 +692,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M8/d9232730-e0b6-4a02-a03b-e81281447a4f.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -640,6 +703,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/f39f548e-301f-432d-b232-c7da2ca99a2d.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -650,6 +714,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/4529be0c-139f-4845-bd42-3ae2390b54a0.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -660,6 +725,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/98140a6a-21dd-495e-8c90-a3835b9b446f.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -670,6 +736,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/4fe26f14-bab1-4236-bf6e-1b76ba96369a.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -680,6 +747,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/1c06a394-be9f-4268-993a-e6b37b41716d.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -690,6 +758,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/71096b89-8405-4e83-ba63-ce243ab7864c.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -700,6 +769,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/a7b4cf00-4786-45c9-8a71-b8b3795773a7.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -710,6 +780,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M9/e03badcd-9474-48ac-bea8-7413b77745f9.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -720,6 +791,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/ae13d18d-a5f7-40f1-8a9b-6834a6342377.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -730,6 +802,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/c698db96-8df4-4c7a-ac0f-9a897ddff117.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -740,6 +813,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/bfb63625-db4a-41be-819d-7fcb18905bf3.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -750,6 +824,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/ca6400dc-2882-4cf7-ab7d-02e384ea9207.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -760,6 +835,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/afcf721d-efb5-46ec-bf32-1ff3db9b1596.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -770,6 +846,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/39cf0eca-c52e-49c8-b0f8-b1a94df3e487.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -780,6 +857,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/16ef6433-379d-4105-b833-1d50c41b56f1.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -790,6 +868,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M10/7c4fcf7b-62c5-4cdf-84f3-8da1d7c6ee7f.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -800,6 +879,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/c324e906-e6e2-405b-8c1d-6dcc02b10b5d.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -810,6 +890,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/111a5e3a-0082-40b3-9e0f-7fc0bd9e9d95.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -820,6 +901,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/30a64716-c300-4c28-b8de-f177029719a8.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -830,6 +912,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/1ac7de1e-e675-4c9f-b76b-7112236c5b9d.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -840,6 +923,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/e760ee4c-4e27-4e30-9a2e-c88087d96f29.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -850,6 +934,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/2e89807c-26f2-4692-bece-49cb808215e3.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -860,6 +945,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/4660085c-8325-4e0d-8317-989a3de58869.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -870,6 +956,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/adfac256-07e1-4c82-a918-5ee6c3640e2d.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -880,6 +967,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/a8b75708-84af-4a7b-a1b7-69d560f1ab90.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -890,6 +978,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/cb484ce2-ebbc-40db-8b02-80470d9a7bc0.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -900,6 +989,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/6bf9a047-2847-482d-a83c-c701ca62d6d7.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -910,6 +1000,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/94a9d7c9-7754-4da6-974a-b175bad775ae.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -920,6 +1011,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/2ba1f400-a8cf-4cf7-981a-1fe9631cd664.pdf',
+    examYear: 2020,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -930,6 +1023,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/4f6729c6-d241-412b-9902-e64f2ceba7ea.pdf',
+    examYear: 2020,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -940,6 +1035,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/0b34498d-553f-4926-87ff-bd456be11ac2.pdf',
+    examYear: 2020,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -950,6 +1047,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/903a23a7-eb70-456b-85ea-4830402a87e9.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -960,6 +1058,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/e38777b4-f038-47b9-9dd7-4a4aa9698dcb.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -970,6 +1069,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/04bc22f4-4856-4384-bf82-200bf6e278fd.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -980,6 +1080,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/926bd49d-4307-47b4-bc7c-9b16f05e037b.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -990,6 +1091,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/63174ef1-94dd-493d-a36d-d607b5024c98.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1000,6 +1102,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/7e08db47-0276-482a-98fc-2c8cd90891e6.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1010,6 +1113,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/35e029e2-b02d-4d1b-9aa4-10e617a82297.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1020,6 +1124,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/6d8c062c-c3cf-49ae-9904-c76ed2eb45fa.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1030,6 +1135,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/d63d3f3a-d8a0-4237-9abf-c07e8f816b6a.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1040,6 +1146,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/d516eaef-7164-4cfb-b0a7-af7e76aa79d4.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1050,6 +1157,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/12e86e81-5ed3-4bae-b00f-bc0f2c7e688b.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1060,6 +1168,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/08b5450d-ffec-48cf-86e3-cb78d9768514.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1070,6 +1179,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/e3920be2-7063-4cd8-9dd1-546ff3e44088.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1080,6 +1190,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/062054ad-6202-4a0a-96fe-4c59fe028abd.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1090,6 +1201,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/1371d916-1875-469e-b845-05a87370a06c.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1100,6 +1212,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/675f169c-0cfa-4fdb-bbd5-8103727b2d2c.pdf',
+    examYear: 2013,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1110,6 +1224,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/95b8ee34-8c56-4ccf-b224-85a4f56135da.pdf',
+    examYear: 2013,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1120,6 +1236,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/7a5d625a-dff4-41ec-86d7-10c139325ccb.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1130,6 +1247,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/d661f212-4932-458c-a962-c169b75ec99f.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1140,6 +1258,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/af637fbe-525a-4524-a5aa-8ef55f62d54f.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1150,6 +1269,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M12/f7270b95-7cd1-4919-a08e-79c267ce87bc.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1160,6 +1280,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/ff06e358-c542-40ac-9186-d89d73fad4e9.pdf',
+    examYear: 2024,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1170,6 +1292,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/7362ee68-2c78-4ef2-b5d1-1ae779962c78.pdf',
+    examYear: 2024,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1180,6 +1304,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/77c869ac-612a-4c02-8fdb-e134124ae043.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1190,6 +1315,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/803d6985-ab2b-471f-b269-6991dce26a7e.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1200,6 +1326,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/4381926d-2f6e-4a34-909c-2ffcbb5c2e67.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1210,6 +1337,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/863ac533-1320-49f1-9a6c-727ad1380250.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1220,6 +1348,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/dd9e0865-c5e1-4c71-833a-033c517d8537.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1230,6 +1359,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/e61c9ece-92d8-47dc-a492-27fcb70caee2.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1240,6 +1370,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/13f0134a-b64b-4e40-b81b-9d083723e31b.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1250,6 +1381,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/add942f7-88d9-440b-91e6-61cb16a3107e.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1260,6 +1392,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/77203555-73c4-43f1-85ce-4163fd39ae89.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1270,6 +1403,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/f100c649-4f2e-4371-a9f3-25c8bebba936.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1280,6 +1414,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/8ebc3866-fab4-4485-8e04-ece3b4d5122a.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1290,6 +1425,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/aceb0677-8045-4cd5-b21c-7fe7c10e01a9.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1300,6 +1436,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/401b875a-84fb-4d03-8fe9-f73a2ee0f053.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1310,6 +1447,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/b5814f6a-a8b2-45b0-8bc5-7d9fe85542c3.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1320,6 +1458,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/91e23c00-3ec8-45c0-8fdc-34b18a141ea4.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1330,6 +1469,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/2d86a897-219e-4172-83e9-815d5262a9a6.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1340,6 +1480,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/b74986b0-6860-4d19-869b-93d668a6d341.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1350,6 +1491,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/9836b016-c674-4c80-98ec-2c73c7f53042.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1360,6 +1502,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/f0398a3f-4a56-4a32-b1c5-7442f8c6cd17.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1370,6 +1513,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/b042b70d-c599-4ce5-b692-a39311d00827.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1380,6 +1524,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/45d14b4a-f902-4372-9363-1464ad5b7ac3.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1390,6 +1535,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/541c3584-9bbf-4004-9c67-200da85ff3d7.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1400,6 +1546,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/3b8c8c44-0344-47b0-bb32-01e52b6fd4ec.pdf',
+    examYear: 2016,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1410,6 +1558,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/000a167b-aaf1-42a1-b6e4-973a07688715.pdf',
+    examYear: 2016,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1420,6 +1570,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/3697181d-f26c-4862-a38d-ff4e98ecbbca.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1430,6 +1581,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/85f949ef-b737-434f-a00d-0be0ace7ecc0.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1440,6 +1592,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/80546b5e-77ee-413f-a4b2-4a4c6b048ff6.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1450,6 +1603,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/6df73494-7750-4aa5-b28f-6c25cf21a2ee.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1460,6 +1614,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/50b25c36-761d-439e-a657-e4597451f0e8.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1470,6 +1625,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/5e633101-e97f-4af0-a0ec-8b7f7024db25.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1480,6 +1636,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/c040b534-d4a4-4b23-b10b-71c5fe947747.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1490,6 +1647,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/3f74ca8a-d91f-45ef-9efc-355ce365eec2.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1500,6 +1658,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/8788a711-f78b-4042-88ad-894e6385b23a.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1510,6 +1669,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/0062ad62-46d2-4b7c-9c99-239b7f59fa0a.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1520,6 +1680,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/01741968-8e7a-4b5f-a8aa-bfd6841b571b.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1530,6 +1691,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/3f73e914-3ffb-4bd8-9585-e835515b3cc5.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1540,6 +1702,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/f46bddbe-719e-4b95-85a3-ef651b1a4024.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1550,6 +1713,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/6f01cd9c-98c4-4955-b74d-a3b8aabc3f56.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1560,6 +1724,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/306dc232-3ed1-4848-b26d-72ceb5463741.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1570,6 +1735,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/48c8cbac-9b6a-42b6-9ded-706cc73c7b07.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1580,6 +1746,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/638a9176-6bb8-4fe9-8c20-faeab769b3e9.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1590,6 +1757,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/f5a613b8-b5ef-454f-a47a-250d6f1dea92.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1600,6 +1768,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/65db31e8-370c-471e-9e18-7eb7baf05ea8.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1610,6 +1779,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/e8b962e1-c95a-4571-b074-c7c0662690d5.pdf',
+    examYear: 2024,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1620,6 +1791,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/b60a27fb-2e9c-49ab-8562-02ba7922f6cb.pdf',
+    examYear: 2024,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1630,6 +1803,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ce3e44b1-1528-4840-a9fd-e32c71a05166.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1640,6 +1814,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/322fb666-eccf-4921-9626-770f7500b1b3.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1650,6 +1825,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/611bba63-7ecf-4489-a207-0425d4dd7508.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1660,6 +1836,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/fb3e5f87-5010-4437-a558-4910f5f52509.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1670,6 +1847,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/57553907-5a06-4326-a556-a35353caf635.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1680,6 +1858,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ce33ebce-0a39-4374-87b1-7c53d2d7fa47.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1690,6 +1869,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/8af07646-7218-4b80-9b19-749d18dde5f1.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1700,6 +1880,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/fcb23f84-4d20-4c04-a936-e2d283b6d46e.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1710,6 +1891,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/e9e64484-4a9c-4716-a808-341f459a13ab.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1720,6 +1902,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/e7bacd6f-baac-4cb0-99bb-f2102fe90daa.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1730,6 +1913,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/349dc551-7e4b-4484-91fb-2b1c937e8f9a.pdf',
+    examYear: 2021,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1740,6 +1925,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/3733c97c-54a2-47e7-9c62-bb39b9c1d866.pdf',
+    examYear: 2020,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1750,6 +1937,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/3a24aad4-b661-4e0a-b6fd-72c5d1647561.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1760,6 +1948,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/4f41e537-6c18-4c4c-80e4-95aa243fe3cb.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1770,6 +1959,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/0d6fad5c-a970-4fee-9024-4f07f88de1a1.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1780,6 +1970,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/f64a029c-3302-4c39-9d2f-991973f95fda.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1790,6 +1981,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/b0a0cdd4-3452-4a46-8d61-e2b44b61406f.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1800,6 +1992,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/8f8b3f67-b838-4efe-a1bf-91a0da119553.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1810,6 +2003,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/1222be86-9a74-48af-902c-0239a0626e86.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1820,6 +2014,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/e264b2bc-8d82-4569-a283-9979330f26c8.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1830,6 +2025,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/863cb068-4569-498e-b686-647ddeced25d.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1840,6 +2036,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/16a7fccd-95ec-4cae-abd6-bb235ff4658f.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1850,6 +2047,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/30ddd2d8-4137-4574-8c4f-bf4b81aa7635.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1860,6 +2058,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/2bc9b2ca-7dab-464b-a5e1-f19d5e7e4cf1.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1870,6 +2069,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/e1c14d3c-a2e0-48f6-88fd-1ded85ab0863.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1880,6 +2080,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/11cfd1f3-cfe4-4c29-9ec4-6ec4e947de35.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1890,6 +2091,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/fea490e5-9883-4faa-8775-58baa51d67bc.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1900,6 +2102,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/d9ec7ecb-02e9-4e97-b84b-dbc2ca16f59d.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1910,6 +2113,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/aa171023-005a-49fb-8cf7-fc5c0fd60547.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1920,6 +2124,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/f13efdab-6715-495c-b6dd-8544361c0bbf.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1930,6 +2135,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/f54f457d-bc07-4da2-b93d-38d5be0ed6d6.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1940,6 +2146,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/464c346e-c53d-456c-9701-ed8c0e222e16.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1950,6 +2157,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/918a8227-785b-4b65-bdae-c7c8ef6cf92d.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1960,6 +2168,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/dd93bdce-b556-468b-8e70-2bd341ecf1c7.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1970,6 +2179,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/14979c35-f1cf-469e-a239-c6eabdb23edd.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1980,6 +2190,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/b112f05b-d34e-4905-9acc-cf5d4fa427c9.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -1990,6 +2201,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/949699f4-e0a5-4aef-b8d7-e3ebc4639741.pdf',
+    examYear: 2009,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2000,6 +2212,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/32a3646e-2052-4605-a388-00969059986e.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2010,6 +2223,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/9715ee34-5c6a-49fa-ae93-91ad019b4ead.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2020,6 +2234,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/42bc2290-fa67-4b30-82a3-c1b23e89e79d.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2030,6 +2245,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/19e36b5d-d50a-439a-99ad-3cbd61afb5f2.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2040,6 +2256,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/126a8437-e69b-47ad-ba8e-53d3996ef631.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2050,6 +2267,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/06a9d2a6-0272-4db4-a2ba-c7626f952206.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2060,6 +2278,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/c15948ec-d9fc-45d3-bc49-f150c547ba90.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2070,6 +2289,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/06cae77d-fa38-49ed-bec4-2d52c8a38612.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2080,6 +2300,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/daf022ea-ca7d-498e-8dfc-2f0ae70498cf.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2090,6 +2311,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/6bc122b6-b407-4af7-a2b9-90f2c42e0458.pdf',
+    examYear: 2021,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2100,6 +2323,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/5646a322-5f27-4d98-b2c9-60023c1a5ad6.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2110,6 +2334,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/962a04b3-de59-4790-853f-1921bdde537c.pdf',
+    examYear: 2020,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2120,6 +2346,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/cd235b62-8a2d-4f2e-9a3a-7b5bb8e7a6c5.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2130,6 +2357,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/30bcc537-2d52-4638-9a52-1092b682027f.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2140,6 +2368,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/6b2f3eee-133c-4871-8004-b2917063194f.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2150,6 +2379,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/c12220d2-571e-4d62-8ed6-5bd3bffc538b.pdf',
+    examYear: 2023,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2160,6 +2391,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/5b96b7c8-30a6-42fc-884c-3c9a44b1125b.pdf',
+    examYear: 2023,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2170,6 +2403,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/da9d646b-1b54-49c9-b485-a18d81907c6e.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2180,6 +2414,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/08a42fd0-a49a-4188-b674-8163faa62c46.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2190,6 +2425,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/7587ef04-599e-4afb-9fe4-05d0ead2cc83.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2200,6 +2436,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/24145b5b-a2cc-4c3f-a233-17985e53adc0.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2210,6 +2447,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/66686a9d-087a-4eff-b0d3-389f288c8fdd.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2220,6 +2458,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/8ec8840d-a605-4ec5-a487-240eca0ff3c7.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2230,6 +2469,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/1a10ce59-85b6-49be-bd68-b35dd511d405.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2240,6 +2480,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/7605e5f6-35d5-4be7-b945-af16a0eba129.pdf',
+    examYear: 2009,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2250,6 +2491,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/909954f0-2eb1-407c-baf6-6fd44c6a4c82.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2260,6 +2502,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/c6072286-16e2-4661-8b4f-4705bc401a4c.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2270,6 +2513,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/9a7b758e-5c81-43cd-b150-2c6ba3cf3467.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2280,6 +2524,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/5145c382-a714-4dbd-ba05-520d2728ae3c.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2290,6 +2535,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/ecf1af50-e43b-46d6-99aa-21fe9495b2c7.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2300,6 +2546,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M22/9d25f307-8ede-47e5-8b18-c3e21315f566.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2310,6 +2557,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/f37f3295-7336-43dd-952d-223d1988b6f4.pdf',
+    examYear: 2023,
+    topic: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2320,6 +2569,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/1a0b1b94-8ed3-4bce-9543-6b52940e7ae0.pdf',
+    examYear: 2023,
+    topic: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2330,6 +2581,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/a6771fd1-b5df-40e0-b280-0b17c8722544.pdf',
+    examYear: 2023,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2340,6 +2593,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/a8f0df29-945c-4a29-9a55-dbdcd727cb10.pdf',
+    examYear: 2023,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2350,6 +2605,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/d90d0f83-186f-49aa-bad9-1db762ac4f36.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2360,6 +2616,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/54831fe3-bef0-4cf9-abf0-65bf31192da9.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2370,6 +2627,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/c4dfae4a-116e-4aac-9d11-2b572264cbb6.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2380,6 +2638,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/b603697c-1af6-4409-a4ad-f6131287f81d.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2390,6 +2650,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/6ecd7908-c053-49a3-9897-9b856fe3b705.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2400,6 +2662,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/f1273394-3fdb-465d-a6ef-2dbe8beade0f.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2410,6 +2673,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/90133063-9c3c-4913-aedf-fb3278cb9472.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2420,6 +2684,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/e91619f0-b333-4abb-a114-c54a33a3262a.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2430,6 +2695,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/3d35ad5a-c133-4939-ad8d-6570e4a5fc9d.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2440,6 +2706,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/a3b562fe-b4b7-4988-b160-a37d0fdcbf19.pdf',
+    examYear: 2016,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2450,6 +2718,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/08d571e1-0408-438a-ad68-bf3dffefb246.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2460,6 +2729,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/5b693e70-f76b-473a-a237-dffab1060d1e.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2470,6 +2740,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/ef29994d-baa4-441f-9f64-06f9c9de6b50.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2480,6 +2751,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/44767706-af1d-4fcf-b264-f54b4d2406e1.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2490,6 +2762,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/2a944267-2d97-4a15-b6e1-9c3e7e7e6563.pdf',
+    examYear: 2016,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2500,6 +2774,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/d69b1aa5-02f4-4be3-aaf5-688e9e231e12.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2510,6 +2785,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/da2ece67-c2e0-420b-abb0-7688488bbfec.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2520,6 +2796,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/2dad78ef-d0c7-4dd8-b3f9-3658cd33a700.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2530,6 +2807,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/0d9158a2-fa97-4110-b89c-a9c7f7b73c4d.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2540,6 +2818,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/1fc0464c-79d6-42c2-a4c6-d134802a52c6.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2550,6 +2829,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/927c8dea-0793-49f7-8f54-3ba2cd45dfc2.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2560,6 +2840,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/c660b67e-7775-4b4a-ae16-0c423bb1fe56.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2570,6 +2851,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/992515e5-ea4c-4bec-9143-2c9493bf2fcb.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2580,6 +2862,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/4e06caea-bc56-425e-9407-8e4d793ed6d6.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2590,6 +2873,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/edd42e69-0763-41aa-b021-6d99af6bf139.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2600,6 +2884,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/056dbf35-d681-4d8f-883a-9c0507dfee77.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2610,6 +2895,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/eaad17a1-fe75-48e4-81f5-b7baf01ab278.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2620,6 +2906,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/38c6c3c0-559f-40ba-b2c5-76e662791eec.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2630,6 +2917,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/58d23157-35e4-4424-add8-51163c5e22b5.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2640,6 +2928,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/2e933e34-7e8c-406c-9b0d-bb1730c2c96e.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2650,6 +2939,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/03a9551f-cd61-494c-b9f8-5e5cd049b1d3.pdf',
+    examYear: 2012,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2660,6 +2951,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/1c126d56-5ab4-4c4c-b7f7-f9970d0c988c.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2670,6 +2962,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/5340a5a4-df35-4fc0-a325-91d359b27405.pdf',
+    examYear: 2012,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2680,6 +2974,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/a6260887-d6ff-4d04-a549-6fec3f0c8d2b.pdf',
+    examYear: 2010,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2690,6 +2986,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/c21a1731-bb72-4252-8b7e-176c120d4ca9.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2700,6 +2997,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/d9080b0f-545b-485b-afab-0715a5ce2a45.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2710,6 +3008,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/ee864d3f-cc30-4961-8d7f-07519c129011.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2720,6 +3019,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/6e28733a-57f4-452c-a294-4dd400d3e379.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2730,6 +3030,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M27/6d688519-83b3-4d01-a085-818ff149143f.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2740,6 +3041,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/35a24843-9cd4-4b0b-af28-73236239664a.pdf',
+    examYear: 2025,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2750,6 +3053,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/0b49bb93-ede7-4e30-be42-6e9af3dd49cc.pdf',
+    examYear: 2025,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2760,6 +3065,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/18138bd9-5f1b-487a-9b91-50d64b193108.pdf',
+    examYear: 2024,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2770,6 +3077,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/cf1acfd3-6d2c-4278-af8b-616a56b57bcb.pdf',
+    examYear: 2024,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2780,6 +3089,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/44df1f4d-c2d2-4008-8e2c-d817b15c56c8.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2790,6 +3100,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/165215d6-d2db-4093-bb16-46a9ce5c7416.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2800,6 +3111,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/7f8e821a-3c66-4b1d-9320-4e1a88b598a8.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2810,6 +3122,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/1bf9baee-49e9-45e1-b9d3-2bfd4fba518a.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2820,6 +3133,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/409cb8d0-de43-4e56-b3d8-d7dc211f09d6.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2830,6 +3144,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/cfb73db5-85a9-4a23-9023-a2f749ee2f75.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2840,6 +3155,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/8a2e799c-cb13-4dd2-9953-9573197840f1.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2850,6 +3166,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/a853e671-ea10-46bd-89ac-7bc04dace8bf.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2860,6 +3177,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/addef673-0510-477f-a0c6-58a843a546d3.pdf',
+    examYear: 2017,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2870,6 +3189,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/207f3848-9f0a-48a2-b489-132e9e2b151a.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2880,6 +3200,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/a7eae2de-2b2c-4484-aa36-0d0e8d13c8b2.pdf',
+    examYear: 2017,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2890,6 +3212,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/f2d20576-316e-4f25-9bc1-85644786fc76.pdf',
+    examYear: 2017,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2900,6 +3224,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/42e8cb53-e437-41f1-a36c-8e6d5cc43604.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2910,6 +3235,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/543dcf0e-5e7c-498b-a5e3-84718e085dca.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2920,6 +3246,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/968e23c3-12dd-478f-8a2d-b99a2363b4fe.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2930,6 +3257,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/75456dd8-5383-400d-a650-2b4ad667ead2.pdf',
+    examYear: 2017,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2940,6 +3269,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/25f40aae-25bf-4319-9a76-067451524d3a.pdf',
+    examYear: 2017,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2950,6 +3281,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/bce9e77b-e684-4b67-8407-203ec093a56c.pdf',
+    examYear: 2017,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2960,6 +3293,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/2d805d3a-3daf-49fe-8d1a-d337be55062f.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2970,6 +3304,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/b10ad14b-cf40-476c-867f-03be1f031a89.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2980,6 +3315,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/53a2d52d-2f76-4381-aab6-c2127213a179.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -2990,6 +3326,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/e085acf4-bd94-4967-a182-3b7ff24b5591.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3000,6 +3337,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/0318b1e4-86f7-4921-9dd1-79c049645128.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3010,6 +3348,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/91b82b7b-47ba-4206-b589-1438f7a2d227.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3020,6 +3359,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/1d2606fc-769c-41ab-8f33-14bb990fd063.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3030,6 +3370,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/ff928352-2ad6-41c8-b49c-b12bee384793.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3040,6 +3381,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/00353681-7724-4592-9e3d-92f4f3fbd72d.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3050,6 +3392,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/273dc53b-58f5-4054-91c5-ea171bd11cfd.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3060,6 +3403,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/05d5c96f-91d3-4755-98d4-91df65b56c08.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3070,6 +3414,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/32d8f078-9818-4ae5-bb3b-00b141467e3d.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3080,6 +3425,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/7f37060e-6ee4-45d9-a2f0-23bbebb1eb46.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3090,6 +3436,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/b8e644dc-872c-4d7c-98bc-98d3c7af8001.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3100,6 +3447,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/29e46e8c-9429-4114-a257-13233ac6fe03.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3110,6 +3458,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/db8fe9f4-f4b3-4087-9c4c-4c6608515898.pdf',
+    examYear: 2020,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3120,6 +3470,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/e8feda0c-8eb1-4048-9e10-74287014fee0.pdf',
+    examYear: 2020,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3130,6 +3482,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/afe25d27-310c-4099-9a65-7b107d29da0f.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3140,6 +3493,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/9f5589da-585c-4c3c-a81e-e961e766c379.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3150,6 +3504,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/75841546-de31-4bf7-8d80-2ab92855061f.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3160,6 +3515,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/48bf5a16-a298-4fff-990a-c932dc804627.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3170,6 +3526,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/5356bcad-c20b-45de-ae92-2b40a38226ed.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3180,6 +3537,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/c706d6f2-6f01-4fe3-ac2c-6369c866d15e.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3190,6 +3548,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/8d8cb5c7-0669-4b72-9de8-53856a0ee191.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3200,6 +3559,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/35921f44-33b0-4fb3-a2b9-2bb99c1517ff.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3210,6 +3570,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M32/83aaf1ae-021e-4d8b-a715-774d67b641a6.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3220,6 +3581,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M32/ae3e9110-32a4-4446-89b5-cf5d1f791c10.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3230,6 +3592,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M32/a61b6501-8148-4814-b352-1feb0d1840e5.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3240,6 +3603,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M32/387ab8e7-be00-4f5b-a832-930b0b2153ca.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3250,6 +3614,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/b2e078c0-94f6-49a9-b024-15316d912aa9.pdf',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3260,6 +3625,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/35b262a5-67a0-429b-871f-e4c5db1828fb.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3270,6 +3636,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/c44c668b-9015-4903-ab53-0d958df3e4de.pdf',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3280,6 +3647,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/ccdc8260-6863-4b27-8fed-37a86d17a2b7.pdf',
+    examYear: 2024,
+    topic: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3290,6 +3659,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/dfb05b81-8834-4658-8c6c-0203d29532e5.pdf',
+    examYear: 2024,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3300,6 +3671,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/c01fac58-6237-4bc5-a69c-b79bf798a956.pdf',
+    examYear: 2024,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3310,6 +3683,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/aa010193-1e85-4dc4-bd45-9a53be0f427f.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3320,6 +3694,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/fd0e1177-190d-4557-8ad6-58cc7f31fce2.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3330,6 +3705,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/1994cbef-aa5d-4fbd-83ba-3ccc7c16f4ec.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3340,6 +3716,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/939c0656-8a6d-41d1-871b-57b78a0cb8fc.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3350,6 +3727,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/29ae5e5e-e2a2-4fe8-a3ba-6d0f22e47b6f.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3360,6 +3738,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/349bc9f7-3049-414c-8847-2843aba0c1d5.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3370,6 +3749,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/c9c4620e-a731-43bf-9674-097727b2e025.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3380,6 +3760,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/9af9c7f0-1487-4920-924e-1e643b880209.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3390,6 +3771,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/35796212-2af1-4814-8105-1b1063d8ee4a.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3400,6 +3782,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/b0704f40-900f-4a4d-90dd-5575dae0d699.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3410,6 +3793,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/8da5668b-b939-4064-a069-39247635421c.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3420,6 +3804,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/d477e0df-55f4-4481-a806-4ecf455ef8dc.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3430,6 +3815,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/f009c8bc-dcb2-47df-8a6c-14026d37d295.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3440,6 +3826,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/20475425-d786-41aa-a1a9-a966aff53ba9.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3450,6 +3837,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/3415578e-8285-4dca-8147-2723e248a041.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3460,6 +3848,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/392d4e57-4374-4518-bddf-caabe497195f.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3470,6 +3859,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/9477c49e-76ae-4ea0-a125-33652d03d8b8.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3480,6 +3870,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/44b9083e-ccf0-455b-9857-d56c80266e7b.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3490,6 +3881,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/ff708a02-947b-4d7a-8df3-3eb751d0075a.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3500,6 +3892,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M35/325cdb2c-ffe8-4ac7-91ef-44890588e4de.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3510,6 +3903,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/9b14d1c2-1e53-4b79-af11-034401e7c4d7.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3520,6 +3914,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/93a9f796-63b7-423c-b2a2-cae196d6a1fb.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3530,6 +3925,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/0c735ee8-c63a-48d1-8201-40070b3de4e9.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3540,6 +3936,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/c85b9db9-d34d-4134-bc42-d94f7c049278.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3550,6 +3947,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/2ebdfa27-f80a-4ecd-b143-301295db2ab5.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3560,6 +3958,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/2b4849f5-2b85-42e7-b4da-4dfd66c2bb1e.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3570,6 +3969,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/e1b16e60-2a7f-4423-8d93-0d9d79883cb0.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3580,6 +3980,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/0fbb9efc-5994-44b7-88fc-2426bc68f83a.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3590,6 +3991,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/57830865-c899-403b-8176-334e84a0c05f.pdf',
+    examYear: 2021,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3600,6 +4002,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/0100d5b1-d9f2-46fb-987d-a45f140a74b5.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3610,6 +4013,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/83d261c2-acc0-4f15-b671-ab36d5043fb7.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3620,6 +4024,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/80b1e309-e920-4c91-8d70-7fc6fa7dcd95.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3630,6 +4035,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/2931ea63-9fed-422c-809f-81d098f7bab5.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3640,6 +4046,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/0fd76f30-bf6d-4862-a0bc-81186e4baa3b.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3650,6 +4057,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/c4f7ef9d-466e-4157-8f67-e888394bee43.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3660,6 +4068,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/e073e066-9698-48ef-b77a-2c2f579e777e.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3670,6 +4079,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/37100410-46d8-4616-a540-431fb9819169.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3680,6 +4090,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/fd74eaf3-56af-4364-979b-08e48e2c027a.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3690,6 +4101,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/e87d7787-685c-4c10-b63e-826fcef87f69.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3700,6 +4112,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/1867cc81-f9be-4be0-ab31-3dd921c21f70.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3710,6 +4123,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/e510de26-c33f-4b3e-98ba-ae9c1a31c9f1.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3720,6 +4134,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M37/69ae74ed-3b07-4330-9d91-a8693d851306.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3730,6 +4145,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M37/aa7e58b4-8c3c-4237-b3b7-fd713e46fa07.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3740,6 +4156,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/df56ed50-adb1-4033-a38d-6d69ed73aed4.pdf',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3750,6 +4167,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/6aad3b01-4f71-4b67-be69-f719c39002f2.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3760,6 +4178,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/62adf1da-4377-4fc5-a7ed-ae3e404c2249.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3770,6 +4189,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/e2d9085b-d294-4ae3-aaeb-099888b29295.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3780,6 +4200,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/18ee09cb-db4d-4ba5-aba0-0aa2e13232c2.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3790,6 +4211,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/ed44d929-1f87-46ba-a49a-d73e5ad567a1.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3800,6 +4222,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/5b69477b-fc32-4fa8-bcca-3dec981da175.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3810,6 +4233,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/be3aaffb-c049-4bef-bb97-2fb8369b8e83.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3820,6 +4244,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/b3a0c11e-60c9-47ca-85b9-1ba1c5947921.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3830,6 +4255,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/4691c9b5-b938-4408-bcd8-65a15fb91d24.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3840,6 +4266,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/b300edf7-986f-4d23-8c3a-284eff3ef7ef.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3850,6 +4277,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/31e12f57-cc8d-433f-bb94-0d71a3f9f597.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3860,6 +4288,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/64e86cbe-82ad-4cf7-adf2-d152ae3c456c.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3870,6 +4299,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/126a7f15-6e99-424b-89ec-5b3b817ae08d.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3880,6 +4310,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/6acbd0a7-e8b8-4e90-a281-fa1bae5baec2.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3890,6 +4321,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/09f24be6-2701-49f4-b3fb-43d7cc4613c2.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3900,6 +4332,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/65e7d5a8-97bb-4e61-bdcc-97272f38b731.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3910,6 +4343,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/0a8a8c96-db17-4aa5-8385-57fc58670971.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3920,6 +4354,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/ce2f8cd2-c37d-4837-aad7-2e23c4cf0b67.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3930,6 +4365,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/1674c52d-0b55-4af3-8ebf-5353a9364ca4.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3940,6 +4376,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/2357587f-3a58-45b8-be0e-d1e37a722b06.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3950,6 +4387,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/3108e514-f125-44e4-aa73-78fc0add9ce2.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3960,6 +4398,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/78403e43-0063-43d2-b7c1-37bb68049cee.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3970,6 +4409,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/291fd71e-63b9-4ce9-a8de-5e789cd83024.pdf',
+    examYear: 2020,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3980,6 +4420,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/3215471a-0d24-4b61-8d2b-b6bcf8c889b3.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -3990,6 +4431,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/60a7a864-39b7-40ba-8bf9-db67f3f811c0.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4000,6 +4442,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/eddcc580-f164-48ba-8e50-5a5fdd9d503c.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4010,6 +4453,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/94186149-b49f-4da5-8d19-8b6238abdb60.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4020,6 +4464,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/c7c21e77-7312-481b-9e5a-9d51773d44dc.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4030,6 +4475,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/fabc3cc7-704c-47b3-a9b0-f56d90479490.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4040,6 +4486,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/0a4c1ea1-fa2b-4014-86a6-d7708f7d1c83.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4050,6 +4497,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/678c78fe-d62c-4156-9ad3-f1833ab6cd0e.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4060,6 +4508,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/f7ecbd31-40ac-4efb-8a1b-87eb2c06d1de.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4070,6 +4519,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/84b96e86-43dc-41fa-841a-d56aca8ffd0f.pdf',
+    examYear: 2015,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4080,6 +4531,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/e01988ac-978b-4ae3-a0e9-e606c628077d.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4090,6 +4542,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/dd4585b1-aa1b-44bf-b515-5f9331422848.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4100,6 +4553,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/5cfbef41-190a-4655-9348-d67e14415f09.pdf',
+    examYear: 2015,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4110,6 +4565,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/c3a21ed0-b5b3-4351-9880-180924c607ab.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4120,6 +4576,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/79268b75-a96e-4d76-896a-8682a679136f.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4130,6 +4587,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/d8c0fe45-6e3f-4d9a-9cf4-83a926842fab.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4140,6 +4599,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/6f7a343c-b97c-431f-b690-569d72c49894.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4150,6 +4611,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/91a6d065-605f-46b1-910a-770724798fc9.pdf',
+    examYear: 2017,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4160,6 +4623,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/c7f4e5ae-cee3-4cdb-8cad-0d85a21bd8d2.pdf',
+    examYear: 2017,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4170,6 +4635,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/ea77ccbf-faed-460b-b8b7-52c0839c6d17.pdf',
+    examYear: 2015,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4180,6 +4647,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/1ab28f08-601f-4a7f-9c07-ecc3664051a8.pdf',
+    examYear: 2015,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4190,6 +4659,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/02a9985b-2712-4b3e-8352-9bb71f2023ed.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4200,6 +4670,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/591d8b21-cb35-4f5a-9562-b06ea8fb760b.pdf',
+    examYear: 2019,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4210,6 +4682,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/41ee989b-b545-4ade-ae15-19cbd5cd285f.pdf',
+    examYear: 2019,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4220,6 +4694,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/ae519d84-556f-45d6-9a26-fcf7a029f367.pdf',
+    examYear: 2019,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4230,6 +4706,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/702edf23-7dfd-4350-b68a-e9e11a1fc7d4.pdf',
+    examYear: 2019,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4240,6 +4718,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/7572a290-dba3-4a00-a4c7-7361075e8014.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4250,6 +4730,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/3c46e45d-2b09-43ae-91a1-69cc8ac1947e.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4260,6 +4742,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/0b207f43-f788-4807-afe3-99980070161b.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4270,6 +4754,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/7f8ac2de-ed78-4ecb-b3b5-2e43155f650c.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4280,6 +4766,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/1f011da0-b811-4540-bb4f-84d60a87b193.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4290,6 +4778,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/7c38d1d6-3a2b-4005-8d56-cdacd8cb0bd9.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4300,6 +4790,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/facce36b-e8a4-440a-af4c-4ac126ff4065.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4310,6 +4801,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/e4fd34ec-6db7-459b-a6ac-cab8af5c6da1.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4320,6 +4812,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/7c0ba777-bb2c-415e-9d45-c4bba91628cc.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4330,6 +4823,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/4b1db9cd-295d-45f2-964b-e42a9f5a653c.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4340,6 +4834,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/b2f0969b-c6a6-4bec-afcd-3685b0f9afd3.pdf',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4350,6 +4845,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/50b15e55-0e61-41a8-abd1-bc744560a25d.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4360,6 +4856,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/9fa84eb6-840d-45a8-8975-4a2129a06bcb.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4370,6 +4867,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/c4aa308a-d7dd-4d11-afdd-656158b0c3a7.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4380,6 +4878,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/28e71993-4bdc-4a36-98fc-b76289efbac5.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4390,6 +4889,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/86906a69-abdd-4b43-aa51-186ff1913eae.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4400,6 +4900,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/108f4f5e-6142-4868-8182-d8b36cb3ec5b.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4410,6 +4911,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/691d53e0-da02-4180-9c53-ed6b97d395e1.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4420,6 +4922,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/0caa680a-c7c5-4290-b4d7-59bbd0be071a.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4430,6 +4933,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/ed16160a-57b6-4de3-89c8-329441045223.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4440,6 +4944,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/26a6987b-f674-4196-b084-70dd5a1ed52c.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4450,6 +4955,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/823251ed-6f32-455b-a834-025b98a12cf3.pdf',
+    examYear: 2011,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4460,6 +4966,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/f664e818-21b5-4edd-82a5-9f02f4fbb5a6.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4470,6 +4977,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/c7334b56-65d0-455e-8395-a46d9f0d0118.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4480,6 +4988,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/800b9b36-5372-45b7-aa85-6bdbe25de844.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4490,6 +4999,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/c3678002-66eb-422f-9c6b-da26ce07ea1f.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4500,6 +5010,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/6ced5f7c-5761-4e07-a0bf-44b5c62ea29f.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4510,6 +5021,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/6ab402b0-b8ea-4035-89d2-780dcecf9030.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4520,6 +5032,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/4b7447eb-a2d8-46bb-acb1-d79c0aee7787.pdf',
+    examYear: 2019,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4530,6 +5043,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/05a37eb0-f9bb-4686-87a8-d8f01776c04b.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4540,6 +5054,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/821dcd91-02af-4c00-8393-f4f602352521.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4550,6 +5065,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/9ee2b4ea-1b0b-455f-9730-e0bdbed754d1.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4560,6 +5076,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/5969df23-1771-4459-9e25-0129ff69dc39.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4570,6 +5087,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/5569038d-141c-4003-b1f4-148682d1ed60.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4580,6 +5098,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/603169c6-a66c-4d02-bf21-cca17b103e53.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4590,6 +5109,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/b5e61d1e-64f7-43e0-a2bc-710c883cad0d.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4600,6 +5120,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/157fa8b0-824d-4069-966d-79253b2e6f09.pdf',
+    examYear: 2015,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4610,6 +5131,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/M44/4bf0a80c-eac4-47cb-98cb-3b96dc06bdb9.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4620,6 +5142,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/6183fa48-4f36-4274-b18b-68fd6897b535.pdf',
+    examYear: 2024,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4630,6 +5154,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/ee5c4560-a5fb-4943-8474-18e19f29f822.pdf',
+    examYear: 2024,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4640,6 +5166,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/327cb434-f323-4c57-a00e-0d95172811d2.pdf',
+    examYear: 2023,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4650,6 +5177,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/28e594d0-fcce-4894-baf7-8fdc1e2cc330.pdf',
+    examYear: 2023,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4660,6 +5189,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/9088167a-7bbe-4a1c-ac30-1792ffd87118.pdf',
+    examYear: 2023,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4670,6 +5201,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/0cce06c9-a8a3-4669-a7e7-fee53ad838c2.pdf',
+    examYear: 2023,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4680,6 +5213,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/c87f8c8f-6bca-4bbb-a61c-355ee733488e.pdf',
+    examYear: 2023,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4690,6 +5225,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/1d5a4a9c-6348-4dd8-8445-f70f127fca52.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4700,6 +5237,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/48f015a2-33d9-4e3f-962d-60a8d78e22eb.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4710,6 +5249,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/39cbca19-b8ab-4620-b64b-4b2767cb0d2c.pdf',
+    examYear: 2022,
+    topic: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4720,6 +5261,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/d8d12b50-84a9-498a-9332-b9eea4d0f496.pdf',
+    examYear: 2022,
+    topic: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4730,6 +5273,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/49a3c67f-781f-449c-859c-ba8c4c89f7f2.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4740,6 +5285,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/ebc13f58-48a7-4499-b017-78dea57e1086.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4750,6 +5297,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/c972cbef-e711-4619-a050-722aee6c05a4.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4760,6 +5309,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/b960b2c3-47fb-48c2-9e8b-d53832fa305f.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4770,6 +5320,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/32fd3bca-ad6c-45ff-9ffa-baa584c86d54.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4780,6 +5332,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/5842d021-82b9-4b24-8293-18268d9630ff.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4790,6 +5343,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/4dbc4b1c-aa56-41c9-93ba-86d72ef6c9b2.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4800,6 +5354,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/35bdf665-2850-4a57-b424-163d68d00766.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4810,6 +5365,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/4a3ca4c6-a773-4dc1-ad8a-d77db59e95c5.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4820,6 +5376,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/4a0e9790-0bc6-4b39-92a2-b813c15f6986.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4830,6 +5387,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/61bf0aca-be9c-4704-8f06-2edac323e147.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4840,6 +5398,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/e21f8302-70b9-4396-9ef3-5b1c0d417e1d.pdf',
+    examYear: 2022,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4850,6 +5409,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/78eb3773-5409-417f-bc4d-7ffbdd681cfb.pdf',
+    examYear: 2022,
+    topic: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4860,6 +5421,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/2d013a64-7325-447c-a3ca-2348b904adac.pdf',
+    examYear: 2022,
+    topic: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4870,6 +5433,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/5c5aa0e6-280e-4dc8-aa39-fa6b1102416c.pdf',
+    examYear: 2022,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4880,6 +5445,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/315b13c3-565d-4eca-99fa-424a8f90d6b4.pdf',
+    examYear: 2022,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4890,6 +5457,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/03bed458-9bf0-40d7-afa1-c2ce51047be4.pdf',
+    examYear: 2010,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4900,6 +5468,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/012a9dce-393a-4fd6-a805-54b370a6ef48.pdf',
+    examYear: 2012,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4910,6 +5479,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/9606b130-04b3-4bae-a665-3a9737cbc43b.pdf',
+    examYear: 2016,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4920,6 +5490,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/65ef6ce8-bd0b-4a6c-8930-717a1d626068.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4930,6 +5501,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/9975cc62-d258-4fe1-9e0d-8451e9dc94a9.pdf',
+    examYear: 2018,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4940,6 +5512,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/5716b749-8cb2-4c73-a98c-9cde036625c0.pdf',
+    examYear: 2017,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4950,6 +5523,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/820264ff-f0c7-4a2e-89a8-9daae1a0190c.pdf',
+    examYear: 2014,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4960,6 +5534,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/5cde5941-c176-4bad-9607-93423be18a0f.pdf',
+    examYear: 2015,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4970,6 +5546,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/c67a7cb7-d8fc-4f62-ba0d-b8c846df3cfa.pdf',
+    examYear: 2015,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4980,6 +5558,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/2f57d75f-6202-4d27-ae85-14163f7614af.pdf',
+    examYear: 2018,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -4990,6 +5570,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/309b8a67-2512-4af7-8bc6-b50cda944f3d.pdf',
+    examYear: 2018,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5000,6 +5582,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/40a65302-fcc9-4af1-b9a6-bda0460cb70b.pdf',
+    examYear: 2018,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5010,6 +5594,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/845cded9-8038-4674-bb63-7dec04c6beaf.pdf',
+    examYear: 2018,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5020,6 +5606,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/1d2f9599-5f52-4841-8cbd-e2b6c53dcefc.pdf',
+    examYear: 2011,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5030,6 +5618,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/739586ee-c73e-423b-89a5-ef37b1b8d462.pdf',
+    examYear: 2011,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5040,6 +5630,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/a88e5d50-edbe-4af8-a075-5b95e61981fd.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5050,6 +5641,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/9809fa8d-b24d-4da4-88c7-dd636e255798.pdf',
+    examYear: 2013,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5060,6 +5652,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/d21819b7-9ebc-44d9-a2a0-08b70b9b03e9.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5070,6 +5663,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/f0c7ffdf-0832-4f05-be4f-4c110709d0e4.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5080,6 +5674,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/f32742de-b4ab-45cd-95f9-09ec0b5a266b.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5090,6 +5685,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/b3ab4927-5447-45b5-b6f4-7a1067304139.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5100,6 +5696,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/f62daeae-b616-4d28-9018-8e9fea91514e.jpg',
+    examYear: 2025,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5110,6 +5708,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/c64087c4-7a63-4832-8b19-463e66f963f7.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5120,6 +5719,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/12c605a5-2e51-4bf2-b037-647572733d49.jpg',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5130,6 +5730,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/b327c093-a86a-4e2a-8c06-0f1f209848be.jpg',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5140,6 +5741,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/eff67d5b-e5b5-462d-99df-fa3fc960e99f.jpg',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5150,6 +5752,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/3ce1439a-57f9-4d11-9753-815bf135868d.jpg',
+    examYear: 2025,
+    topic: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5160,6 +5764,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/963ea4f3-7e41-4bcd-a5f9-5ef81af5ef50.jpg',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5170,6 +5775,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/ce09c5cd-3703-44b0-b5d3-657fc5dbbbf7.jpg',
+    examYear: 2024,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5180,6 +5786,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/c3b9ed24-c575-44dd-b491-097ba704ef7a.pdf',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5190,6 +5797,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/3e7381c4-475f-48db-b17f-f04ed5beb352.pdf',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5200,6 +5808,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/36a45efe-6f18-4020-97f5-12f40bcbda9b.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5210,6 +5819,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/34d797d4-aec5-4446-98d2-a68dffc951a5.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5220,6 +5830,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/4db7d004-e8de-497b-a57e-e4b0ef3b9ca6.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5230,6 +5841,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/1de69d8d-f616-4b99-a366-f929a5afc76c.jpg',
+    examYear: 2025,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5240,6 +5853,8 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/c6fd5515-5ad7-431c-b7dc-d9df10478d1b.jpg',
+    examYear: 2025,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5250,6 +5865,7 @@ export const RESOURCES = [
     type: 'parcial' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/72a4fa5f-e605-4a30-8a63-e687553799ff.jpg',
+    examYear: 2025,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5260,6 +5876,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/16fdc364-fd45-4598-821f-c0120d022f66.pdf',
+    examYear: 2025,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5270,6 +5888,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/4d260ea7-9f9c-4f3d-938e-a0a7a439ee48.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5280,6 +5900,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/1abd81fe-c51a-4bc5-9786-7effd8d29e9e.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5290,6 +5912,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/2023e458-aea2-4549-8f11-96099e2abee6.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5300,6 +5924,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/1bf0b549-19de-42f9-8cb1-61d5ac02ee30.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5310,6 +5936,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/9a066dc6-fe30-49de-87ac-92bc007b4283.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5320,6 +5948,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/a1b4c0e3-88ac-4606-b16c-8d62889d7c71.pdf',
+    examYear: 2024,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5330,6 +5960,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/9f967451-a63c-449a-8447-49ff6953044f.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5340,6 +5972,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/99e4eccd-c775-459c-bb52-fb37c812ed59.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5350,6 +5984,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/b95ffa6a-4a6f-450f-8f5e-bdf84792ffdd.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5360,6 +5996,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/ebfd9b71-6396-4a38-9f6e-94402e17a349.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5370,6 +6008,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/7224cb21-4dfc-4dd0-88dd-fd1c28d542c2.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5380,6 +6020,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/f1cf2d46-b858-4fc5-81ec-494ab73c1322.pdf',
+    examYear: 2023,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5390,6 +6032,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/bdbf7f28-09d3-4b6c-bca8-be9e164c10fc.pdf',
+    examYear: 2023,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5400,6 +6044,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/fe4b0340-a059-4e7a-b658-298e8619d665.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5410,6 +6056,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/363bc30d-c905-4c10-9fe5-403744491576.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5420,6 +6068,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/38263766-cbb2-45fc-80b9-96e62f14c09f.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5430,6 +6080,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/febe6b1c-ea9a-4f7c-b25e-d4897caf0850.pdf',
+    examYear: 2022,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5440,6 +6092,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/62e7fce9-840b-4f6d-910a-73cbb6f8bfae.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5450,6 +6104,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/80750c05-5172-4183-88ef-91b802a620e1.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5460,6 +6116,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/c50159f0-e105-43f9-96dc-bd86a526cf7f.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5470,6 +6128,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/45653632-6326-4701-a4ee-56a0384862c7.pdf',
+    examYear: 2022,
+    examMonth: 8,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5480,6 +6141,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/d5ecdd94-2e09-4eda-a551-a72873be9257.pdf',
+    examYear: 2022,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5490,6 +6153,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/88b788f5-6924-4a3c-b8a6-ddfe45fc01d3.pdf',
+    examYear: 2022,
+    examMonth: 8,
+    topic: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5500,6 +6166,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/455eabbc-f3f2-4cdc-99e5-7f89a9f59161.pdf',
+    examYear: 2022,
+    examMonth: 8,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5510,6 +6179,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/f53e35f0-64b6-4f5b-8e0c-d04badeb8c31.pdf',
+    examYear: 2020,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5520,6 +6191,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/bd8ed8ae-ca1a-4410-b1fd-584665715185.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5530,6 +6203,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/6d636174-3cd0-49a3-9d97-1d2057879690.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5540,6 +6215,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/28fc6d7b-a949-4b4c-8ca1-a9890bc9b322.pdf',
+    examYear: 2021,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5550,6 +6227,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/9ff5be46-73c4-4732-b407-c90f444c006d.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5560,6 +6239,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/79bec90c-703f-432f-81f8-19d83154396d.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5570,6 +6251,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/93cbe3c2-c815-4aa9-82c1-8934408b9041.pdf',
+    examYear: 2020,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5580,6 +6263,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/3a4ad228-f99b-4534-bd40-0401afe38dcb.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5590,6 +6275,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/25cbe1d6-cb79-472a-93f9-ebcbe2fa6f6b.pdf',
+    examYear: 2019,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5600,6 +6287,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/6aaa61eb-c851-45ce-b30c-9cf3f2fbd894.pdf',
+    examYear: 2019,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5610,6 +6299,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/cba19ce8-0d1d-42fd-9973-5a6a9d44e47a.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5620,6 +6311,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/80a32123-bce6-4af1-928a-cc111c9a8c13.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5630,6 +6323,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/7d45b11d-6577-46be-89fd-8276b10bb8e5.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5640,6 +6335,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/71045879-3b89-4305-b909-d4adf6524939.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5650,6 +6347,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/66c19293-339a-4b7a-bbe7-15d701aae6b4.pdf',
+    examYear: 2018,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5660,6 +6359,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/ac8408e2-1004-4737-a7c7-1ba7cf6e3ea1.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5670,6 +6371,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/11660bb4-e88a-4044-896a-b4f80f24399d.pdf',
+    examYear: 2018,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5680,6 +6383,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/66b9ce4f-5c8f-46a3-8be4-f0724259aabe.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5690,6 +6395,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/a9e7b210-41b9-4b7e-a380-4876dc93a748.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5700,6 +6407,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/3be47990-e1b8-4640-86ef-c569cffff2db.pdf',
+    examYear: 2017,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5710,6 +6419,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/0b627604-e025-4f3a-bcfe-dd6a6ac9796a.pdf',
+    examYear: 2018,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5720,6 +6431,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/c673e90c-fab1-4488-a0ca-842f0cf22dc7.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5730,6 +6443,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/aa371797-183b-4e4a-8085-d0b6392bf6d8.pdf',
+    examYear: 2018,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5740,6 +6455,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/38c762a4-fbcb-4874-b32f-676e8cbb2b85.pdf',
+    examYear: 2018,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5750,6 +6467,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/ab91ff43-a8fa-4d92-9627-0b2e65ed0321.pdf',
+    examYear: 2017,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5760,6 +6479,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/cdc34373-b4d5-4c7f-a368-86c6b96b8bb0.pdf',
+    examYear: 2016,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5770,6 +6491,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/decc855a-55a9-478f-a268-3229a99c6aef.pdf',
+    examYear: 2017,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5780,6 +6503,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/082d35ea-6924-4c5c-8a50-2cfd76c96076.pdf',
+    examYear: 2017,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5790,6 +6515,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/58369312-1afd-4ce9-9241-9b1a701e75e5.pdf',
+    examYear: 2016,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5800,6 +6527,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/c75a140d-5f50-4cad-9fcc-766058411106.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5810,6 +6539,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/bff00e5e-b7a3-4482-a972-f2191f4cb76c.pdf',
+    examYear: 2015,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5820,6 +6551,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/bc69588c-78e8-49f1-93ae-5eb931b0965f.pdf',
+    examYear: 2015,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5830,6 +6563,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/2f110526-34cd-4106-a6bf-96592add291f.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5840,6 +6575,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/4861555b-d85c-48f1-ae97-30370f970e97.pdf',
+    examYear: 2015,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5850,6 +6587,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/90d6a672-dc6c-4f5b-8548-d8cd437ae82f.pdf',
+    examYear: 2016,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5860,6 +6599,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/939668ef-fdae-47b7-a5bc-32dd88d5659c.pdf',
+    examYear: 2016,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5870,6 +6611,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/00451a78-5acd-4738-b1e6-ccc20cecb834.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5880,6 +6623,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/e9f2b198-1c54-480c-a31c-6f5e0856d820.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5890,6 +6635,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/6653f1bd-6985-48c0-b51a-e53885859fd3.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5900,6 +6647,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/2e64ec29-f7bc-4010-bf81-c0ffef01078b.pdf',
+    examYear: 2015,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5910,6 +6659,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/9925eb05-4e1c-4252-9e98-34939eb901b4.pdf',
+    examYear: 2014,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5920,6 +6671,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/fad9dd75-40d9-4b4e-95dc-4f2844438ba6.pdf',
+    examYear: 2013,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5930,6 +6683,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/55f114b7-0f21-4353-ac6b-1cbf9a71b7cc.pdf',
+    examYear: 2013,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5940,6 +6695,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/8ff8e560-3ca9-4d18-97bf-db529568a78a.pdf',
+    examYear: 2013,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5950,6 +6707,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/450eb873-1a3f-43b4-8265-3da994f1e913.pdf',
+    examYear: 2012,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5960,6 +6719,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/e9acc8bc-9216-4143-a009-119dfb7c5e6f.pdf',
+    examYear: 2022,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5970,6 +6731,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/64c2229b-466a-4aef-9996-906a74ffa83b.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5980,6 +6743,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/9ed293a5-832e-4112-b042-a12c0f788402.pdf',
+    examYear: 2022,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -5990,6 +6755,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M2/3c6f1046-2496-46f1-891a-e2eea086a225.pdf',
+    examYear: 2014,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6000,6 +6767,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/a25d2ae3-d186-41bb-8214-8c70951aad37.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6010,6 +6779,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/f259c243-12a5-48d4-be7a-23b8a467681b.pdf',
+    examYear: 2018,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6020,6 +6791,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/c7e804ca-6dc4-4d6c-9a7b-504a96341cbb.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6030,6 +6803,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/880bdf18-5a9d-4e95-b246-1a451ad208b7.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6040,6 +6815,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/d82efcd0-cfcf-41eb-8f16-086a7d12112d.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6050,6 +6827,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/b729f886-3ffc-464a-8b00-e148baa6be95.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6060,6 +6839,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M1/6adea747-3543-4ae0-9237-7c265cb70870.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6070,6 +6851,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/465e5bb9-2ecb-4bb2-9040-3a9a7bff6794.pdf',
+    examYear: 2025,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6080,6 +6863,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/5a1ad029-2633-4c15-9435-58f26ba3c6ee.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6090,6 +6875,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/dd74f8ae-c0d4-4e3c-9cd7-5b8db9e10564.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6100,6 +6887,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/ca30b5d8-b03d-4ba1-a7de-01a4bc1b982a.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6110,6 +6899,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/3590ad8f-a657-4f7f-9a90-601267309515.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6120,6 +6911,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/926e8216-7a00-4f95-8bc7-93ba036f52aa.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6130,6 +6923,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/ad4a3966-5429-4c36-9ced-0b531660113d.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6140,6 +6935,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/164896b3-0bef-4cdc-ad60-9c283db4d457.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6150,6 +6947,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/76342fd5-6a17-47a8-af3f-3c111c7d705c.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6160,6 +6959,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/5b9ae565-b93f-43f6-ab0e-f73e59f050a3.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6170,6 +6971,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/7795a61f-18d6-408c-abf9-dc11e5cf6f58.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6180,6 +6983,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/badd5971-897f-4559-8173-fca8337ddc92.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6190,6 +6995,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/48c3b85f-5cad-41f5-b1f8-71dc3eb67f47.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6200,6 +7007,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/332819f2-41e6-48ad-b28c-9b7836ce9ee6.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6210,6 +7019,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/427ca01b-8dca-4ab5-a99a-ff8838705aaa.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6220,6 +7031,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/8303c534-fae6-4c23-a305-f4d1ba35f7c5.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6230,6 +7043,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/17dffab7-fc70-42be-9337-2d1f2e794b14.pdf',
+    examYear: 2022,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6240,6 +7055,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/48bd4fc4-b57d-47f4-bde7-34f4c0f9fe54.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6250,6 +7067,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/533f39e4-2076-4c87-89e1-33d57a71adb3.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6260,6 +7079,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/8c2affca-45d9-490c-b12e-230f5d7d4c92.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6270,6 +7091,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/681de8d6-754d-4745-b46d-a799bd26d8b9.pdf',
+    examYear: 2019,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6280,6 +7103,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/390a21cd-1712-45b5-9dce-6c0cb74ec2f8.pdf',
+    examYear: 2016,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6290,6 +7115,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/dd0759f2-661c-4d46-a53c-a2cbefb7c0a9.pdf',
+    examYear: 2014,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6300,6 +7127,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/7c06083d-6d67-4d16-bf8b-e590a266d062.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6310,6 +7139,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/a7dfa74c-6fda-460d-8f29-563b34e074c0.pdf',
+    examYear: 2019,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6320,6 +7151,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/732518f4-6cbe-419f-9525-b89a44600b87.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6330,6 +7163,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/b9fa1745-6904-457c-b6bd-85dbdb063bb3.pdf',
+    examYear: 2016,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6340,6 +7175,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/7bcee22d-55d1-4c72-b5b4-f668a8f1fdb1.pdf',
+    examYear: 2016,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6350,6 +7187,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/3961d370-43e5-4eba-b73d-e03c3c4583cc.pdf',
+    examYear: 2016,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6360,6 +7199,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/99346bd7-7bff-4479-9f23-e265f669f6b3.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6370,6 +7211,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/a53f1a22-62f9-44eb-9b0e-6da9bd5fa930.pdf',
+    examYear: 2020,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6380,6 +7223,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/7b924ba2-cf5c-444f-8ac6-11c9a542ce16.pdf',
+    examYear: 2015,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6390,6 +7235,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M1/a3f86f1c-5cdd-4a10-9b78-ab3944010a11.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6400,6 +7247,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M8/007c0b6c-2454-4a78-b39b-19a856b7835f.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6410,6 +7259,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M8/48c0d23f-4131-4137-a3f9-84a90d9c7a95.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6420,6 +7271,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/3dbcc570-2339-4db8-838b-ddcd045becff.pdf',
+    examYear: 2025,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6430,6 +7283,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/ab0da6e6-dd73-433d-8bd9-f038bf38950c.pdf',
+    examYear: 2013,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6440,6 +7295,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/52fe4a3e-c6eb-412d-8861-f6d0028e0244.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6450,6 +7307,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/6c60aad9-7619-4091-8aa7-cda1f272b34a.pdf',
+    examYear: 2020,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6460,6 +7319,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/3c378408-349d-4599-a455-20a059f75218.pdf',
+    examYear: 2017,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6470,6 +7331,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/283e055c-6f7a-4eab-b1d1-bf061515684d.pdf',
+    examYear: 2014,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6480,6 +7343,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/604c04ef-e7fd-4871-a199-9355d8031dd1.pdf',
+    examYear: 2012,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6490,6 +7355,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M9/34b85cba-6043-4a31-8d84-c597d7883814.pdf',
+    examYear: 2019,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6500,6 +7367,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/2044d06d-f512-41cd-afba-970fcb41eb57.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6510,6 +7379,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/e39ab16d-3950-44e4-bb11-cd2bb90c1bbf.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6520,6 +7391,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/cf400dc8-f6df-47e0-b297-069f78613bcf.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6530,6 +7403,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/6b02a2e2-72db-42e8-90e1-7cb1a27224fd.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6540,6 +7415,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/cbd7d9c9-6af5-46fb-a8af-7f63d673ff22.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6550,6 +7427,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/28f8794a-fb06-4080-ad0a-4105320546f8.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6560,6 +7439,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/5e7182b8-e274-4108-9e8a-8ac96a3d9a0b.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6570,6 +7451,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/86a80084-1149-4775-815c-03e60d4bf25b.pdf',
+    examYear: 2021,
+    examMonth: 12,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6580,6 +7464,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/1b1e4eb2-a098-4fce-a718-d57a943690da.pdf',
+    examYear: 2021,
+    examMonth: 12,
+    topic: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6590,6 +7477,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/dab6e106-c517-4bd5-a173-517086037196.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6600,6 +7489,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/4b1a6a92-be5d-4189-8dcf-85cc9ba23132.pdf',
+    examYear: 2020,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6610,6 +7501,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/4412f471-910a-4f31-8758-50bb280e27dd.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6620,6 +7513,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/204b2a32-1f6e-4f5e-8485-9b2d695816f0.pdf',
+    examYear: 2016,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6630,6 +7525,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M10/9bdf2765-b126-46a4-bbb5-2354e6f59b8e.pdf',
+    examYear: 2016,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6640,6 +7537,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/e3d08cbe-b9b8-40e5-b1ba-444f764c835d.pdf',
+    examYear: 2025,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6650,6 +7549,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/08d03ccc-d46a-461d-8290-49c99f564563.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6660,6 +7561,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/e2c33105-f26e-4b5d-92b5-99fbe5634a8d.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6670,6 +7573,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/f7fb4d81-1cb2-453b-a279-85add62614e7.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6680,6 +7585,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/c1753875-c29a-427a-a2b1-666a5b833175.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6690,6 +7597,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/8d0cce8d-936c-4143-af06-ae8a4d148acf.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6700,6 +7609,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/ac1fc357-617b-4e47-83bc-13301f7e958a.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6710,6 +7621,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/f0628d7c-8b50-4508-86bf-2b6c7fd394bb.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6720,6 +7633,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/420f001d-c47f-419c-8554-7f984364ca18.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6730,6 +7645,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/45d8203b-9422-4570-8372-136b5e450118.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6740,6 +7657,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/50a91671-cbf2-473d-bbc8-f1cac9c28933.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6750,6 +7669,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/b82e69bc-f995-46e5-b78b-320d2ed56171.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6760,6 +7681,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/be2be4d4-5fef-4e71-8a37-165c35f05f4f.pdf',
+    examYear: 2021,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6770,6 +7693,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/b8a9ca2f-57ff-462a-a66d-f407d3c34d98.pdf',
+    examYear: 2019,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6780,6 +7705,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/c4f27ae8-9a5f-48b5-918b-a79254433938.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6790,6 +7717,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/b29133ab-b1fd-4883-9927-4d068b10d961.pdf',
+    examYear: 2012,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6800,6 +7729,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/1f52d9cb-95ef-4a76-9cd3-892e309929b8.pdf',
+    examYear: 2017,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6810,6 +7741,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/5baefe1d-b230-4201-8349-e508e4ed46bb.pdf',
+    examYear: 2017,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6820,6 +7753,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/518b5913-8c60-46db-9a82-21c4c6d8d9f5.pdf',
+    examYear: 2016,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6830,6 +7765,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/c20b7ab4-be3b-498f-8a08-f5d7fefc2fc8.pdf',
+    examYear: 2015,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6840,6 +7777,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/87689334-186f-4c0f-a11e-172ab24d3e4a.pdf',
+    examYear: 2016,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6850,6 +7789,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/d316b92b-0a36-449c-be32-5c476b1ff68b.pdf',
+    examYear: 2016,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6860,6 +7801,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M2/29034e1c-cee7-4d23-b967-48708cf3de81.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6870,6 +7813,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/c1549265-13cf-4662-a4c2-9a6a6133846b.pdf',
+    examYear: 2025,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6880,6 +7825,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/01ad6eb3-99fd-4f22-bb67-b54650e2ce09.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6890,6 +7837,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/b5d3a9a8-4c76-4b4f-8702-ec1aea382e2a.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6900,6 +7849,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/fa357e09-fe36-484b-8fcf-d9f08159d282.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6910,6 +7861,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/0c4bca26-4b1c-45f3-ade8-0a12c98720cd.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6920,6 +7873,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/2a6f0d3a-2959-405a-85b7-70eea4b2b557.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6930,6 +7885,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/d206a80c-e878-4241-89e9-fc4a85d7bc22.pdf',
+    examYear: 2023,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6940,6 +7897,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/f07919e9-52dd-4a6d-b086-b969ff3a9a11.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6950,6 +7909,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/9a2332b9-6f1b-4706-96b3-651fa8b7b37d.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6960,6 +7921,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/86d9be17-b327-4c89-874b-a92cc6a15584.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6970,6 +7933,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/f4a03f7c-4bdf-4cf8-afd8-e82d02eb1c1d.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6980,6 +7945,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/a5d1435c-80a0-4c89-87ed-b57f0532272a.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -6990,6 +7957,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/af9d2832-9c3e-40c0-886b-207b8b782128.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7000,6 +7969,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/5273d1a6-4308-4676-8498-41bcf599fa2c.pdf',
+    examYear: 2021,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7010,6 +7981,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/bcc005bc-5a14-4bd6-85b0-2dedea4b550b.pdf',
+    examYear: 2021,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7020,6 +7993,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/760b1572-15af-42c3-a706-182eeac2dec0.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7030,6 +8005,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/3a829d35-e459-4a30-85f5-f9c93c1cb6f4.pdf',
+    examYear: 2020,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7040,6 +8017,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/f794c185-24b2-4d8c-a3f4-17150cc681ee.pdf',
+    examYear: 2020,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7050,6 +8029,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/6aeb852e-148f-4cee-bca3-530db7cf00f5.pdf',
+    examYear: 2014,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7060,6 +8041,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/b5347a77-2222-4bd1-af2b-866fa08ed175.pdf',
+    examYear: 2013,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7070,6 +8053,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/f09fe47b-0cba-4cdc-a998-28ed0afe38d4.pdf',
+    examYear: 2013,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7080,6 +8065,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/50f00c16-8f50-464d-98ac-817c1a3cda50.pdf',
+    examYear: 2015,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7090,6 +8077,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/082e4797-2d7d-44c8-8531-b8edd131c7a7.pdf',
+    examYear: 2015,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7100,6 +8089,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/f88ca37c-20a8-4f41-a4bd-0dc4f88b3f39.pdf',
+    examYear: 2015,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7110,6 +8101,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/7571a29f-c4c2-4bce-9d82-212d9a1a962f.pdf',
+    examYear: 2015,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7120,6 +8113,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/3913d2bb-a1c0-48ea-b234-843595d1aa2a.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7130,6 +8125,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/4b6f0c22-67d1-412b-89a2-815507d71657.pdf',
+    examYear: 2016,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7140,6 +8137,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/5c24fda8-6504-43c2-b7f9-74731180ca97.pdf',
+    examYear: 2016,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7150,6 +8149,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/87618b80-e427-429f-9728-95a5a8e0a32e.pdf',
+    examYear: 2016,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7160,6 +8161,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/4b9b0bf2-2a9a-42a6-89f0-7bd15d7ce95c.pdf',
+    examYear: 2016,
+    examMonth: 2,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7170,6 +8174,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/3d206d02-ed10-47c7-9569-dadad2ac82b3.pdf',
+    examYear: 2016,
+    examMonth: 2,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7180,6 +8187,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/9d9e0684-6cbe-4c27-a3e0-f86b5e3aeb58.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7190,6 +8199,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/3861b9d8-0ca8-48a1-81c2-8dadfc72f526.pdf',
+    examYear: 2018,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7200,6 +8211,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/784c4f4b-ad8e-43da-ac42-43fbaa7af124.pdf',
+    examYear: 2018,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7210,6 +8223,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/f7f939d6-23e4-4f45-861c-869e55322ac5.pdf',
+    examYear: 2018,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7220,6 +8235,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/8eee4365-f657-45d8-9574-2f73b72fcabf.pdf',
+    examYear: 2018,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7230,6 +8247,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/38bdcc16-e881-4226-8f13-d15da7829c18.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7240,6 +8259,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/20753d87-43cc-4bba-867b-e5536c711d29.pdf',
+    examYear: 2018,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7250,6 +8271,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/9723e9db-4b00-4eac-b464-2db9c322803c.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7260,6 +8283,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/55e982da-a59b-43d3-8172-2098d668de62.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7270,6 +8295,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/14108e3b-dcb0-4026-9e52-12bff2096814.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7280,6 +8307,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/b41812cc-8db8-4b1b-a0ee-2c55d3f4b941.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7290,6 +8319,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/cba5ad54-e1aa-4c38-a410-84d94c4deae1.pdf',
+    examYear: 2019,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7300,6 +8331,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/6c1591bc-8643-4bca-a5a0-6d224491b116.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7310,6 +8343,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/b55fac01-b529-44d7-a777-d7afa6f1c225.pdf',
+    examYear: 2022,
+    examMonth: 7,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7320,6 +8356,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/dcfc44d5-e1cf-4359-8fef-f7682c28b10a.pdf',
+    examYear: 2022,
+    examMonth: 7,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7330,6 +8369,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/1d06cb13-7d44-4976-bdc1-51d4c43bc0d6.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7340,6 +8381,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/c75267e0-1da8-4961-b406-326a2d6a295b.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7350,6 +8393,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M12/143674a7-bbf0-421a-9242-95ae81a388bd.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7360,6 +8405,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M13/d8c3dd6f-ba65-4c33-8460-0680984713c0.pdf',
+    examYear: 2025,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7370,6 +8417,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/be59ff75-525e-475e-a592-a7e352f43d90.pdf',
+    examYear: 2024,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7380,6 +8429,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/789eb342-81ce-40aa-9fc8-54a8dd369aaf.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7390,6 +8441,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/eb51b2ad-8876-4f76-ade4-5f0f376fc016.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7400,6 +8453,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/ed7832c2-8de0-412e-8ba3-2a000cff7e50.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7410,6 +8465,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/6f9c3bf4-f7ef-4720-b6cc-3113d14b5c2f.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7420,6 +8477,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/c717b40c-c1d2-4692-990f-635cbb776767.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7430,6 +8489,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/4aa027b0-49dc-4c40-ac4a-86cfe2ee29a9.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7440,6 +8501,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/9187c45c-4ad3-400d-8369-b282f3cb6989.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7450,6 +8513,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/43a18238-b554-4c14-8564-45a6f1d65767.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7460,6 +8525,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/1301b73c-d079-4011-94ec-119680959a16.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7470,6 +8537,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/a5be40c6-9332-45fb-b3a4-73417c281466.pdf',
+    examYear: 2022,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7480,6 +8549,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/882ef4ba-a2a3-44d1-978c-a91d7b120dce.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7490,6 +8561,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/ebfb8502-e0d7-49bf-bd69-94aafc3f2942.pdf',
+    examYear: 2022,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7500,6 +8573,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/c22d4815-7c4b-4735-953f-27338913a4dd.pdf',
+    examYear: 2022,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7510,6 +8585,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/3c163392-991f-4746-9687-85457e48dea9.pdf',
+    examYear: 2021,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7520,6 +8597,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/6188b252-8fb4-43a5-83af-08cf7b2b57f2.pdf',
+    examYear: 2021,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7530,6 +8609,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/222f20d3-9dbf-446f-9d43-d627306e70b6.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7540,6 +8621,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/c6859118-9034-472d-bccc-a4d3a7ed56b6.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7550,6 +8633,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/66f762fa-1ffd-413d-b718-609fceeb2e18.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7560,6 +8645,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M4/98f533d0-5ffe-44ad-b107-220f89fb1db6.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7570,6 +8657,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/41813aa7-cc6a-4d72-a9a4-2f716d0c71b9.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7580,6 +8669,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/18059138-a2a1-4416-b315-8a80d5000162.pdf',
+    examYear: 2021,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7590,6 +8681,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/1ce4d73b-44e0-467d-a712-f572116b3097.pdf',
+    examYear: 2020,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7600,6 +8693,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/e57ea547-bedc-4bb5-aa89-7f8e07f07e5b.pdf',
+    examYear: 2018,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7610,6 +8705,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/14bd3fb7-7505-487f-93fa-aa4e88e471cd.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7620,6 +8717,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/60aa55df-32b0-4b50-af66-a2e2bd495829.pdf',
+    examYear: 2015,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7630,6 +8729,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/e7b9d90c-2378-4757-8729-a0a4ec97e3d9.pdf',
+    examYear: 2014,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7640,6 +8741,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/41f4074b-1273-408a-bd4d-d55a1393cb82.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7650,6 +8753,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/090fece0-ce00-4eb0-a81b-a0ee21e3f8d0.pdf',
+    examYear: 2013,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7660,6 +8765,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/f1bb253b-b293-4955-ac40-edcf7ed7b108.pdf',
+    examYear: 2017,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7670,6 +8777,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/32a6e781-00e6-41e7-a1c8-b4883a0a5cff.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7680,6 +8789,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/64378cee-98a2-4e7c-9425-cdc1e953cb2d.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7690,6 +8801,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/f38fdabb-0a5a-4f19-8baf-4788aacef545.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7700,6 +8813,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/db90bbdf-5976-4c3d-a771-ceea4d6b5818.pdf',
+    examYear: 2020,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7710,6 +8825,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C2M3/b43a22fe-d649-49d7-a018-2e1e9764e112.pdf',
+    examYear: 2011,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7720,6 +8837,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/1920a11c-f7ac-4f1d-8e3c-bd4f12b04557.pdf',
+    examYear: 2025,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7730,6 +8849,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/3f524ab0-7193-4008-bd2f-fa476a1ce53a.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7740,6 +8861,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/ad16d6b4-e21a-46db-8bf4-561077f04d65.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7750,6 +8873,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/63db891b-fd7d-49be-8c51-0e38a9ec7d95.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7760,6 +8885,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/994309aa-b695-4144-97b4-5a3c1d38f218.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7770,6 +8897,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/0dacd4be-8836-43cc-8610-a0f5156d3c08.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7780,6 +8909,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/1655006b-4dcf-43cf-9311-be2340d19000.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7790,6 +8921,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/6b1bdad3-60f5-47f3-ac90-ea509439f760.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7800,6 +8933,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/648c7127-7c96-469c-8215-1aaa71e951a3.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7810,6 +8945,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/858d2b6f-cfbe-4e6b-bd08-b50897c42974.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7820,6 +8957,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/051927cc-a8ed-43be-a240-f9bf6369d08c.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7830,6 +8969,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/15bc5eb6-c1c4-4717-ab30-8caaa97786f4.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7840,6 +8981,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M1/96d8d200-cc4b-4685-856c-27857d685cec.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7850,6 +8993,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/5e5e03e6-07e2-4964-a095-a6092ba17ad4.pdf',
+    examYear: 2025,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7860,6 +9005,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/c17b7810-8c53-4e43-8c4e-883d3532815c.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7870,6 +9017,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/f9463357-5dc8-4009-8944-79b8e4023609.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7880,6 +9029,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/b4112609-ab00-48e5-9ba4-079f6a74003c.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7890,6 +9041,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/5c69e732-57ea-4070-afd1-48eba381c8a2.pdf',
+    examYear: 2024,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7900,6 +9053,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/7e3db1f7-de23-4b2d-a000-11d2f13e01d5.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7910,6 +9065,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/8819e237-9636-43aa-b0ae-e31fd54f0946.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7920,6 +9077,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/0201ec75-8d15-40fa-a46e-84aeb44e9482.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7930,6 +9089,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/b5c1359e-f5ab-4b39-ae74-1b81ec0a17b0.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7940,6 +9101,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/d1f43947-79cb-4c36-a6c2-83bf9b9179ce.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7950,6 +9113,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/37e91b13-f656-411e-85fe-7608643d3ed8.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7960,6 +9125,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/4a0bfbbc-23c7-48f1-9714-a8a42471abf5.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7970,6 +9137,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/0e55f279-e710-447e-8fa6-8d43ec1f3a44.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7980,6 +9149,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/12b60b15-f4f7-4af3-ad0f-049fc929dd8c.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -7990,6 +9161,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/567cbb43-001f-49e1-8a78-cc3a643d46fd.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8000,6 +9173,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/34f45f05-edd1-46e5-8600-9eaf44d0346f.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8010,6 +9185,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/63bd4f04-b959-4bae-8cb1-e1dd94dccec1.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8020,6 +9197,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ad6febf9-0ed4-4faf-b010-a2bb229edca0.pdf',
+    examYear: 2020,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8030,6 +9209,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ca0f3b07-9c0f-4f8a-89e0-b67b47c4dcec.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8040,6 +9221,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/cc879ba9-7268-44ab-a99a-639021426900.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8050,6 +9233,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/92487a27-c0f4-4d70-bc7b-5024a536087e.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8060,6 +9245,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ae9dc20a-7ef2-4d09-b3d1-f1bed9f5bf94.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8070,6 +9257,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/55d222b7-82de-48bd-ab79-7376af90477f.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8080,6 +9269,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/4c564dd8-9012-4aa4-9e06-60d09ed3ea0b.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8090,6 +9281,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/177dc0a3-6a7c-43b6-b45f-e30224a231d9.pdf',
+    examYear: 2016,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8100,6 +9293,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/006e998a-ef4f-40ca-8c5c-9c8f42b4dc5b.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8110,6 +9305,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ed886df3-79fc-4667-b5a5-213fdeef203b.pdf',
+    examYear: 2015,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8120,6 +9317,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/23334c7d-9a7b-4e09-bcc1-78649767e7e3.pdf',
+    examYear: 2015,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8130,6 +9329,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/601154c3-7d99-4a8b-82db-f2975ce5e1d6.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8140,6 +9341,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/608a3cd1-93d0-42a3-aafc-2698789762b9.pdf',
+    examYear: 2015,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8150,6 +9353,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/6ee91c2e-9a3b-4d4a-bd7b-e221d0db8de5.pdf',
+    examYear: 2011,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8160,6 +9365,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/27a39a7e-5a67-41f2-be3c-b8a4a56501a5.pdf',
+    examYear: 2010,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8170,6 +9377,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ebab71ea-c2d1-4a6f-9195-154a0e2ee05a.pdf',
+    examYear: 2014,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8180,6 +9389,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/23453354-f6ad-4ea9-a628-d105acad2429.pdf',
+    examYear: 2014,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8190,6 +9401,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/0b371287-02b5-43cb-afcb-ab2ea3395b8e.pdf',
+    examYear: 2014,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8200,6 +9413,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/208a8b9b-8f87-4ca0-bf5c-a70098e2b7af.pdf',
+    examYear: 2010,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8210,6 +9425,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/63934b9e-137e-4ce1-8b56-50dd3cfcf56d.pdf',
+    examYear: 2010,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8220,6 +9437,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/b9649862-df04-4fcf-be28-905c26bd4dc4.pdf',
+    examYear: 2010,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8230,6 +9449,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/ad7feb3c-4867-4cda-acce-b29ec63f1cd8.pdf',
+    examYear: 2009,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8240,6 +9461,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/15a29563-6a8b-4719-862f-95a169d4fd99.pdf',
+    examYear: 2009,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8250,6 +9473,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/01d3eb4e-c2b4-43cd-bfd6-b0517b547aa2.pdf',
+    examYear: 2021,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8260,6 +9485,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/5baf0e0b-c666-410e-9759-879ff96beb6f.pdf',
+    examYear: 2021,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8270,6 +9497,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/d7905e69-effb-4f24-b9a8-18a5c5c83019.pdf',
+    examYear: 2021,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8280,6 +9509,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/4b7c08ea-6a91-4913-802b-4fab3501e872.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8290,6 +9521,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/cbbf06e9-e6ab-4762-b0e9-3a7a57c11c7f.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8300,6 +9533,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/03e847cf-6c1d-4250-98e9-9d1ea32f9124.pdf',
+    examYear: 2020,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8310,6 +9545,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/1cf47c03-cd85-4970-8292-50fcd61952e9.pdf',
+    examYear: 2025,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8320,6 +9557,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/177d037e-b8f5-4884-a977-fee3a65b437c.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8330,6 +9569,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/2786f2b5-72c9-44dc-8dd2-0dd85ca32eb4.pdf',
+    examYear: 2013,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8340,6 +9581,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/e7b005c7-f924-469b-be01-ab4f58d4c9dd.pdf',
+    examYear: 2014,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8350,6 +9593,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/62c3484c-4df1-4198-95de-719ebcf14db0.pdf',
+    examYear: 2013,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8360,6 +9605,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/a4d5b438-c453-497a-80a2-017d4bc89822.pdf',
+    examYear: 2014,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8370,6 +9617,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/fd0b13f4-ab56-422c-9301-34c721ef1845.pdf',
+    examYear: 2014,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8380,6 +9629,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/ae0b6903-bc91-4bb4-97c0-5e68360c579c.pdf',
+    examYear: 2015,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8390,6 +9641,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/eac4abc4-1585-4a89-96f6-907e27f15e5f.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8400,6 +9653,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/bf58e06e-a0b3-4c75-a2d8-28b97fb30c66.pdf',
+    examYear: 2021,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8410,6 +9665,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/2770a23f-86f9-4e22-813d-c350da63eacf.pdf',
+    examYear: 2021,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8420,6 +9677,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/9d71199a-baba-4e84-a59c-e170f49eef90.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8430,6 +9689,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/7f83a9a7-7f74-42c5-891a-81df92a37015.pdf',
+    examYear: 2020,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8440,6 +9701,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/9ef43d34-e2ba-44be-bf0f-ff3cb8e206a8.pdf',
+    examYear: 2020,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8450,6 +9713,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/612e8706-11d5-4eb6-bb33-7f2ba4db33ea.pdf',
+    examYear: 2020,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8460,6 +9725,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/aa4f3102-bea7-4aa5-a1d1-4be1d49e05f7.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8470,6 +9737,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/670201ea-bd2f-43f9-8b01-66b62518ebd7.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8480,6 +9749,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/e808d911-ca19-41c6-9509-b8511dbd884a.pdf',
+    examYear: 2016,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8490,6 +9761,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/5198d3a7-4335-4d5d-beb6-a2ef1c1ad581.pdf',
+    examYear: 2016,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8500,6 +9773,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/b546f33c-e8d4-4b24-be90-c2ca2bf99803.pdf',
+    examYear: 2016,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8510,6 +9785,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/bc0ce2ba-eb69-4962-b433-8222812b09c9.pdf',
+    examYear: 2017,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8520,6 +9797,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/0843d9fc-8225-4cd9-8da9-9672be4821d6.pdf',
+    examYear: 2017,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8530,6 +9809,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/2789a780-533e-43e5-b6d7-bd6ee81654a4.pdf',
+    examYear: 2017,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8540,6 +9821,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/eb6a879c-43af-43e6-85bf-3e311a6af528.pdf',
+    examYear: 2017,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8550,6 +9833,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/96ccb9a2-f4d0-4089-a7b3-4d43c9c5542c.pdf',
+    examYear: 2018,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8560,6 +9845,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/2074dd6b-0780-4600-914f-8153c44c300b.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8570,6 +9857,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/c7871ab7-167a-457b-ace7-b6d2a6144c40.pdf',
+    examYear: 2018,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8580,6 +9869,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/af0d0b25-1061-4771-9acd-ea48a60e7325.pdf',
+    examYear: 2019,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8590,6 +9881,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/5e006962-f425-4310-abbd-299b9961fd01.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8600,6 +9893,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/96503c04-7679-46cc-a618-673162348563.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8610,6 +9905,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/832a6ed7-c9e4-4f29-8652-15812f606eb5.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8620,6 +9917,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/db5b7cd2-aa7d-4baf-ab22-be6933f49bcb.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8630,6 +9929,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/665e0ef1-d698-4c7b-b61c-4e7c5dd4adfe.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8640,6 +9941,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/2377ceff-8dd8-4f9a-8957-7a6540ec88bd.pdf',
+    examYear: 2022,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8650,6 +9953,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/13c0f89e-8796-4446-b929-d411c3dc6e14.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8660,6 +9965,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/740a400a-95af-4fe3-8b0c-8cb12fb42ac2.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8670,6 +9977,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/963fb482-6d57-4cc8-a7db-d874b4617e5e.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8680,6 +9989,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/4b94a7e3-98ec-4291-b063-1ef211ad7c72.pdf',
+    examYear: 2024,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8690,6 +10001,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/e25464a2-c034-42af-aa71-b2643f5c5773.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8700,6 +10013,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/c61c24fe-baf9-486a-a659-fba9dd9e568c.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8710,6 +10025,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/a26e49e2-ae2b-4fa6-8ae7-d2a9a8ab02f3.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8720,6 +10037,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/424aeb8d-63e4-4cb1-8ac3-03e087e5410f.pdf',
+    examYear: 2023,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8730,6 +10049,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/e24a2115-3b68-41f3-871b-a0fa0f9d211e.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8740,6 +10061,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/9023d0b1-c8f4-4749-a3ce-d2ee0bdc9867.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8750,6 +10073,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A3C1M2/37c15a8d-6155-49d2-b798-3ccc08cdbf07.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8760,6 +10085,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M22/38d6fa86-b6cf-4974-bb3b-a667e42b451a.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8770,6 +10097,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/7c33221a-da7f-4e3e-b434-fb5d2de16e99.pdf',
+    examYear: 2025,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8780,6 +10109,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/9cc5978b-796f-41f5-bf09-79d55d3a4d82.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8790,6 +10121,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/ba8d832e-748e-4e61-b8da-96b5c9954725.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8800,6 +10133,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/cb9a1911-d184-4856-8695-044f6dbd29b4.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8810,6 +10145,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M3/cd8efcbf-24ef-49d5-96bb-392624c804b3.pdf',
+    examYear: 2022,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8820,6 +10157,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/66043301-adc4-4830-9c4e-6ac77cab35ef.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8830,6 +10169,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/bde6fee7-df71-411f-a698-6997e994c684.pdf',
+    examYear: 2017,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8840,6 +10181,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/9cf7a60f-44cc-4802-b363-5b6567693d58.pdf',
+    examYear: 2014,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8850,6 +10193,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/c346f9f4-3590-411d-a0da-f24210d98712.pdf',
+    examYear: 2015,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8860,6 +10205,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/5cc6ef17-7156-4237-bf31-06283a52e451.pdf',
+    examYear: 2015,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8870,6 +10217,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/3a929340-f4dc-4a52-99e4-d16b2d3f2e68.pdf',
+    examYear: 2015,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8880,6 +10229,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/19cbba26-a409-4992-bf18-9b34e2c54c47.pdf',
+    examYear: 2015,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8890,6 +10241,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/e06df399-0434-4dc1-979a-69b74428eaab.pdf',
+    examYear: 2012,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8900,6 +10253,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/5e69be82-3c69-454b-afac-4384d7fc1e0f.pdf',
+    examYear: 2014,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8910,6 +10265,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M27/8923185c-093a-4433-a70b-285af18c317a.pdf',
+    examYear: 2014,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8920,6 +10277,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/d7978091-477c-44d1-ac94-9291d8dec331.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8930,6 +10289,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/73a34692-e76e-40f4-b508-d4ed838dc911.pdf',
+    examYear: 2024,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8940,6 +10301,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/6a66ff07-a6e8-4669-be27-61820eaca90f.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8950,6 +10313,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/a3acc26e-8f5a-4625-9343-80db4ae084b4.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8960,6 +10325,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/b8b330a9-ca4f-420f-bdbd-caf8e2b27c07.pdf',
+    examYear: 2017,
+    examMonth: 7,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8970,6 +10338,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/160ba1a5-d12f-48f1-a209-fc1e98e693d6.pdf',
+    examYear: 2017,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8980,6 +10350,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/970ebbfa-0581-4844-8eae-127ea0583095.pdf',
+    examYear: 2017,
+    examMonth: 7,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -8990,6 +10363,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/f095e16f-3d25-46cb-a15a-f302726842c4.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9000,6 +10375,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/e4692a41-5336-4d2f-b9ba-b758b2817983.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9010,6 +10387,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/a1e3c3f3-9a54-4da7-8622-6b97ea5e63ba.pdf',
+    examYear: 2010,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9020,6 +10399,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M2/9ad319d0-4e6e-4a00-8d78-56194c5e92ff.pdf',
+    examYear: 2016,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9030,6 +10411,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/a5ef7854-d5b3-4493-a80e-cd05df9177f0.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9040,6 +10423,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/cf000e21-10fc-4309-9df3-788bca39b762.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9050,6 +10435,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/3a70913a-4abd-4a3c-b123-5eb3c738e62f.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9060,6 +10447,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/5e8126eb-dd06-455a-b77c-7273ad310787.pdf',
+    examYear: 2024,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9070,6 +10459,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/c11947bc-3030-4bea-8bf8-6d49667cb959.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9080,6 +10471,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/50b07625-f491-4493-b476-3e97a4d55758.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9090,6 +10483,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/3c334c61-513a-454c-aa21-ad872dca034a.pdf',
+    examYear: 2024,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9100,6 +10495,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/c9b8b749-d032-4bb4-b6d3-9c44dc953b43.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9110,6 +10507,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/e4c642d8-84bc-43c4-af9b-9019278b0298.pdf',
+    examYear: 2023,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9120,6 +10519,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/ee7b2658-5591-496d-b1a8-fd59bc3cdac8.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9130,6 +10531,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/18781279-9d35-46e7-b3f2-dcb588aa3727.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9140,6 +10543,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/befa947f-4a8b-4851-a041-35586f3c017f.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9150,6 +10555,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/813b90fa-6d87-4f7d-bac5-fc43d24ab357.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9160,6 +10567,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/cb396f20-ad25-456a-a621-925deeab2970.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9170,6 +10579,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/21c6bbc4-b5f7-4929-81a7-144584689ec7.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9180,6 +10591,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/8c22a5be-fbff-4611-a3de-129ff9297416.pdf',
+    examYear: 2022,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9190,6 +10603,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/34b8941a-b1d0-4326-bfca-fc11430da34c.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9200,6 +10615,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/8dd9e0c6-050e-4e4a-8318-81f1099101fa.pdf',
+    examYear: 2020,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9210,6 +10627,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/6b40cbd1-a28d-4142-95eb-5b27cc310830.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9220,6 +10639,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/571ab2ed-b4df-4cbe-a75a-53fb3649e2cc.pdf',
+    examYear: 2021,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9230,6 +10651,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/1f5729f2-1f08-48b5-9832-679b42d36376.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9240,6 +10663,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/31d5b0cf-7b53-4a6e-90a2-b109ee1e13cc.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9250,6 +10675,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/7fc759d2-341b-4152-b911-d872ff5b96f3.pdf',
+    examYear: 2018,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9260,6 +10687,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/f54255b5-6397-45d2-a900-43dff9f183e2.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9270,6 +10699,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/f79ffc06-1e54-4cd5-b0ca-7e0e10034545.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9280,6 +10711,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/8ff42589-ef3e-4cc5-a589-7447128a1f97.pdf',
+    examYear: 2019,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9290,6 +10723,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/482f716a-36b8-4c09-9ab8-0aa1ea1090d7.pdf',
+    examYear: 2017,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9300,6 +10735,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/dd45bb34-d674-4dc6-912b-7bbd3f17db79.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9310,6 +10747,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/e3dbbf2b-c3c8-43bc-ae75-0a04800a3b09.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9320,6 +10759,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/562077d9-81cd-45df-87e7-6cf8d08d7c39.pdf',
+    examYear: 2017,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9330,6 +10771,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/3f8b7419-5bb2-4713-8c17-eb8742e3f213.pdf',
+    examYear: 2017,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9340,6 +10783,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/73872e64-f8ff-4a4e-9c6c-6014a52f83bc.pdf',
+    examYear: 2019,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9350,6 +10795,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/b70bbac6-a396-471a-9893-876ba9f83311.pdf',
+    examYear: 2019,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9360,6 +10807,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/e39bfc3d-a41a-4a3d-98e1-c44b422a027d.pdf',
+    examYear: 2017,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9370,6 +10819,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/6c81bf19-b07f-4df0-9a20-dbd9b7448b59.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9380,6 +10831,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/a241efc4-9c3d-47db-91ad-f95d43b93d0b.pdf',
+    examYear: 2019,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9390,6 +10843,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/735e1fd3-e2de-49e1-ae17-522f45f5b6c3.pdf',
+    examYear: 2015,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9400,6 +10855,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/8b21348f-1a1a-49ee-88a0-282952bc6765.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9410,6 +10867,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/7031357d-b243-47a7-9db2-f353a15f376e.pdf',
+    examYear: 2016,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9420,6 +10879,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/ececc596-01d9-4bbb-b13f-0d3e9d2c9390.pdf',
+    examYear: 2017,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9430,6 +10891,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/cf7c273b-5d91-49b0-9936-9e829a0646be.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9440,6 +10903,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/b96dd66a-02fb-4c8f-b0ea-190ef7a185d5.pdf',
+    examYear: 2019,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9450,6 +10915,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M32/a1e3f845-f76a-4983-a737-ce85e10fc8ad.pdf',
+    examYear: 2013,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9460,6 +10927,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/435f8fac-9865-4df7-aaef-361b3ee1a132.pdf',
+    examYear: 2020,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9470,6 +10939,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/fa2e8d43-3699-43cb-a13a-d738765d57cb.pdf',
+    examYear: 2025,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9480,6 +10951,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/e81b305d-9475-4457-8ee1-86f6a672c220.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9490,6 +10963,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/231a4ca5-ef0c-47bb-b5db-bf463c9a94e8.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9500,6 +10975,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/7b9c3ed8-58c8-4d73-9767-ec993b7f4050.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9510,6 +10987,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/1109e4db-54c9-4113-af69-61396d027472.pdf',
+    examYear: 2024,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9520,6 +10999,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/5eb85daa-1f79-4ced-aad2-6da3fda2f460.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9530,6 +11011,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/e7f516ab-02ee-418d-bb99-1348675a5613.pdf',
+    examYear: 2024,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9540,6 +11023,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/6f24e1dc-03a8-442e-af3c-a44cfef76293.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9550,6 +11035,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/4d048dbf-b003-4e36-8039-65e887ab9741.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9560,6 +11047,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/8672f3fe-a1f8-461d-927a-44c52a7884e0.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9570,6 +11059,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/296ea3f9-2a57-45c5-9260-e8a1513461b4.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9580,6 +11071,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/ee2143d7-734c-4a7a-8f0d-e955b67fa44f.pdf',
+    examYear: 2023,
+    examMonth: 10,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9590,6 +11083,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/da222471-50bc-4ce1-9874-46bb573ee98e.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9600,6 +11095,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/287a2b4f-ccec-4777-b5a6-715671f68927.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9610,6 +11107,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/bdae5ebb-7e2b-47e5-a554-9b3feaddb5fd.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9620,6 +11119,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/5ecc4745-134d-43ab-9ee4-b4929af175a9.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9630,6 +11131,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/b54eac59-2b1c-487b-8e8b-0d86cbb826c3.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9640,6 +11143,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/b6dd56f3-a09f-4427-9423-8d9179a66624.pdf',
+    examYear: 2020,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9650,6 +11155,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/0939935e-a4e3-483c-92a6-448f57f605c2.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9660,6 +11167,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/6538b7ae-3108-4348-83ac-6eae78b99340.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9670,6 +11179,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/0565a226-123c-47ab-b68f-25eb7ce446ae.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9680,6 +11191,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/97f22578-81a3-4875-a9a0-9faf8dcc10a2.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9690,6 +11203,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/041794d0-ddbb-42cc-aa0a-3b8b4a24a260.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9700,6 +11215,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/9c7df83d-3cb6-4f00-8a8a-73b978db6ceb.pdf',
+    examYear: 2011,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9710,6 +11227,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/e7c4dd06-9ac4-425e-aad7-39949a690c49.pdf',
+    examYear: 2010,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9720,6 +11239,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/df57091b-ca67-4f17-b004-8c02916f6945.pdf',
+    examYear: 2012,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9730,6 +11251,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/8c78cebd-3322-46ba-a066-1f9867971e32.pdf',
+    examYear: 2016,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9740,6 +11263,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/6edd9b8a-c39f-498b-aa09-98f2ea6fd9bf.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9750,6 +11275,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/35bae9b6-18ea-4917-9746-e8918c1e15fb.pdf',
+    examYear: 2020,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9760,6 +11287,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/c0e47e3b-685f-44e3-bcbc-fdf7b36db071.pdf',
+    examYear: 2019,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9770,6 +11299,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/c35bea24-8f8a-408d-b623-6c8c7adffe99.pdf',
+    examYear: 2015,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9780,6 +11311,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/dabe9e0f-eb48-4d71-b659-a55cdcf00d2a.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9790,6 +11323,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/a93150fe-64b3-4d98-beee-40acdc2e0d2c.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9800,6 +11335,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/9f01841d-ac37-4de7-a791-db7682513388.pdf',
+    examYear: 2012,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9810,6 +11347,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/573852e4-5df3-4a59-8b59-c1e387cd34ce.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9820,6 +11359,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/e40e4634-f811-42e3-b4d8-1d638ff01fcf.pdf',
+    examYear: 2013,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9830,6 +11371,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/9bf7a500-f0fe-4432-af87-5c2555261ce9.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9840,6 +11383,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/20b8087e-5b8f-406e-8d0c-94f5ee52f181.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9850,6 +11395,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/fa274775-3df7-4bfe-a971-35aa73d656c0.pdf',
+    examYear: 2013,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9860,6 +11407,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/4330dace-6b50-4cef-bc24-130fab21ee5f.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9870,6 +11419,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/10fc82ab-f99f-4ec4-8556-4b7dd3673ca5.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9880,6 +11431,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/13fe376e-8278-4442-823c-f1faf165003b.pdf',
+    examYear: 2014,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9890,6 +11443,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/f2bf2916-1650-4bff-a6a5-ffdfd8c839bd.pdf',
+    examYear: 2020,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9900,6 +11455,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/acab65a2-8e7e-44da-9e74-930485cf2a72.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9910,6 +11467,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/b2440c78-c2dc-49e2-8f00-707ebb58b52f.pdf',
+    examYear: 2014,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9920,6 +11479,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/a5f2ad38-1e98-4710-9d3d-0e7c914bd818.pdf',
+    examYear: 2019,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9930,6 +11491,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M35/44766396-7a53-41db-9270-0270226df303.pdf',
+    examYear: 2020,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9940,6 +11503,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/4342ab34-a78c-42a4-b19f-24fa01c09e1f.pdf',
+    examYear: 2025,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9950,6 +11515,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/66ca00ee-1277-46cc-ac52-f56a284f0e1b.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9960,6 +11527,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/cdd98122-17f1-4675-a3d5-c16cd446c408.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9970,6 +11539,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/447e9d18-a1d7-4bac-817d-fbe3cd884ba8.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9980,6 +11551,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/1db89edb-2096-41b6-9684-48e0e2d362b4.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -9990,6 +11563,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/4a2b312e-5870-40a6-a383-eb2db4920de6.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10000,6 +11575,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/f520cbc2-890e-45e0-9bab-b03585a67c38.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10010,6 +11587,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/7ad4d9d9-48da-41ba-94cf-9399a1162a2c.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10020,6 +11599,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/d96ec304-da17-45e5-bbba-16b6714fe160.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10030,6 +11611,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/f68ab2d0-865c-4665-8bec-4974a388eb68.pdf',
+    examYear: 2019,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10040,6 +11623,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/cb154d54-4f8f-4bab-bead-3773418cb842.pdf',
+    examYear: 2015,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10050,6 +11635,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/2ded8836-4e4f-431d-b34d-7af38c0a0419.pdf',
+    examYear: 2018,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10060,6 +11647,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/12d6552b-2f2f-4078-8a6b-2e7b0a55d4c2.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10070,6 +11659,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/e37dfdfb-54f7-49f2-b68b-f62fcf71b0e3.pdf',
+    examYear: 2018,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10080,6 +11671,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/85f47aaa-95e2-4b5d-8f07-0a47efedfaad.pdf',
+    examYear: 2017,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10090,6 +11683,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/0fd6cdab-cf5b-47fd-a78c-dff6db2be69f.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10100,6 +11695,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/382aa4a2-deba-4c3b-b9e5-b13aa09afb93.pdf',
+    examYear: 2018,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10110,6 +11707,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/a5f20d29-aff0-4a70-b7a0-73c6cce043dd.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10120,6 +11719,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/aaec10c5-047b-4d24-8b38-3f9ebd80f0b3.pdf',
+    examYear: 2015,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10130,6 +11731,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/2b023372-3c33-4ecc-b764-af7931d6f0ea.pdf',
+    examYear: 2016,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10140,6 +11743,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/b4d1caf1-eae1-4308-8df1-14a4938f765e.pdf',
+    examYear: 2014,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10150,6 +11755,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/b3ae7c1a-cdb2-4ca6-88d4-c848679df101.pdf',
+    examYear: 2013,
+    examMonth: 5,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10160,6 +11767,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/f42eaa6f-b310-4ae1-8d0d-808f9c36d888.pdf',
+    examYear: 2014,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10170,6 +11779,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M2/5ae2ce2a-50fb-4bbe-8452-d344e417cda2.pdf',
+    examYear: 2012,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10180,6 +11791,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/78ee2a9c-a0a5-43dd-90d4-222655437abe.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10190,6 +11803,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/a3910f3f-4c6e-4601-9295-8c7038d6f5d5.pdf',
+    examYear: 2024,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10200,6 +11815,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/0fcd12ca-f14c-453c-858d-94d946142ad9.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10210,6 +11827,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/681b36da-cc58-4b63-8323-3e224e1484c1.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10220,6 +11839,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/66339f3c-eefa-4602-a5eb-91592bbf7841.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10230,6 +11851,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/4827091b-fd3a-4880-8048-abbc6bb571d1.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10240,6 +11863,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/1f3aa32b-5acb-4266-b580-85dcc1496dc1.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10250,6 +11875,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/ffad4dd4-674e-4996-acd2-c60c107ae18e.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10260,6 +11887,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/aa15b5d3-5b1c-4311-8f3f-214b6eb96f69.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10270,6 +11899,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/c772bd42-7cb3-4df2-b05d-613adb2bd80d.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10280,6 +11911,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/38b5e82c-32d1-4b4c-88a5-7c87c040c567.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10290,6 +11923,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/cc05817b-31e4-4684-acc9-6b611c9d6937.pdf',
+    examYear: 2018,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10300,6 +11935,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/efe00ff4-c3ea-4f11-90cd-70fd59893be0.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10310,6 +11947,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/b2e30b70-ced5-4dd8-8a70-11798f91111e.pdf',
+    examYear: 2018,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10320,6 +11959,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/c46f7239-2eef-44de-aab1-da96deddf035.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10330,6 +11971,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/b459f5a6-fbc8-436b-9d97-bb4dc1a68be3.pdf',
+    examYear: 2017,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10340,6 +11983,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/a0968ac5-54ac-46df-b89d-aa5e84d9c33c.pdf',
+    examYear: 2018,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10350,6 +11995,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/04814dfc-d2e6-4a1b-88f8-9c114205dd15.pdf',
+    examYear: 2017,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10360,6 +12007,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/14e1bd72-718c-4192-93c7-97303aa37e83.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10370,6 +12019,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/adde1396-36a8-43eb-9b2c-899dacb9794f.pdf',
+    examYear: 2017,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10380,6 +12031,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/06b3ba66-e4f7-4c3d-8656-94f7c51e2a11.pdf',
+    examYear: 2017,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10390,6 +12043,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/abc40fa2-9d26-4d44-a171-56850659e5f8.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10400,6 +12055,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/9a67bcd0-40b7-4898-b661-47dc0866ced8.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10410,6 +12067,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/54f1d5e7-dc0d-4c8a-91bb-2df878ad3109.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10420,6 +12079,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/68063ba8-969c-4774-b53a-038490e55048.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10430,6 +12091,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/dbe76ce7-c8ae-479f-9e46-013aafe50e22.pdf',
+    examYear: 2019,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10440,6 +12103,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/6aa7b11d-24ce-4a85-ae1b-37511631ed75.pdf',
+    examYear: 2019,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10450,6 +12115,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/d343d4d9-7f1d-4130-8f6c-4f7d34be3b04.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10460,6 +12127,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/fcf328f9-1b42-4bda-9d80-7bd15f7229de.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10470,6 +12139,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/5928fdb6-5d65-4a74-8bee-534199f93e0c.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10480,6 +12151,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/0fcce1cf-b263-44e3-ad03-6d2f56c9ad43.pdf',
+    examYear: 2020,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10490,6 +12163,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/29b6b3e9-7d50-4123-a8ad-787ebe7a84bc.pdf',
+    examYear: 2020,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10500,6 +12175,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/c4b303ac-d7df-4672-9a2b-37933ad253c8.pdf',
+    examYear: 2020,
+    examMonth: 9,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10510,6 +12188,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/6fe6cc5d-e305-4384-a437-9db72f51b1b4.pdf',
+    examYear: 2020,
+    examMonth: 9,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10520,6 +12201,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/d36ce489-c20c-42b0-b6bd-67cd6f56f89c.pdf',
+    examYear: 2021,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10530,6 +12213,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/9e45a683-8f1d-439d-a0c8-b8cfffad0364.pdf',
+    examYear: 2021,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10540,6 +12225,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/31c53736-eb09-4170-9ed2-4ab6ef77a71d.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10550,6 +12237,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/38f3a131-a3dd-4b7c-9b9f-13448dc1db4a.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10560,6 +12249,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/961051bb-31ba-4df6-9ed3-1df6a8b011b7.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10570,6 +12261,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/0cca31ea-7d79-4deb-9952-4457a9385915.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10580,6 +12273,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/e904c54b-6aa3-4f32-b4da-7bcf1b88d875.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10590,6 +12285,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/0d19f839-f16f-4dd1-b327-1aee079f067e.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10600,6 +12297,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/fb915676-874e-4466-9e19-03e357597806.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10610,6 +12309,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/6e13f4bf-8931-471f-91b0-1f1759f4d339.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10620,6 +12321,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/d90caf04-f376-4c01-a768-86d551bada48.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10630,6 +12333,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M1/449f3a53-24f1-484b-a747-8c2d98836bf3.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10640,6 +12345,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/92bba374-a682-4280-9657-48ed76eab551.pdf',
+    examYear: 2025,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10650,6 +12357,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/d04c2432-3536-43bd-8390-6b45b86e0bf5.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10660,6 +12369,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/ab1441df-d11d-46c4-90c5-884ecae27670.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10670,6 +12381,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/630e7aba-787b-46e1-aac6-680038c3ced3.pdf',
+    examYear: 2016,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10680,6 +12393,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/07de0689-acfe-44cc-a9f0-857c5c175204.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10690,6 +12405,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/3f8ca6e8-7bec-4a50-b10d-540b9800928b.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10700,6 +12417,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/9080aee7-ce30-4832-a28c-0a05067daf56.pdf',
+    examYear: 2020,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10710,6 +12429,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/41b016f4-ba7e-49a3-bac1-412e14880819.pdf',
+    examYear: 2020,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10720,6 +12441,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/f5da976b-8a8b-4e06-91a6-d84119b4d170.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10730,6 +12453,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/699dc2ee-6f6d-4920-aaf0-7b0eda7be3df.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10740,6 +12465,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/83d0df51-b7af-4bcf-a176-d82cc2d68d42.pdf',
+    examYear: 2019,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10750,6 +12477,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/c8bdb2d4-0634-47a0-a587-83c32a56d15b.pdf',
+    examYear: 2016,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10760,6 +12489,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/029e313c-3044-4960-a467-0d1127175a4f.pdf',
+    examYear: 2019,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10770,6 +12501,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/6ca64f56-20d1-40b7-afed-ec620698e5c7.pdf',
+    examYear: 2018,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10780,6 +12513,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/ff93164e-e225-4dc9-b6bf-d6d613740764.pdf',
+    examYear: 2018,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10790,6 +12525,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/cf086f07-068e-4b63-85a3-765b47ef42d8.pdf',
+    examYear: 2018,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10800,6 +12537,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/23f3b180-0f13-4c25-8834-e65dcdd48aab.pdf',
+    examYear: 2017,
+    examMonth: 11,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10810,6 +12549,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/da152bfb-95ac-47d6-a547-3410463c0541.pdf',
+    examYear: 2017,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10820,6 +12561,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/a2930627-d377-44b1-b3ef-e0fdcb241919.pdf',
+    examYear: 2018,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10830,6 +12573,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/00a50026-5965-4dfe-b89d-86ef6c08842f.pdf',
+    examYear: 2020,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10840,6 +12585,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/9650fff0-ce66-464b-aedd-b76bd82706d1.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10850,6 +12597,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/dd3f591d-0edc-4182-9bea-f99766e03be3.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10860,6 +12609,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/d4b19158-e954-4c23-8455-ab999d8d36f3.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10870,6 +12621,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M4/89a58ecd-4433-4c6a-ad9c-fe26c908040a.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10880,6 +12633,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/c2932f46-ffae-4ac5-b8e4-9971aba035fc.pdf',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10890,6 +12645,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/c22644d2-f986-4538-abb7-bba65a3c2150.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10900,6 +12657,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/2e4ec172-03a8-4dce-8de4-ba18e68054c3.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10910,6 +12669,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/05ca9cd6-3546-4b90-9b6f-f908a22e523d.pdf',
+    examYear: 2023,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10920,6 +12681,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/57b3f5cc-dc92-41ed-8aa0-81ddd38e1b5d.pdf',
+    examYear: 2023,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10930,6 +12693,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/08bc6d3f-ad72-4ebc-a8dd-5b00557a87c3.pdf',
+    examYear: 2019,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10940,6 +12705,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/861be94a-9ecf-4173-a9e7-1431824204c6.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10950,6 +12717,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/8f488ca8-53d2-4ee7-a30f-c31d21f20ae8.pdf',
+    examYear: 2023,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10960,6 +12729,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/61e2a090-5d6f-45cc-963c-ff2e77e4c1e6.pdf',
+    examYear: 2020,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10970,6 +12741,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/216fdf1f-2ee3-4db7-948c-efdf232b5de7.pdf',
+    examYear: 2021,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10980,6 +12753,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/91a60883-1735-4775-9bc4-9a602ba2eeac.pdf',
+    examYear: 2021,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -10990,6 +12765,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/0866a47a-79bf-4a3e-92d7-1d65ee8ef26f.pdf',
+    examYear: 2020,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11000,6 +12777,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/a6d34ee5-cde9-4a62-a6a3-9aa7ee58f009.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11010,6 +12789,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/db4afb5b-74a5-4026-a815-74c906ab7bf4.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11020,6 +12801,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/3523d916-58ee-4585-9565-9f2b89443d48.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11030,6 +12813,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C2M3/2a7b1900-644a-49cf-8127-aeb917f32a9f.pdf',
+    examYear: 2023,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11040,6 +12825,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/a23d4b16-e104-4030-912b-ecf0a75bde46.pdf',
+    examYear: 2024,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11050,6 +12837,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/f3ea4534-b9ff-45c4-951c-05faef114fb3.pdf',
+    examYear: 2022,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11060,6 +12849,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/ac423306-b608-406d-aa79-79a7b6266193.pdf',
+    examYear: 2023,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11070,6 +12861,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/15081283-44fd-44a3-bb82-545d0496e72a.pdf',
+    examYear: 2022,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11080,6 +12873,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/9dcf5e09-0e89-4d2e-b968-01609005c6a5.pdf',
+    examYear: 2020,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11090,6 +12885,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/e4f7be10-81c3-4fda-88b0-8f0b79e417d0.pdf',
+    examYear: 2019,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11100,6 +12897,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/8b08db8d-db32-4a97-baec-fd5b3fbd5055.pdf',
+    examYear: 2019,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11110,6 +12909,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/b05f9c90-e803-4cc1-b555-02f9e2d74616.pdf',
+    examYear: 2017,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11120,6 +12921,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/5f57f7ee-778d-4828-b2a7-bd43c7298878.pdf',
+    examYear: 2020,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11130,6 +12933,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/67a936e7-4ed2-49c1-a714-3c843cbeebb0.pdf',
+    examYear: 2019,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11140,6 +12945,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/ae53b0b1-449b-4b4f-aefe-d610a3cd7b6f.pdf',
+    examYear: 2018,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11150,6 +12957,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/af984d00-e93e-47d7-8417-fa5ae7b46a7b.pdf',
+    examYear: 2018,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11160,6 +12969,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/7298ee0a-750b-4700-8ab3-5389888e3915.pdf',
+    examYear: 2016,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11170,6 +12981,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/538818c7-6516-470b-bd34-245feeaf58e0.pdf',
+    examYear: 2017,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11180,6 +12993,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/f0d98c09-b2b9-464d-80a3-a3a34eb57ade.pdf',
+    examYear: 2018,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11190,6 +13005,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/d3411d91-96d9-43da-bf2f-f9d8e3c45d4f.pdf',
+    examYear: 2017,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11200,6 +13017,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/7f346626-9f09-4c5e-9ad6-993ad6a4489a.pdf',
+    examYear: 2017,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11210,6 +13029,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/c0cc1d9c-e2ab-48c2-b1c6-527759a9d934.pdf',
+    examYear: 2013,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11220,6 +13041,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/4b1375b8-0259-47ab-8aeb-54b053613a56.pdf',
+    examYear: 2013,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11230,6 +13053,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/a1866538-9ec7-46e5-952e-4c5fe237bda9.pdf',
+    examYear: 2015,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11240,6 +13065,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/6849b3b3-171b-4339-9800-7dc030e113c4.pdf',
+    examYear: 2014,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11250,6 +13077,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/b2c94625-cdf4-440b-9a11-0178b142ab12.pdf',
+    examYear: 2019,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11260,6 +13089,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/ba98f22b-20c8-4d0e-ab80-2bdb6320c43f.pdf',
+    examYear: 2017,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11270,6 +13101,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/b00be4ad-504a-493f-a974-b6a15e87550d.pdf',
+    examYear: 2017,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11280,6 +13113,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/d0a4613c-1818-4011-829f-909b7568eb5e.pdf',
+    examYear: 2015,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11290,6 +13125,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/0d952cf1-3002-4868-83ae-b8620161f197.pdf',
+    examYear: 2016,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11300,6 +13137,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/bcb5d4a8-d1b9-4040-8f78-8682d3b6a787.pdf',
+    examYear: 2014,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11310,6 +13149,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/af9573d5-0577-4663-a4fb-6464831387a3.pdf',
+    examYear: 2014,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11320,6 +13161,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/7a2118cc-c951-4ee6-9047-99866bcef6bb.pdf',
+    examYear: 2013,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11330,6 +13173,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/becc5793-98a5-4d0a-9de3-9c25e6fc2c4b.pdf',
+    examYear: 2011,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11340,6 +13185,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/826de87d-942f-40ff-8cff-7a6d979d1df8.pdf',
+    examYear: 2011,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11350,6 +13197,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/e7d5fec7-c663-4e2b-8c9e-8e6ca352b6e2.pdf',
+    examYear: 2011,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11360,6 +13209,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/M44/76142c67-4b54-4d4d-868f-d2c0cac59445.pdf',
+    examYear: 2010,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11370,6 +13221,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/9d51fc8a-bad2-44bc-aa45-66fa9a7293c9.pdf',
+    examYear: 2024,
+    examMonth: 4,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11380,6 +13233,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/d2b1e05d-e88f-4e40-8e75-0339d3db8e4e.pdf',
+    examYear: 2024,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11390,6 +13245,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/af3c4ac4-f185-41f2-9296-9996083ef31d.pdf',
+    examYear: 2024,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11400,6 +13257,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/00ab09b4-d629-4a68-a86d-f64002a36032.pdf',
+    examYear: 2023,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11410,6 +13269,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/a75e1b9b-74b8-4b20-ba2f-0fb293453931.pdf',
+    examYear: 2022,
+    examMonth: 3,
+    topic: 1,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11420,6 +13282,9 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/1ca56125-584b-4efb-8406-24c77b17703d.pdf',
+    examYear: 2022,
+    examMonth: 3,
+    topic: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11430,6 +13295,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/7cc935b1-c654-4e93-a3ad-fa5de9dce948.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11440,6 +13307,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/2397b3ae-6dc5-49b9-92e9-1755c8f828e7.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11450,6 +13319,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/0ac7abdc-823d-4506-b975-b2bfd85b70e9.pdf',
+    examYear: 2022,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11460,6 +13331,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/91524eeb-879a-4191-82c6-c0622ca2f300.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11470,6 +13343,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/5048828c-8a95-4329-8f9a-ee2c81ccc65b.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11480,6 +13355,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/846188c4-9ee2-4869-8015-629dd8f9b099.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11490,6 +13367,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/626ee058-e265-4c83-8cef-ced463a0c2dc.pdf',
+    examYear: 2023,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11500,6 +13379,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/7f29fb86-b698-4f39-bacb-47bc133fda91.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11510,6 +13391,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/6d828996-069b-4b1a-a2be-5070244b1d3a.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11520,6 +13403,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/1270b52f-fe12-43ad-a502-f2a920ed4dcf.pdf',
+    examYear: 2022,
+    examMonth: 8,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11530,6 +13415,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/ff773f19-5166-4bcf-a250-2dba6ef47c5b.pdf',
+    examYear: 2022,
+    examMonth: 3,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11540,6 +13427,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/8b67523d-dcb6-4f01-bc2e-e929052d3d5e.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11550,6 +13439,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/6d8d87b7-3a6a-42a2-b44d-6cb865871f73.pdf',
+    examYear: 2022,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11560,6 +13451,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M3/4d25474f-9d65-4787-93d7-382d8269b88e.jpg',
+    examYear: 2025,
+    examMonth: 7,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11570,6 +13463,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/ddb0473a-56b8-4858-a9ae-b80869c77943.jpg',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11580,6 +13475,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/376941a4-5e42-4a40-8121-610069a54282.jpg',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11590,6 +13487,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M2/fbee4ec8-5f15-4392-aded-f9f5408caa63.jpg',
+    examYear: 2025,
+    examMonth: 2,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11600,6 +13499,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C2M4/616c7409-97a6-4865-a6e0-dbccf9bf9db8.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11610,6 +13511,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/6cd5e429-0865-4051-aab3-310cb6cc45c1.jpg',
+    examYear: 2024,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11620,6 +13523,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/eb4e954d-9e26-4164-a2f5-0c15d31c6fc6.jpg',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11630,6 +13535,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M3/587e3749-bbc2-406a-9552-a55aaf17c11c.jpg',
+    examYear: 2025,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11640,6 +13547,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A2C1M2/eeda5667-fa5e-4a55-9c81-391fe09d2efa.jpg',
+    examYear: 2025,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11650,6 +13559,8 @@ export const RESOURCES = [
     type: 'final' as const,
     status: 'published' as const,
     r2Key: 'public/A1C1M1/9a8145e3-939c-42c6-858f-4b070ad4f4df.jpg',
+    examYear: 2025,
+    examMonth: 9,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -11920,6 +13831,8 @@ export const RESOURCES = [
     type: 'resumen' as const,
     status: 'published' as const,
     r2Key: 'public/A4C1M3/353312d7-a7e9-4ec4-82da-227c42e38159.pdf',
+    examYear: 2024,
+    examMonth: 12,
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
   },
   {
@@ -12171,5 +14084,5 @@ export const RESOURCES = [
     status: 'published' as const,
     r2Key: 'public/A1C2M4/ac86e3c9-f62d-40b8-af9a-a22225f8c9d3.pdf',
     publishedAt: new Date('2024-01-01T00:00:00.000Z'),
-  },
+  }
 ];

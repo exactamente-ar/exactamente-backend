@@ -1,13 +1,14 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { eq, and, sql, inArray, desc } from 'drizzle-orm';
+import { eq, ne, and, or, sql, inArray, desc } from 'drizzle-orm';
 import { db } from '@/db';
 import { resources, subjects, careerSubjects, careers, careerPlans } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { storage } from '@/services/storage';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
+import { buildResourceTitle } from '@/routes/resources';
 import type { AppContext } from '@/types';
 
 const app = new Hono<AppContext>();
@@ -89,12 +90,17 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
 // ─── POST / — subir recurso (admin, auto-publicado) ───────────────────────────
 
 const uploadBodySchema = z.object({
-  subjectId: z.string().min(1),
-  type:      z.enum(['resumen', 'parcial', 'final']),
-  examDate:  z.string().date().optional(),
-  period:    z.string().max(20).optional(),
-  notes:     z.string().optional(),
-});
+  subjectId:  z.string().min(1),
+  type:       z.enum(['resumen', 'parcial', 'final']),
+  examDate:   z.string().date().optional(),
+  topic:      z.coerce.number().int().min(1).max(5).optional(),
+  examYear:   z.coerce.number().int().min(1900).max(2100).optional(),
+  examMonth:  z.coerce.number().int().min(1).max(12).optional(),
+  notes:      z.string().optional(),
+}).refine(
+  d => (d.examYear === undefined) === (d.examMonth === undefined),
+  { message: 'examYear y examMonth deben indicarse juntos' },
+);
 
 app.post('/', ...adminGuard, async (c) => {
   const formData = await c.req.formData();
@@ -102,7 +108,9 @@ app.post('/', ...adminGuard, async (c) => {
   const subjectId = formData.get('subjectId') as string | null;
   const type      = formData.get('type') as string | null;
   const examDate  = formData.get('examDate') as string | null;
-  const period    = formData.get('period') as string | null;
+  const topic     = formData.get('topic') as string | null;
+  const examYear  = formData.get('examYear') as string | null;
+  const examMonth = formData.get('examMonth') as string | null;
   const notes     = formData.get('notes') as string | null;
 
   if (!(file instanceof File))
@@ -115,9 +123,11 @@ app.post('/', ...adminGuard, async (c) => {
   const parsed = uploadBodySchema.safeParse({
     subjectId,
     type,
-    examDate: examDate ?? undefined,
-    period:   period   ?? undefined,
-    notes:    notes    ?? undefined,
+    examDate:  examDate  ?? undefined,
+    topic:     topic     ?? undefined,
+    examYear:  examYear  ?? undefined,
+    examMonth: examMonth ?? undefined,
+    notes:     notes     ?? undefined,
   });
   if (!parsed.success)
     return c.json({ error: parsed.error.issues[0].message }, 400);
@@ -134,7 +144,12 @@ app.post('/', ...adminGuard, async (c) => {
   await storage.uploadFile(key, buffer, 'application/pdf');
 
   const user = c.get('user');
-  const title = buildTitle(parsed.data.type, parsed.data.period);
+  const title = buildResourceTitle(parsed.data.type, subject.title, {
+    examDate:  parsed.data.examDate  ?? null,
+    examYear:  parsed.data.examYear  ?? null,
+    examMonth: parsed.data.examMonth ?? null,
+    topic:     parsed.data.topic     ?? null,
+  });
 
   const [resource] = await db.insert(resources).values({
     id:          resourceId,
@@ -145,9 +160,11 @@ app.post('/', ...adminGuard, async (c) => {
     type:        parsed.data.type,
     status:      'published',
     r2Key:       key,
-    examDate:    parsed.data.examDate ?? null,
-    period:      parsed.data.period   ?? null,
-    notes:       parsed.data.notes    ?? null,
+    examDate:    parsed.data.examDate  ?? null,
+    topic:       parsed.data.topic     ?? null,
+    examYear:    parsed.data.examYear  ?? null,
+    examMonth:   parsed.data.examMonth ?? null,
+    notes:       parsed.data.notes     ?? null,
     publishedAt: now,
   }).returning();
 
@@ -204,6 +221,64 @@ app.patch('/bulk-approve', ...adminGuard, zValidator('json', bulkApproveSchema),
   }
 
   return c.json({ approved, errors });
+});
+
+// ─── GET /:id — detalle con similar resources ─────────────────────────────────
+
+app.get('/:id', ...adminGuard, async (c) => {
+  const id = c.req.param('id');
+  const resource = await db.query.resources.findFirst({ where: eq(resources.id, id) });
+  if (!resource) return c.json({ error: 'Recurso no encontrado' }, 404);
+
+  const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, resource.subjectId) });
+
+  const hasMeta = resource.examDate || (resource.examYear && resource.examMonth);
+  let similarResources: Array<{
+    id: string; title: string; status: string;
+    uploadedBy: string; createdAt: string; fileUrl: string | null;
+  }> = [];
+
+  if (hasMeta) {
+    const dateConditions = [];
+    if (resource.examDate) {
+      dateConditions.push(eq(resources.examDate, resource.examDate));
+    }
+    if (resource.examYear && resource.examMonth) {
+      dateConditions.push(and(
+        eq(resources.examYear, resource.examYear),
+        eq(resources.examMonth, resource.examMonth),
+      )!);
+    }
+
+    const similarRows = await db.select({
+      id:         resources.id,
+      title:      resources.title,
+      status:     resources.status,
+      uploadedBy: resources.uploadedBy,
+      createdAt:  resources.createdAt,
+      r2Key:      resources.r2Key,
+    })
+    .from(resources)
+    .where(and(
+      eq(resources.subjectId, resource.subjectId),
+      eq(resources.type, resource.type),
+      sql`${resources.topic} IS NOT DISTINCT FROM ${resource.topic}`,
+      ne(resources.status, 'rejected'),
+      ne(resources.id, id),
+      or(...dateConditions)!,
+    ));
+
+    similarResources = similarRows.map(r => ({
+      id:         r.id,
+      title:      r.title,
+      status:     r.status,
+      uploadedBy: r.uploadedBy,
+      createdAt:  r.createdAt.toISOString(),
+      fileUrl:    r.r2Key && r.status === 'published' ? storage.getPublicUrl(r.r2Key) : null,
+    }));
+  }
+
+  return c.json({ ...rowToAdminResource(resource, subject?.title ?? undefined), similarResources });
 });
 
 // ─── GET /:id/preview — signed URL para previsualizar ────────────────────────
@@ -300,10 +375,12 @@ app.delete('/:id', ...adminGuard, async (c) => {
 // ─── PATCH /:id — editar campos de un recurso ────────────────────────────────
 
 const updateBodySchema = z.object({
-  type:     z.enum(['resumen', 'parcial', 'final']).optional(),
-  period:   z.string().max(20).optional(),
-  examDate: z.string().date().nullable().optional(),
-  notes:    z.string().nullable().optional(),
+  type:      z.enum(['resumen', 'parcial', 'final']).optional(),
+  examDate:  z.string().date().nullable().optional(),
+  topic:     z.number().int().min(1).max(5).nullable().optional(),
+  examYear:  z.number().int().min(1900).max(2100).nullable().optional(),
+  examMonth: z.number().int().min(1).max(12).nullable().optional(),
+  notes:     z.string().nullable().optional(),
 });
 
 app.patch('/:id', ...adminGuard, zValidator('json', updateBodySchema), async (c) => {
@@ -313,28 +390,35 @@ app.patch('/:id', ...adminGuard, zValidator('json', updateBodySchema), async (c)
   const resource = await db.query.resources.findFirst({ where: eq(resources.id, id) });
   if (!resource) return c.json({ error: 'Recurso no encontrado' }, 404);
 
-  const newType   = body.type ?? resource.type;
-  const newPeriod = 'period' in body ? body.period : resource.period ?? undefined;
-  const newTitle  = buildTitle(newType, newPeriod ?? undefined);
+  const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, resource.subjectId) });
+
+  const newType      = body.type      ?? resource.type;
+  const newExamDate  = 'examDate'  in body ? (body.examDate  ?? null) : resource.examDate;
+  const newExamYear  = 'examYear'  in body ? (body.examYear  ?? null) : resource.examYear;
+  const newExamMonth = 'examMonth' in body ? (body.examMonth ?? null) : resource.examMonth;
+  const newTopic     = 'topic'     in body ? (body.topic     ?? null) : resource.topic;
+
+  const newTitle = buildResourceTitle(newType, subject?.title ?? '', {
+    examDate:  newExamDate,
+    examYear:  newExamYear,
+    examMonth: newExamMonth,
+    topic:     newTopic,
+  });
 
   const setFields: Partial<typeof resources.$inferInsert> = {
     title: newTitle, type: newType, updatedAt: new Date(),
   };
-  if ('period' in body)   setFields.period   = body.period   ?? null;
-  if ('examDate' in body) setFields.examDate  = body.examDate ?? null;
-  if ('notes' in body)    setFields.notes     = body.notes    ?? null;
+  if ('examDate'  in body) setFields.examDate  = body.examDate  ?? null;
+  if ('examYear'  in body) setFields.examYear  = body.examYear  ?? null;
+  if ('examMonth' in body) setFields.examMonth = body.examMonth ?? null;
+  if ('topic'     in body) setFields.topic     = body.topic     ?? null;
+  if ('notes'     in body) setFields.notes     = body.notes     ?? null;
 
   const [updated] = await db.update(resources).set(setFields).where(eq(resources.id, id)).returning();
-  const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, updated.subjectId) });
   return c.json(rowToAdminResource(updated, subject?.title ?? undefined));
 });
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function buildTitle(type: string, period?: string): string {
-  if (period) return period;
-  return type.charAt(0).toUpperCase() + type.slice(1);
-}
 
 function rowToAdminResource(
   row: typeof resources.$inferSelect,
@@ -355,7 +439,9 @@ function rowToAdminResource(
     status:          row.status,
     r2Key:           row.r2Key,
     examDate:        row.examDate        ?? null,
-    period:          row.period          ?? null,
+    examYear:        row.examYear        ?? null,
+    examMonth:       row.examMonth       ?? null,
+    topic:           row.topic           ?? null,
     notes:           row.notes           ?? null,
     rejectionReason: row.rejectionReason ?? null,
     downloadCount:   row.downloadCount,

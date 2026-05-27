@@ -10,6 +10,26 @@ import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
 import { uploadResourceSchema } from '@/validators/resource.validators';
 import type { AppContext } from '@/types';
 
+const MONTHS_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function buildResourceTitle(type: string, subjectTitle: string, data: {
+  examDate?: string | null;
+  examYear?: number | null;
+  examMonth?: number | null;
+  topic?: number | null;
+}): string {
+  const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+  let base = `${typeLabel} - ${subjectTitle}`;
+  if (data.examDate) {
+    const [y, m, d] = data.examDate.split('-');
+    base += ` - ${d}/${m}/${y}`;
+  } else if (data.examYear && data.examMonth) {
+    base += ` - ${MONTHS_ES[data.examMonth - 1]} ${data.examYear}`;
+  }
+  if (data.topic) base += ` (Tema ${data.topic})`;
+  return base;
+}
+
 const resourceQuerySchema = z.object({
   subjectId: z.string().optional(),
   type:      z.enum(['resumen', 'parcial', 'final']).optional(),
@@ -51,9 +71,11 @@ app.get('/', zValidator('query', resourceQuerySchema), async (c) => {
     title:         r.title,
     type:          r.type,
     status:        r.status,
-    examDate:      r.examDate   ?? null,
-    period:        r.period     ?? null,
-    notes:         r.notes      ?? null,
+    examDate:      r.examDate    ?? null,
+    examYear:      r.examYear    ?? null,
+    examMonth:     r.examMonth   ?? null,
+    topic:         r.topic       ?? null,
+    notes:         r.notes       ?? null,
     downloadCount: r.downloadCount,
     publishedAt:   r.publishedAt?.toISOString() ?? null,
     createdAt:     r.createdAt.toISOString(),
@@ -71,7 +93,9 @@ app.post('/', verifyToken, async (c) => {
   const subjectId = formData.get('subjectId') as string | null;
   const type      = formData.get('type') as string | null;
   const examDate  = formData.get('examDate') as string | null;
-  const period    = formData.get('period') as string | null;
+  const topic     = formData.get('topic') as string | null;
+  const examYear  = formData.get('examYear') as string | null;
+  const examMonth = formData.get('examMonth') as string | null;
   const notes     = formData.get('notes') as string | null;
 
   if (!(file instanceof File))
@@ -84,9 +108,11 @@ app.post('/', verifyToken, async (c) => {
   const parsed = uploadResourceSchema.safeParse({
     subjectId,
     type,
-    examDate: examDate ?? undefined,
-    period:   period   ?? undefined,
-    notes:    notes    ?? undefined,
+    examDate:  examDate  ?? undefined,
+    topic:     topic     ?? undefined,
+    examYear:  examYear  ?? undefined,
+    examMonth: examMonth ?? undefined,
+    notes:     notes     ?? undefined,
   });
   if (!parsed.success)
     return c.json({ error: parsed.error.issues[0].message }, 400);
@@ -102,13 +128,12 @@ app.post('/', verifyToken, async (c) => {
   await storage.uploadFile(key, buffer, 'application/pdf');
 
   const user = c.get('user');
-  const typeLabel = parsed.data.type.charAt(0).toUpperCase() + parsed.data.type.slice(1);
-  const periodDisplay = parsed.data.period
-    ? parsed.data.period.replace(new RegExp(`^${typeLabel}\\s*`, 'i'), '').trim()
-    : undefined;
-  const title = periodDisplay
-    ? `${typeLabel} - ${subject.title} - ${periodDisplay}`
-    : `${typeLabel} - ${subject.title}`;
+  const title = buildResourceTitle(parsed.data.type, subject.title, {
+    examDate:  parsed.data.examDate  ?? null,
+    examYear:  parsed.data.examYear  ?? null,
+    examMonth: parsed.data.examMonth ?? null,
+    topic:     parsed.data.topic     ?? null,
+  });
 
   const [resource] = await db.insert(resources).values({
     id:         resourceId,
@@ -118,9 +143,11 @@ app.post('/', verifyToken, async (c) => {
     type:       parsed.data.type,
     status:     'pending',
     r2Key:      key,
-    examDate:   parsed.data.examDate ?? null,
-    period:     parsed.data.period   ?? null,
-    notes:      parsed.data.notes    ?? null,
+    examDate:   parsed.data.examDate  ?? null,
+    topic:      parsed.data.topic     ?? null,
+    examYear:   parsed.data.examYear  ?? null,
+    examMonth:  parsed.data.examMonth ?? null,
+    notes:      parsed.data.notes     ?? null,
   }).returning();
 
   return c.json({
@@ -130,10 +157,13 @@ app.post('/', verifyToken, async (c) => {
     type:      resource.type,
     status:    resource.status,
     examDate:  resource.examDate  ?? null,
-    period:    resource.period    ?? null,
+    examYear:  resource.examYear  ?? null,
+    examMonth: resource.examMonth ?? null,
+    topic:     resource.topic     ?? null,
     notes:     resource.notes     ?? null,
     createdAt: resource.createdAt.toISOString(),
   }, 201);
 });
 
+export { buildResourceTitle };
 export default app;

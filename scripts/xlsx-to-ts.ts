@@ -2,6 +2,38 @@ import * as xlsx from 'xlsx';
 import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 
+const MONTH_NAMES: Record<string, number> = {
+  enero: 1, ene: 1,
+  febrero: 2, feb: 2,
+  marzo: 3, mar: 3,
+  abril: 4, abr: 4,
+  mayo: 5,
+  junio: 6, jun: 6,
+  julio: 7, jul: 7,
+  agosto: 8, ago: 8,
+  septiembre: 9, sep: 9,
+  octubre: 10, oct: 10,
+  noviembre: 11, nov: 11,
+  diciembre: 12, dic: 12,
+};
+
+const MONTH_PATTERN = Object.keys(MONTH_NAMES).sort((a, b) => b.length - a.length).join('|');
+const MONTH_RE = new RegExp(`\\b(${MONTH_PATTERN})\\b`, 'i');
+
+function parseFromTitle(title: string): { examYear?: number; examMonth?: number; topic?: number } {
+  const result: { examYear?: number; examMonth?: number; topic?: number } = {};
+  const yearMatch = title.match(/\b((?:19|20)\d{2})\b/);
+  if (yearMatch) result.examYear = parseInt(yearMatch[1], 10);
+  const monthMatch = title.match(MONTH_RE);
+  if (monthMatch) {
+    const month = MONTH_NAMES[monthMatch[1].toLowerCase()];
+    if (month) result.examMonth = month;
+  }
+  const topicMatch = title.match(/\bTema\s+([1-5])\b/i);
+  if (topicMatch) result.topic = parseInt(topicMatch[1], 10);
+  return result;
+}
+
 const SHEET_TYPE_MAP: Record<string, string> = {
   Parciales: 'parcial',
   Finales: 'final',
@@ -59,6 +91,11 @@ function main() {
       }
 
       const id = crypto.randomUUID();
+      const parsed = parseFromTitle(title);
+      const optionalFields =
+        (parsed.examYear  ? `    examYear: ${parsed.examYear},\n`  : '') +
+        (parsed.examMonth ? `    examMonth: ${parsed.examMonth},\n` : '') +
+        (parsed.topic     ? `    topic: ${parsed.topic},\n`         : '');
       entries.push(
         `  {\n` +
         `    id: '${id}',\n` +
@@ -68,6 +105,7 @@ function main() {
         `    type: '${type}' as const,\n` +
         `    status: 'published' as const,\n` +
         `    driveFileId: '${driveFileId}',\n` +
+        optionalFields +
         `    publishedAt: new Date('2024-01-01'),\n` +
         `  }`
       );
