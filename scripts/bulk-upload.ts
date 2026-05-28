@@ -8,10 +8,10 @@
  *   {
  *     "subjectId": "S1",
  *     "type": "parcial",
+ *     "subtype": "recuperatorio",  // required if type="parcial"
  *     "filePath": "./pdfs/parcial-s1-2024.pdf",
- *     "period": "2024-1",       // optional
- *     "examDate": "2024-06-15", // optional, YYYY-MM-DD
- *     "notes": "..."            // optional
+ *     "period": "2024-1",          // optional
+ *     "notes": "..."               // optional
  *   }
  * ]
  *
@@ -29,9 +29,9 @@ import { storage } from '../src/services/storage';
 const entrySchema = z.object({
   subjectId: z.string().min(1),
   type:      z.enum(['resumen', 'parcial', 'final']),
+  subtype:   z.enum(['parcial', 'recuperatorio', 'prefinal', 'parcialito']).optional(),
   filePath:  z.string().min(1),
   period:    z.string().max(20).optional(),
-  examDate:  z.string().date().optional(),
   notes:     z.string().optional(),
 });
 
@@ -96,9 +96,9 @@ async function main() {
         reviewedBy:  adminUser.id,
         title,
         type:        entry.type,
+        subtype:     entry.subtype   ?? null,
         status:      'published',
         r2Key,
-        examDate:    entry.examDate  ?? null,
         period:      entry.period    ?? null,
         notes:       entry.notes     ?? null,
         publishedAt: new Date(),

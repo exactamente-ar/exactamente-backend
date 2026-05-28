@@ -1,31 +1,15 @@
 import { db } from '../src/db';
 import { resources } from '../src/db/schema';
-import { isNull, eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { RESOURCES } from './data/resources';
 
 // ─── Parsing ──────────────────────────────────────────────────────────────────
 
-const MONTH_NAMES: Record<string, number> = {
-  enero: 1, ene: 1,
-  febrero: 2, feb: 2,
-  marzo: 3, mar: 3,
-  abril: 4, abr: 4,
-  mayo: 5,
-  junio: 6, jun: 6,
-  julio: 7, jul: 7,
-  agosto: 8, ago: 8,
-  septiembre: 9, sep: 9,
-  octubre: 10, oct: 10,
-  noviembre: 11, nov: 11,
-  diciembre: 12, dic: 12,
-};
+type Subtype = 'parcial' | 'recuperatorio' | 'prefinal' | 'parcialito';
 
-const MONTH_PATTERN = Object.keys(MONTH_NAMES).sort((a, b) => b.length - a.length).join('|');
-const MONTH_RE = new RegExp(`\\b(${MONTH_PATTERN})\\b`, 'i');
-
-function parseSubtype(title: string): string {
+function parseSubtype(title: string): Subtype {
   const t = title.toLowerCase();
   if (t.startsWith('recuperatorio')) return 'recuperatorio';
   if (t.startsWith('prefinal'))      return 'prefinal';
@@ -33,32 +17,9 @@ function parseSubtype(title: string): string {
   return 'parcial';
 }
 
-function parseFromTitle(title: string): { examYear?: number; examMonth?: number; topic?: number } {
-  const result: { examYear?: number; examMonth?: number; topic?: number } = {};
-
-  const yearMatch = title.match(/\b((?:19|20)\d{2})\b/);
-  if (yearMatch) result.examYear = parseInt(yearMatch[1], 10);
-
-  const monthMatch = title.match(MONTH_RE);
-  if (monthMatch) {
-    const month = MONTH_NAMES[monthMatch[1].toLowerCase()];
-    if (month) result.examMonth = month;
-  }
-
-  const topicMatch = title.match(/\bTema\s+([1-5])\b/i);
-  if (topicMatch) result.topic = parseInt(topicMatch[1], 10);
-
-  return result;
-}
-
 // ─── Serialización ────────────────────────────────────────────────────────────
 
-type ResourceEntry = typeof RESOURCES[number] & {
-  examYear?: number;
-  examMonth?: number;
-  topic?: number;
-  subtype?: string;
-};
+type ResourceEntry = typeof RESOURCES[number];
 
 function serializeEntry(r: ResourceEntry): string {
   const lines = [
@@ -73,9 +34,9 @@ function serializeEntry(r: ResourceEntry): string {
   if (r.type === 'parcial') {
     lines.push(`    subtype: '${parseSubtype(r.title)}' as const,`);
   }
-  if (r.examYear)  lines.push(`    examYear: ${r.examYear},`);
-  if (r.examMonth) lines.push(`    examMonth: ${r.examMonth},`);
-  if (r.topic)     lines.push(`    topic: ${r.topic},`);
+  if ('examYear'  in r && r.examYear)  lines.push(`    examYear: ${r.examYear},`);
+  if ('examMonth' in r && r.examMonth) lines.push(`    examMonth: ${r.examMonth},`);
+  if ('topic'     in r && r.topic)     lines.push(`    topic: ${r.topic},`);
   lines.push(`    publishedAt: new Date('${r.publishedAt.toISOString()}'),`);
   return `  {\n${lines.join('\n')}\n  }`;
 }
@@ -83,37 +44,25 @@ function serializeEntry(r: ResourceEntry): string {
 // ─── Paso A: actualizar DB ────────────────────────────────────────────────────
 
 async function updateDB() {
-  const rows = await db.select({
-    id: resources.id,
-    title: resources.title,
-  }).from(resources).where(isNull(resources.examYear));
+  const rows = await db.select({ id: resources.id, title: resources.title })
+    .from(resources)
+    .where(and(eq(resources.type, 'parcial'), isNull(resources.subtype)));
 
   let updated = 0;
   for (const row of rows) {
-    const parsed = parseFromTitle(row.title);
-    if (!parsed.examYear) continue;
-
     await db.update(resources)
-      .set({
-        examYear:  parsed.examYear  ?? null,
-        examMonth: parsed.examMonth ?? null,
-        topic:     parsed.topic     ?? null,
-      })
+      .set({ subtype: parseSubtype(row.title) })
       .where(eq(resources.id, row.id));
     updated++;
   }
 
-  const noYear = rows.length - updated;
-  console.log(`✓ DB: ${updated}/${rows.length} registros actualizados (${noYear} sin año — recursos sin fecha en título)`);
+  console.log(`✓ DB: ${updated}/${rows.length} registros de tipo parcial actualizados con subtype`);
 }
 
 // ─── Paso B: reescribir data/resources.ts ────────────────────────────────────
 
 function rewriteResourcesFile() {
-  const entries = RESOURCES.map((r) => {
-    const parsed = parseFromTitle(r.title);
-    return serializeEntry({ ...r, ...parsed });
-  });
+  const entries = RESOURCES.map(serializeEntry);
 
   const output =
     `// Generado por scripts/xlsx-to-ts.ts + scripts/migrate-drive-to-r2.ts + scripts/migrate-period.ts\n` +
@@ -124,7 +73,7 @@ function rewriteResourcesFile() {
 
   const outPath = resolve('scripts/data/resources.ts');
   writeFileSync(outPath, output, 'utf-8');
-  console.log(`✓ data/resources.ts reescrito con campos parseados`);
+  console.log(`✓ data/resources.ts reescrito con subtype para parciales`);
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
