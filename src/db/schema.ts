@@ -1,6 +1,6 @@
 import {
   pgTable, text, varchar, integer, smallint, boolean,
-  timestamp, date, pgEnum, primaryKey, index, unique,
+  timestamp, pgEnum, primaryKey, index, unique,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -18,6 +18,13 @@ export const resourceTypeEnum = pgEnum('resource_type', [
   'resumen',
   'parcial',
   'final',
+]);
+
+export const resourceSubtypeEnum = pgEnum('resource_subtype', [
+  'parcial',
+  'recuperatorio',
+  'prefinal',
+  'parcialito',
 ]);
 
 // ─── JERARQUÍA ────────────────────────────────────────────────────────────────
@@ -128,9 +135,9 @@ export const resources = pgTable('resources', {
   reviewedBy:      text('reviewed_by').references(() => users.id),
   title:           varchar('title', { length: 255 }).notNull(),
   type:            resourceTypeEnum('type').notNull(),
+  subtype:         resourceSubtypeEnum('subtype'),
   status:          resourceStatusEnum('status').notNull().default('pending'),
   r2Key:           text('r2_key'),
-  examDate:        date('exam_date', { mode: 'string' }),
   period:          varchar('period', { length: 20 }),
   topic:           smallint('topic'),
   examYear:        smallint('exam_year'),

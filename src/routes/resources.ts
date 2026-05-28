@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { eq, and, sql } from 'drizzle-orm';
+import { eq, and, ne, sql } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { db } from '@/db';
@@ -13,17 +13,16 @@ import type { AppContext } from '@/types';
 const MONTHS_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
 function buildResourceTitle(type: string, subjectTitle: string, data: {
-  examDate?: string | null;
+  subtype?: string | null;
   examYear?: number | null;
   examMonth?: number | null;
   topic?: number | null;
 }): string {
-  const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
-  let base = `${typeLabel} - ${subjectTitle}`;
-  if (data.examDate) {
-    const [y, m, d] = data.examDate.split('-');
-    base += ` - ${d}/${m}/${y}`;
-  } else if (data.examYear && data.examMonth) {
+  const label = type === 'parcial' && data.subtype
+    ? data.subtype.charAt(0).toUpperCase() + data.subtype.slice(1)
+    : type.charAt(0).toUpperCase() + type.slice(1);
+  let base = `${label} - ${subjectTitle}`;
+  if (data.examYear && data.examMonth) {
     base += ` - ${MONTHS_ES[data.examMonth - 1]} ${data.examYear}`;
   }
   if (data.topic) base += ` (Tema ${data.topic})`;
@@ -70,12 +69,12 @@ app.get('/', zValidator('query', resourceQuerySchema), async (c) => {
     subjectId:     r.subjectId,
     title:         r.title,
     type:          r.type,
+    subtype:       r.subtype       ?? null,
     status:        r.status,
-    examDate:      r.examDate    ?? null,
-    examYear:      r.examYear    ?? null,
-    examMonth:     r.examMonth   ?? null,
-    topic:         r.topic       ?? null,
-    notes:         r.notes       ?? null,
+    examYear:      r.examYear      ?? null,
+    examMonth:     r.examMonth     ?? null,
+    topic:         r.topic         ?? null,
+    notes:         r.notes         ?? null,
     downloadCount: r.downloadCount,
     publishedAt:   r.publishedAt?.toISOString() ?? null,
     createdAt:     r.createdAt.toISOString(),
@@ -85,14 +84,51 @@ app.get('/', zValidator('query', resourceQuerySchema), async (c) => {
   return c.json(buildPaginatedResponse(data, total, safePage, safeLimit));
 });
 
+// ─── POST /check-duplicate — verificar posibles duplicados antes de subir ────
+
+const checkDuplicateSchema = z.object({
+  subjectId:  z.string().min(1),
+  type:       z.enum(['resumen', 'parcial', 'final']),
+  subtype:    z.enum(['parcial', 'recuperatorio', 'prefinal', 'parcialito']).optional(),
+  examYear:   z.number().int().min(1900).max(2100).optional(),
+  examMonth:  z.number().int().min(1).max(12).optional(),
+  topic:      z.number().int().min(1).max(5).optional(),
+});
+
+app.post('/check-duplicate', verifyToken, zValidator('json', checkDuplicateSchema), async (c) => {
+  const { subjectId, type, subtype, examYear, examMonth, topic } = c.req.valid('json');
+
+  if (type === 'resumen' || !examYear || !examMonth) {
+    return c.json({ hasSimilar: false, similar: [] });
+  }
+
+  const rows = await db.select({
+    id:     resources.id,
+    title:  resources.title,
+    status: resources.status,
+  })
+  .from(resources)
+  .where(and(
+    eq(resources.subjectId, subjectId),
+    eq(resources.type, type),
+    sql`${resources.subtype} IS NOT DISTINCT FROM ${subtype ?? null}`,
+    sql`${resources.topic} IS NOT DISTINCT FROM ${topic ?? null}`,
+    ne(resources.status, 'rejected'),
+    and(eq(resources.examYear, examYear), eq(resources.examMonth, examMonth))!,
+  ));
+
+  return c.json({ hasSimilar: rows.length > 0, similar: rows });
+});
+
 // ─── POST / — subir recurso (usuario autenticado) ────────────────────────────
 
 app.post('/', verifyToken, async (c) => {
   const formData = await c.req.formData();
   const file      = formData.get('file');
   const subjectId = formData.get('subjectId') as string | null;
+  const title     = formData.get('title') as string | null;
   const type      = formData.get('type') as string | null;
-  const examDate  = formData.get('examDate') as string | null;
+  const subtype   = formData.get('subtype') as string | null;
   const topic     = formData.get('topic') as string | null;
   const examYear  = formData.get('examYear') as string | null;
   const examMonth = formData.get('examMonth') as string | null;
@@ -107,8 +143,9 @@ app.post('/', verifyToken, async (c) => {
 
   const parsed = uploadResourceSchema.safeParse({
     subjectId,
+    title:     title     ?? undefined,
     type,
-    examDate:  examDate  ?? undefined,
+    subtype:   subtype   ?? undefined,
     topic:     topic     ?? undefined,
     examYear:  examYear  ?? undefined,
     examMonth: examMonth ?? undefined,
@@ -128,25 +165,27 @@ app.post('/', verifyToken, async (c) => {
   await storage.uploadFile(key, buffer, 'application/pdf');
 
   const user = c.get('user');
-  const title = buildResourceTitle(parsed.data.type, subject.title, {
-    examDate:  parsed.data.examDate  ?? null,
-    examYear:  parsed.data.examYear  ?? null,
-    examMonth: parsed.data.examMonth ?? null,
-    topic:     parsed.data.topic     ?? null,
-  });
+  const resourceTitle = parsed.data.type === 'resumen'
+    ? parsed.data.title!
+    : buildResourceTitle(parsed.data.type, subject.title, {
+        subtype:   parsed.data.subtype  ?? null,
+        examYear:  parsed.data.examYear,
+        examMonth: parsed.data.examMonth,
+        topic:     parsed.data.topic    ?? null,
+      });
 
   const [resource] = await db.insert(resources).values({
     id:         resourceId,
     subjectId:  parsed.data.subjectId,
     uploadedBy: user.sub,
-    title,
+    title:      resourceTitle,
     type:       parsed.data.type,
+    subtype:    parsed.data.subtype   ?? null,
     status:     'pending',
     r2Key:      key,
-    examDate:   parsed.data.examDate  ?? null,
     topic:      parsed.data.topic     ?? null,
-    examYear:   parsed.data.examYear  ?? null,
-    examMonth:  parsed.data.examMonth ?? null,
+    examYear:   parsed.data.examYear,
+    examMonth:  parsed.data.examMonth,
     notes:      parsed.data.notes     ?? null,
   }).returning();
 
@@ -155,8 +194,8 @@ app.post('/', verifyToken, async (c) => {
     subjectId: resource.subjectId,
     title:     resource.title,
     type:      resource.type,
+    subtype:   resource.subtype   ?? null,
     status:    resource.status,
-    examDate:  resource.examDate  ?? null,
     examYear:  resource.examYear  ?? null,
     examMonth: resource.examMonth ?? null,
     topic:     resource.topic     ?? null,

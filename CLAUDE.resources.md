@@ -11,8 +11,8 @@
 
 - `POST /api/v1/resources` — subir recurso (auth requerida)
   - Content-Type: `multipart/form-data`
-  - Fields: `file` (PDF, max 20 MB) · `subjectId` · `type` · `examDate?` (YYYY-MM-DD) · `period?` (max 20 chars) · `notes?`
-  - Response 201: `{ id, subjectId, title, type, status: 'pending', examDate, period, notes, createdAt }`
+  - Fields: `file` (PDF, max 20 MB) · `subjectId` · `type` · `title` (requerido si type='resumen') · `subtype` (requerido si type='parcial') · `examYear` · `examMonth` · `topic?` (1-5) · `notes?`
+  - Response 201: `{ id, subjectId, title, type, subtype, status: 'pending', examYear, examMonth, topic, notes, createdAt }`
   - Errores: `400` (no es PDF / >20 MB / validación) · `404` materia no existe
 
 ### Admin (requieren `Authorization: Bearer <admin_token>`)
@@ -48,11 +48,13 @@
 Resource {
   id: string
   subjectId: string
-  title: string            // auto-generado: "Parcial - Álgebra - 1C 2024"
+  title: string            // para resúmenes: provisto por usuario; para parcial/final: auto-generado ej: "Recuperatorio - Álgebra - Jun 2024 (Tema 2)"
   type: 'resumen' | 'parcial' | 'final'
+  subtype: 'parcial' | 'recuperatorio' | 'prefinal' | 'parcialito' | null  // requerido cuando type='parcial'
   status: 'pending' | 'published' | 'rejected'
-  examDate: string | null  // YYYY-MM-DD
-  period: string | null    // ej: "1C 2024", "Final Feb 2024"
+  examYear: number | null
+  examMonth: number | null  // 1–12
+  topic: number | null      // 1–5
   notes: string | null
   downloadCount: number
   publishedAt: string | null  // ISO 8601
@@ -76,5 +78,7 @@ AdminResource extends Resource {
 - **Admin sube** → `status = 'published'` inmediatamente, `fileUrl` disponible.
 - Solo se aceptan archivos PDF, máximo 20 MB.
 - `fileUrl` ya viene resuelta en la respuesta — no construir URLs manualmente.
-- `examDate` y `period` son opcionales pero ayudan a identificar el recurso. Se muestran en el título auto-generado si `period` está presente.
+- `subtype` es requerido para `type='parcial'` y prohibido para otros tipos.
+- `examYear` y `examMonth` son requeridos en el upload; se usan para el título auto-generado y la detección de duplicados.
+- Detección de duplicados: solo aplica a `parcial` y `final` (no resúmenes). Coinciden si tienen misma materia + tipo + subtype + año + mes + tema.
 - Aprobar/rechazar solo funciona sobre recursos en estado `pending`. Intentar sobre otro estado → `409`.

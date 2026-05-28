@@ -43,6 +43,13 @@
       "when": 1779840060334,
       "tag": "0005_faulty_sharon_carter",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1748390400000,
+      "tag": "0006_add_subtype_drop_examdate",
+      "breakpoints": true
     }
   ]
 }

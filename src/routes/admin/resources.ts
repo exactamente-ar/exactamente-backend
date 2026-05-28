@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { eq, ne, and, or, sql, inArray, desc } from 'drizzle-orm';
+import { eq, ne, and, sql, inArray, desc } from 'drizzle-orm';
 import { db } from '@/db';
 import { resources, subjects, careerSubjects, careers, careerPlans } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
@@ -9,6 +9,7 @@ import { requireRole } from '@/middleware/requireRole';
 import { storage } from '@/services/storage';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
 import { buildResourceTitle } from '@/routes/resources';
+import { uploadResourceSchema } from '@/validators/resource.validators';
 import type { AppContext } from '@/types';
 
 const app = new Hono<AppContext>();
@@ -89,25 +90,13 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
 
 // ─── POST / — subir recurso (admin, auto-publicado) ───────────────────────────
 
-const uploadBodySchema = z.object({
-  subjectId:  z.string().min(1),
-  type:       z.enum(['resumen', 'parcial', 'final']),
-  examDate:   z.string().date().optional(),
-  topic:      z.coerce.number().int().min(1).max(5).optional(),
-  examYear:   z.coerce.number().int().min(1900).max(2100).optional(),
-  examMonth:  z.coerce.number().int().min(1).max(12).optional(),
-  notes:      z.string().optional(),
-}).refine(
-  d => (d.examYear === undefined) === (d.examMonth === undefined),
-  { message: 'examYear y examMonth deben indicarse juntos' },
-);
-
 app.post('/', ...adminGuard, async (c) => {
   const formData = await c.req.formData();
   const file      = formData.get('file');
   const subjectId = formData.get('subjectId') as string | null;
+  const title     = formData.get('title') as string | null;
   const type      = formData.get('type') as string | null;
-  const examDate  = formData.get('examDate') as string | null;
+  const subtype   = formData.get('subtype') as string | null;
   const topic     = formData.get('topic') as string | null;
   const examYear  = formData.get('examYear') as string | null;
   const examMonth = formData.get('examMonth') as string | null;
@@ -120,10 +109,11 @@ app.post('/', ...adminGuard, async (c) => {
   if (file.size > 20 * 1024 * 1024)
     return c.json({ error: 'El archivo no puede superar los 20MB' }, 400);
 
-  const parsed = uploadBodySchema.safeParse({
+  const parsed = uploadResourceSchema.safeParse({
     subjectId,
+    title:     title     ?? undefined,
     type,
-    examDate:  examDate  ?? undefined,
+    subtype:   subtype   ?? undefined,
     topic:     topic     ?? undefined,
     examYear:  examYear  ?? undefined,
     examMonth: examMonth ?? undefined,
@@ -144,27 +134,29 @@ app.post('/', ...adminGuard, async (c) => {
   await storage.uploadFile(key, buffer, 'application/pdf');
 
   const user = c.get('user');
-  const title = buildResourceTitle(parsed.data.type, subject.title, {
-    examDate:  parsed.data.examDate  ?? null,
-    examYear:  parsed.data.examYear  ?? null,
-    examMonth: parsed.data.examMonth ?? null,
-    topic:     parsed.data.topic     ?? null,
-  });
+  const resourceTitle = parsed.data.type === 'resumen'
+    ? parsed.data.title!
+    : buildResourceTitle(parsed.data.type, subject.title, {
+        subtype:   parsed.data.subtype  ?? null,
+        examYear:  parsed.data.examYear,
+        examMonth: parsed.data.examMonth,
+        topic:     parsed.data.topic    ?? null,
+      });
 
   const [resource] = await db.insert(resources).values({
     id:          resourceId,
     subjectId:   parsed.data.subjectId,
     uploadedBy:  user.sub,
     reviewedBy:  user.sub,
-    title,
+    title:       resourceTitle,
     type:        parsed.data.type,
+    subtype:     parsed.data.subtype  ?? null,
     status:      'published',
     r2Key:       key,
-    examDate:    parsed.data.examDate  ?? null,
-    topic:       parsed.data.topic     ?? null,
-    examYear:    parsed.data.examYear  ?? null,
-    examMonth:   parsed.data.examMonth ?? null,
-    notes:       parsed.data.notes     ?? null,
+    topic:       parsed.data.topic    ?? null,
+    examYear:    parsed.data.examYear,
+    examMonth:   parsed.data.examMonth,
+    notes:       parsed.data.notes    ?? null,
     publishedAt: now,
   }).returning();
 
@@ -232,24 +224,13 @@ app.get('/:id', ...adminGuard, async (c) => {
 
   const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, resource.subjectId) });
 
-  const hasMeta = resource.examDate || (resource.examYear && resource.examMonth);
+  const hasMeta = resource.examYear && resource.examMonth;
   let similarResources: Array<{
     id: string; title: string; status: string;
     uploadedBy: string; createdAt: string; fileUrl: string | null;
   }> = [];
 
-  if (hasMeta) {
-    const dateConditions = [];
-    if (resource.examDate) {
-      dateConditions.push(eq(resources.examDate, resource.examDate));
-    }
-    if (resource.examYear && resource.examMonth) {
-      dateConditions.push(and(
-        eq(resources.examYear, resource.examYear),
-        eq(resources.examMonth, resource.examMonth),
-      )!);
-    }
-
+  if (hasMeta && resource.type !== 'resumen') {
     const similarRows = await db.select({
       id:         resources.id,
       title:      resources.title,
@@ -262,10 +243,11 @@ app.get('/:id', ...adminGuard, async (c) => {
     .where(and(
       eq(resources.subjectId, resource.subjectId),
       eq(resources.type, resource.type),
+      sql`${resources.subtype} IS NOT DISTINCT FROM ${resource.subtype}`,
       sql`${resources.topic} IS NOT DISTINCT FROM ${resource.topic}`,
       ne(resources.status, 'rejected'),
       ne(resources.id, id),
-      or(...dateConditions)!,
+      and(eq(resources.examYear, resource.examYear!), eq(resources.examMonth, resource.examMonth!))!,
     ));
 
     similarResources = similarRows.map(r => ({
@@ -376,7 +358,8 @@ app.delete('/:id', ...adminGuard, async (c) => {
 
 const updateBodySchema = z.object({
   type:      z.enum(['resumen', 'parcial', 'final']).optional(),
-  examDate:  z.string().date().nullable().optional(),
+  title:     z.string().min(1).max(255).nullable().optional(),
+  subtype:   z.enum(['parcial', 'recuperatorio', 'prefinal', 'parcialito']).nullable().optional(),
   topic:     z.number().int().min(1).max(5).nullable().optional(),
   examYear:  z.number().int().min(1900).max(2100).nullable().optional(),
   examMonth: z.number().int().min(1).max(12).nullable().optional(),
@@ -393,22 +376,27 @@ app.patch('/:id', ...adminGuard, zValidator('json', updateBodySchema), async (c)
   const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, resource.subjectId) });
 
   const newType      = body.type      ?? resource.type;
-  const newExamDate  = 'examDate'  in body ? (body.examDate  ?? null) : resource.examDate;
+  const newSubtype   = 'subtype'  in body ? (body.subtype   ?? null) : resource.subtype;
   const newExamYear  = 'examYear'  in body ? (body.examYear  ?? null) : resource.examYear;
   const newExamMonth = 'examMonth' in body ? (body.examMonth ?? null) : resource.examMonth;
   const newTopic     = 'topic'     in body ? (body.topic     ?? null) : resource.topic;
 
-  const newTitle = buildResourceTitle(newType, subject?.title ?? '', {
-    examDate:  newExamDate,
-    examYear:  newExamYear,
-    examMonth: newExamMonth,
-    topic:     newTopic,
-  });
+  let newTitle: string;
+  if (newType === 'resumen') {
+    newTitle = 'title' in body && body.title ? body.title : resource.title;
+  } else {
+    newTitle = buildResourceTitle(newType, subject?.title ?? '', {
+      subtype:   newSubtype,
+      examYear:  newExamYear,
+      examMonth: newExamMonth,
+      topic:     newTopic,
+    });
+  }
 
   const setFields: Partial<typeof resources.$inferInsert> = {
     title: newTitle, type: newType, updatedAt: new Date(),
   };
-  if ('examDate'  in body) setFields.examDate  = body.examDate  ?? null;
+  if ('subtype'   in body) setFields.subtype   = body.subtype   ?? null;
   if ('examYear'  in body) setFields.examYear  = body.examYear  ?? null;
   if ('examMonth' in body) setFields.examMonth = body.examMonth ?? null;
   if ('topic'     in body) setFields.topic     = body.topic     ?? null;
@@ -436,9 +424,9 @@ function rowToAdminResource(
     reviewedBy:      row.reviewedBy,
     title:           row.title,
     type:            row.type,
+    subtype:         row.subtype         ?? null,
     status:          row.status,
     r2Key:           row.r2Key,
-    examDate:        row.examDate        ?? null,
     examYear:        row.examYear        ?? null,
     examMonth:       row.examMonth       ?? null,
     topic:           row.topic           ?? null,
