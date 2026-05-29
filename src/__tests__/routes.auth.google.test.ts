@@ -100,8 +100,6 @@ describe('GET /api/v1/auth/google/callback', () => {
 
   it('crea usuario nuevo y redirige con state válido', async () => {
     mockFetchGoogleSuccess();
-
-    // Get valid state from the redirect
     const initRes = await app.request('/api/v1/auth/google');
     const location = initRes.headers.get('Location') ?? '';
     const state = new URL(location).searchParams.get('state') ?? '';
@@ -109,7 +107,8 @@ describe('GET /api/v1/auth/google/callback', () => {
     const res = await app.request(`/api/v1/auth/google/callback?code=valid-code-123&state=${state}`);
     expect(res.status).toBe(302);
     const callbackLocation = res.headers.get('Location') ?? '';
-    expect(callbackLocation).toContain('/auth/callback');
+    expect(callbackLocation).toContain('/auth/callback?code=');
+    expect(callbackLocation).not.toContain('token=');
   });
 
   it('rechaza callback sin state', async () => {
@@ -138,5 +137,45 @@ describe('GET /api/v1/auth/google/callback', () => {
     const res = await app.request(`/api/v1/auth/google/callback?code=bad-code&state=${state}`);
     expect(res.status).toBe(302);
     expect(res.headers.get('Location')).toContain('/login?error=oauth_failed');
+  });
+});
+
+describe('POST /api/v1/auth/exchange', () => {
+  it('canjea code válido por token', async () => {
+    mockFetchGoogleSuccess();
+    const initRes = await app.request('/api/v1/auth/google');
+    const initLocation = initRes.headers.get('Location') ?? '';
+    const state = new URL(initLocation).searchParams.get('state') ?? '';
+
+    const callbackRes = await app.request(`/api/v1/auth/google/callback?code=valid-code-123&state=${state}`);
+    const callbackLocation = callbackRes.headers.get('Location') ?? '';
+    const oauthCode = new URL(callbackLocation).searchParams.get('code') ?? '';
+
+    const exchangeRes = await app.request('/api/v1/auth/exchange', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: oauthCode }),
+    });
+    expect(exchangeRes.status).toBe(200);
+    const body = await exchangeRes.json() as { token: string };
+    expect(typeof body.token).toBe('string');
+  });
+
+  it('rechaza code inválido', async () => {
+    const res = await app.request('/api/v1/auth/exchange', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: 'fake-code' }),
+    });
+    expect(res.status).toBe(401);
+  });
+
+  it('rechaza body vacío', async () => {
+    const res = await app.request('/api/v1/auth/exchange', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+    expect(res.status).toBe(400);
   });
 });

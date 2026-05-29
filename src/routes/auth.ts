@@ -17,6 +17,22 @@ const oauthRateLimit    = rateLimit({ limit: 20, windowMs: 15 * 60 * 1000 }); //
 // In-memory store for OAuth state tokens (TTL 10 min)
 const oauthStateStore = new Map<string, number>(); // state → expiresAt
 
+// In-memory store for one-time OAuth codes (TTL 60s)
+const oauthCodeStore = new Map<string, { token: string; expiresAt: number }>();
+
+function storeOneTimeCode(token: string): string {
+  const code = crypto.randomUUID();
+  oauthCodeStore.set(code, { token, expiresAt: Date.now() + 60 * 1000 });
+  return code;
+}
+
+function consumeOneTimeCode(code: string): string | null {
+  const entry = oauthCodeStore.get(code);
+  if (!entry || Date.now() > entry.expiresAt) return null;
+  oauthCodeStore.delete(code);
+  return entry.token;
+}
+
 function generateOAuthState(): string {
   const state = crypto.randomUUID();
   oauthStateStore.set(state, Date.now() + 10 * 60 * 1000);
@@ -139,10 +155,25 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
       facultyId: user.adminFacultyId ?? null,
     });
 
-    return c.redirect(`${env.CORS_ORIGIN}/auth/callback?token=${token}`);
+    const oauthCode = storeOneTimeCode(token);
+    return c.redirect(`${env.CORS_ORIGIN}/auth/callback?code=${oauthCode}`);
   } catch {
     return c.redirect(`${env.CORS_ORIGIN}/login?error=oauth_failed`);
   }
+});
+
+auth.post('/exchange', async (c) => {
+  const body = await c.req.json().catch(() => null);
+  if (!body?.code || typeof body.code !== 'string') {
+    return c.json({ error: 'Código requerido' }, 400);
+  }
+
+  const token = consumeOneTimeCode(body.code);
+  if (!token) {
+    return c.json({ error: 'Código inválido o expirado' }, 401);
+  }
+
+  return c.json({ token });
 });
 
 export default auth;
