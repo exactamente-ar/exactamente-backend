@@ -1,30 +1,55 @@
 import { describe, it, expect, mock, beforeAll } from 'bun:test';
 
+// Variables para controlar el estado del mock
+const registeredEmails = new Set<string>();
+
 // Mock de la DB antes de cualquier import que la use
 mock.module('@/db', () => ({
   db: {
     query: {
       users: {
-        findFirst: mock(() => Promise.resolve(null)),
+        findFirst: mock((opts) => {
+          // Simula que algunos emails ya estaban registrados
+          if (registeredEmails.has('existing@example.com')) {
+            return Promise.resolve({
+              id: 'existing-user-1',
+              email: 'existing@example.com',
+              displayName: 'Existing User',
+              role: 'user',
+              emailVerified: false,
+              adminFacultyId: null,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              passwordHash: 'hash',
+            });
+          }
+          return Promise.resolve(null);
+        }),
       },
     },
     insert: mock(() => ({
-      values: mock(() => ({
-        returning: mock(() => Promise.resolve([{
-          id: 'user-1',
-          email: 'test@example.com',
-          displayName: 'Test User',
-          role: 'user',
-          emailVerified: false,
-          adminFacultyId: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          passwordHash: 'hash',
-        }])),
+      values: mock((vals) => ({
+        returning: mock(() => {
+          registeredEmails.add(vals.email);
+          return Promise.resolve([{
+            id: 'user-1',
+            email: vals.email || 'test@example.com',
+            displayName: vals.displayName || 'Test User',
+            role: 'user',
+            emailVerified: false,
+            adminFacultyId: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            passwordHash: vals.passwordHash || 'hash',
+          }]);
+        }),
       })),
     })),
   },
 }));
+
+// Pre-registrar el email 'existing@example.com'
+registeredEmails.add('existing@example.com');
 
 import app from '@/app';
 
@@ -54,6 +79,18 @@ describe('POST /api/v1/auth/register', () => {
       body: 'not-json',
     });
     expect(res.status).toBe(400);
+  });
+
+  it('devuelve 201 si el email ya estaba registrado (no enumera emails)', async () => {
+    const res = await app.request('/api/v1/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'existing@example.com', password: 'password123', displayName: 'Test' }),
+    });
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body.message).toBe('Si el email no estaba registrado, recibirás un email de confirmación.');
+    expect(body.error).toBeUndefined();
   });
 });
 

@@ -22,7 +22,9 @@ auth.post('/register', registerRateLimit, zValidator('json', registerSchema), as
   const existing = await db.query.users.findFirst({
     where: eq(users.email, email),
   });
-  if (existing) return c.json({ error: 'Email ya registrado' }, 409);
+  if (existing) {
+    return c.json({ message: 'Si el email no estaba registrado, recibirás un email de confirmación.' }, 201);
+  }
 
   const passwordHash = await hashPassword(password);
   const id = crypto.randomUUID();
