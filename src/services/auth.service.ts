@@ -27,7 +27,7 @@ export async function signToken(
 ): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   return sign(
-    { ...payload, iat: now, exp: now + 60 * 60 * 24 * 7 },
+    { ...payload, iat: now, exp: now + 60 * 60 * 24 },
     env.JWT_SECRET,
     'HS256',
   );
