@@ -14,6 +14,22 @@ const loginRateLimit    = rateLimit({ limit: 10, windowMs: 15 * 60 * 1000 });  /
 const registerRateLimit = rateLimit({ limit: 5,  windowMs: 60 * 60 * 1000 });  // 5 / 1 hora
 const oauthRateLimit    = rateLimit({ limit: 20, windowMs: 15 * 60 * 1000 }); // 20 / 15 min
 
+// In-memory store for OAuth state tokens (TTL 10 min)
+const oauthStateStore = new Map<string, number>(); // state → expiresAt
+
+function generateOAuthState(): string {
+  const state = crypto.randomUUID();
+  oauthStateStore.set(state, Date.now() + 10 * 60 * 1000);
+  return state;
+}
+
+function validateAndConsumeState(state: string): boolean {
+  const expiresAt = oauthStateStore.get(state);
+  if (!expiresAt || Date.now() > expiresAt) return false;
+  oauthStateStore.delete(state); // one-time use
+  return true;
+}
+
 const auth = new Hono<AppContext>();
 
 auth.post('/register', registerRateLimit, zValidator('json', registerSchema), async (c) => {
@@ -79,14 +95,16 @@ auth.get('/me', verifyToken, async (c) => {
 });
 
 auth.get('/google', oauthRateLimit, (c) => {
-  return c.redirect(getGoogleAuthUrl());
+  const state = generateOAuthState();
+  return c.redirect(getGoogleAuthUrl(state));
 });
 
 auth.get('/google/callback', oauthRateLimit, async (c) => {
   const code  = c.req.query('code');
   const error = c.req.query('error');
+  const state = c.req.query('state');
 
-  if (error || !code) {
+  if (error || !code || !state || !validateAndConsumeState(state)) {
     return c.redirect(`${env.CORS_ORIGIN}/login?error=oauth_denied`);
   }
 

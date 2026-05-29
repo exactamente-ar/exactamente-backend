@@ -37,7 +37,7 @@ export async function verifyTokenPayload(token: string): Promise<JwtPayload> {
   return verify(token, env.JWT_SECRET, 'HS256') as Promise<JwtPayload>;
 }
 
-export function getGoogleAuthUrl(): string {
+export function getGoogleAuthUrl(state: string): string {
   const params = new URLSearchParams({
     client_id:     env.GOOGLE_CLIENT_ID,
     redirect_uri:  env.GOOGLE_REDIRECT_URI,
@@ -45,6 +45,7 @@ export function getGoogleAuthUrl(): string {
     scope:         'openid email profile',
     access_type:   'offline',
     prompt:        'select_account',
+    state,
   });
   return `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
 }

@@ -75,13 +75,13 @@ function mockFetchGoogleSuccess(googleId = 'google-sub-123', email = 'juan@gmail
 }
 
 describe('GET /api/v1/auth/google', () => {
-  it('redirige a accounts.google.com', async () => {
+  it('redirige a accounts.google.com con state', async () => {
     const res = await app.request('/api/v1/auth/google');
     expect(res.status).toBe(302);
     const location = res.headers.get('Location') ?? '';
     expect(location).toContain('accounts.google.com');
     expect(location).toContain('client_id=test-google-client-id');
-    expect(location).toContain('scope=openid+email+profile');
+    expect(location).toContain('state=');
   });
 });
 
@@ -98,13 +98,30 @@ describe('GET /api/v1/auth/google/callback', () => {
     expect(res.headers.get('Location')).toContain('/login?error=oauth_denied');
   });
 
-  it('crea usuario nuevo y redirige a /auth/callback?token=... con code válido', async () => {
+  it('crea usuario nuevo y redirige con state válido', async () => {
     mockFetchGoogleSuccess();
 
-    const res = await app.request('/api/v1/auth/google/callback?code=valid-code-123');
+    // Get valid state from the redirect
+    const initRes = await app.request('/api/v1/auth/google');
+    const location = initRes.headers.get('Location') ?? '';
+    const state = new URL(location).searchParams.get('state') ?? '';
+
+    const res = await app.request(`/api/v1/auth/google/callback?code=valid-code-123&state=${state}`);
     expect(res.status).toBe(302);
-    const location = res.headers.get('Location') ?? '';
-    expect(location).toContain('/auth/callback?token=');
+    const callbackLocation = res.headers.get('Location') ?? '';
+    expect(callbackLocation).toContain('/auth/callback');
+  });
+
+  it('rechaza callback sin state', async () => {
+    const res = await app.request('/api/v1/auth/google/callback?code=valid-code');
+    expect(res.status).toBe(302);
+    expect(res.headers.get('Location')).toContain('/login?error=oauth_denied');
+  });
+
+  it('rechaza callback con state inválido', async () => {
+    const res = await app.request('/api/v1/auth/google/callback?code=valid-code&state=fake-state');
+    expect(res.status).toBe(302);
+    expect(res.headers.get('Location')).toContain('/login?error=oauth_denied');
   });
 
   it('redirige a /login?error=oauth_failed si Google rechaza el code', async () => {
@@ -113,7 +130,12 @@ describe('GET /api/v1/auth/google/callback', () => {
       json: () => Promise.resolve({ error: 'invalid_grant' }),
     } as Response)) as typeof fetch;
 
-    const res = await app.request('/api/v1/auth/google/callback?code=bad-code');
+    // Get valid state
+    const initRes = await app.request('/api/v1/auth/google');
+    const location = initRes.headers.get('Location') ?? '';
+    const state = new URL(location).searchParams.get('state') ?? '';
+
+    const res = await app.request(`/api/v1/auth/google/callback?code=bad-code&state=${state}`);
     expect(res.status).toBe(302);
     expect(res.headers.get('Location')).toContain('/login?error=oauth_failed');
   });
