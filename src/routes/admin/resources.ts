@@ -426,7 +426,6 @@ function rowToAdminResource(
     type:            row.type,
     subtype:         row.subtype         ?? null,
     status:          row.status,
-    r2Key:           row.r2Key,
     examYear:        row.examYear        ?? null,
     examMonth:       row.examMonth       ?? null,
     topic:           row.topic           ?? null,
