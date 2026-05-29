@@ -120,8 +120,10 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
   const error = c.req.query('error');
   const state = c.req.query('state');
 
+  const frontendUrl = env.CORS_ORIGIN.split(',')[0].trim();
+
   if (error || !code || !state || !validateAndConsumeState(state)) {
-    return c.redirect(`${env.CORS_ORIGIN}/login?error=oauth_denied`);
+    return c.redirect(`${frontendUrl}/login?error=oauth_denied`);
   }
 
   try {
@@ -156,9 +158,9 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
     });
 
     const oauthCode = storeOneTimeCode(token);
-    return c.redirect(`${env.CORS_ORIGIN}/auth/callback?code=${oauthCode}`);
+    return c.redirect(`${frontendUrl}/auth/callback?code=${oauthCode}`);
   } catch {
-    return c.redirect(`${env.CORS_ORIGIN}/login?error=oauth_failed`);
+    return c.redirect(`${frontendUrl}/login?error=oauth_failed`);
   }
 });
 
