@@ -5,9 +5,12 @@ import { db } from '@/db';
 import { subjects, careerSubjects, resources } from '@/db/schema';
 import { subjectFiltersSchema } from '@/validators/subject.validators';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
+import { rateLimit } from '@/middleware/rateLimit';
 import type { Subject } from '@/types';
 
 const app = new Hono();
+
+const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 }); // 100 req/min
 
 function rowToSubject(row: typeof subjects.$inferSelect): Subject {
   return {
@@ -25,7 +28,7 @@ function rowToSubject(row: typeof subjects.$inferSelect): Subject {
   };
 }
 
-app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
+app.get('/', publicReadLimit, zValidator('query', subjectFiltersSchema), async (c) => {
   const { careerId, facultyId, year, quadmester, search, page, limit } = c.req.valid('query');
   const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 
@@ -118,7 +121,7 @@ app.get('/', zValidator('query', subjectFiltersSchema), async (c) => {
   return c.json(buildPaginatedResponse(data, total, safePage, safeLimit));
 });
 
-app.get('/:id', async (c) => {
+app.get('/:id', publicReadLimit, async (c) => {
   const id = c.req.param('id');
 
   const subject = await db.query.subjects.findFirst({

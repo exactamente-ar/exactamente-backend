@@ -5,15 +5,18 @@ import { sql } from 'drizzle-orm';
 import { db } from '@/db';
 import { universities } from '@/db/schema';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
+import { rateLimit } from '@/middleware/rateLimit';
 
 const app = new Hono();
+
+const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 }); // 100 req/min
 
 const universitiesQuerySchema = z.object({
   page:  z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
-app.get('/', zValidator('query', universitiesQuerySchema), async (c) => {
+app.get('/', publicReadLimit, zValidator('query', universitiesQuerySchema), async (c) => {
   const { page, limit } = c.req.valid('query');
   const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 

@@ -12,6 +12,7 @@ import { uploadResourceSchema } from '@/validators/resource.validators';
 import type { AppContext } from '@/types';
 
 const uploadRateLimit = rateLimit({ limit: 10, windowMs: 60 * 60 * 1000 }); // 10 uploads/hora por IP
+const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 }); // 100 req/min
 
 const MONTHS_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
@@ -43,7 +44,7 @@ const app = new Hono<AppContext>();
 
 // ─── GET / — listar recursos publicados ──────────────────────────────────────
 
-app.get('/', zValidator('query', resourceQuerySchema), async (c) => {
+app.get('/', publicReadLimit, zValidator('query', resourceQuerySchema), async (c) => {
   const { subjectId, type, page, limit } = c.req.valid('query');
   const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 
