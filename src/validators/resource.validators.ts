@@ -8,7 +8,7 @@ export const uploadResourceSchema = z.object({
   examYear:  z.coerce.number().int().min(1900).max(2100),
   examMonth: z.coerce.number().int().min(1).max(12),
   topic:     z.coerce.number().int().min(1).max(5).optional(),
-  notes:     z.string().optional(),
+  notes:     z.string().max(2000).optional(),
 })
 .refine(d => d.type !== 'resumen' || (d.title !== undefined && d.title.length > 0),
   { message: 'title es requerido para resúmenes' })

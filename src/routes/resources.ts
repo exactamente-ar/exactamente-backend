@@ -6,9 +6,12 @@ import { db } from '@/db';
 import { resources, subjects } from '@/db/schema';
 import { storage } from '@/services/storage';
 import { verifyToken } from '@/middleware/auth';
+import { rateLimit } from '@/middleware/rateLimit';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
 import { uploadResourceSchema } from '@/validators/resource.validators';
 import type { AppContext } from '@/types';
+
+const uploadRateLimit = rateLimit({ limit: 10, windowMs: 60 * 60 * 1000 }); // 10 uploads/hora por IP
 
 const MONTHS_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
@@ -122,7 +125,7 @@ app.post('/check-duplicate', verifyToken, zValidator('json', checkDuplicateSchem
 
 // ─── POST / — subir recurso (usuario autenticado) ────────────────────────────
 
-app.post('/', verifyToken, async (c) => {
+app.post('/', verifyToken, uploadRateLimit, async (c) => {
   const formData = await c.req.formData();
   const file      = formData.get('file');
   const subjectId = formData.get('subjectId') as string | null;

@@ -34,6 +34,14 @@ function parseFromTitle(title: string): { examYear?: number; examMonth?: number;
   return result;
 }
 
+function parseSubtype(title: string): string {
+  const t = title.toLowerCase();
+  if (t.startsWith('recuperatorio')) return 'recuperatorio';
+  if (t.startsWith('prefinal'))      return 'prefinal';
+  if (t.startsWith('parcialito'))    return 'parcialito';
+  return 'parcial';
+}
+
 const SHEET_TYPE_MAP: Record<string, string> = {
   Parciales: 'parcial',
   Finales: 'final',
@@ -92,7 +100,11 @@ function main() {
 
       const id = crypto.randomUUID();
       const parsed = parseFromTitle(title);
+      const subtypeField = type === 'parcial'
+        ? `    subtype: '${parseSubtype(title)}' as const,\n`
+        : '';
       const optionalFields =
+        subtypeField +
         (parsed.examYear  ? `    examYear: ${parsed.examYear},\n`  : '') +
         (parsed.examMonth ? `    examMonth: ${parsed.examMonth},\n` : '') +
         (parsed.topic     ? `    topic: ${parsed.topic},\n`         : '');
