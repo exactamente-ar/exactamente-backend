@@ -144,6 +144,13 @@ app.post('/', verifyToken, uploadRateLimit, async (c) => {
   if (file.size > 20 * 1024 * 1024)
     return c.json({ error: 'El archivo no puede superar los 20MB' }, 400);
 
+  const buffer = await file.arrayBuffer();
+  const magic = new Uint8Array(buffer).slice(0, 4);
+  const isPdf = magic[0] === 0x25 && magic[1] === 0x50 && magic[2] === 0x44 && magic[3] === 0x46;
+  if (!isPdf) {
+    return c.json({ error: 'El archivo no es un PDF válido' }, 400);
+  }
+
   const parsed = uploadResourceSchema.safeParse({
     subjectId,
     title:     title     ?? undefined,
@@ -164,8 +171,7 @@ app.post('/', verifyToken, uploadRateLimit, async (c) => {
 
   const resourceId = crypto.randomUUID();
   const key = `pending/${resourceId}.pdf`;
-  const buffer = Buffer.from(await file.arrayBuffer());
-  await storage.uploadFile(key, buffer, 'application/pdf');
+  await storage.uploadFile(key, Buffer.from(buffer), 'application/pdf');
 
   const user = c.get('user');
   const resourceTitle = parsed.data.type === 'resumen'
