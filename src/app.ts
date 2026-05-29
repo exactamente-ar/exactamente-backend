@@ -18,6 +18,7 @@ import adminStatsRoutes      from '@/routes/admin/stats';
 import { env } from '@/env';
 import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
+import { securityHeaders } from '@/middleware/securityHeaders';
 import type { AppContext } from '@/types';
 
 const app = new Hono<AppContext>();
@@ -37,6 +38,7 @@ app.onError((err, c) => {
 
 app.use('*', requestId);
 app.use('*', httpLogger);
+app.use('*', securityHeaders);
 app.use('*', cors({
   origin: [env.CORS_ORIGIN, env.ADMIN_ORIGIN],
   allowHeaders: ['Content-Type', 'Authorization'],

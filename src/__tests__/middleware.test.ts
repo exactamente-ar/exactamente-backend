@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll } from 'bun:test';
 import { Hono } from 'hono';
+import app from '@/app';
 
 beforeAll(() => {
   process.env.JWT_SECRET = 'test-secret-key-exactly-32-chars!!';
@@ -80,5 +81,27 @@ describe('requireRole', () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(403);
+  });
+});
+
+describe('security headers', () => {
+  it('incluye X-Content-Type-Options: nosniff', async () => {
+    const res = await app.request('/health');
+    expect(res.headers.get('X-Content-Type-Options')).toBe('nosniff');
+  });
+
+  it('incluye X-Frame-Options: DENY', async () => {
+    const res = await app.request('/health');
+    expect(res.headers.get('X-Frame-Options')).toBe('DENY');
+  });
+
+  it('incluye Referrer-Policy', async () => {
+    const res = await app.request('/health');
+    expect(res.headers.get('Referrer-Policy')).toBe('strict-origin-when-cross-origin');
+  });
+
+  it('incluye Strict-Transport-Security', async () => {
+    const res = await app.request('/health');
+    expect(res.headers.get('Strict-Transport-Security')).toBe('max-age=31536000; includeSubDomains');
   });
 });
