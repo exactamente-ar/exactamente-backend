@@ -40,7 +40,7 @@ app.use('*', requestId);
 app.use('*', httpLogger);
 app.use('*', securityHeaders);
 app.use('*', cors({
-  origin: [env.CORS_ORIGIN, env.ADMIN_ORIGIN],
+  origin: [...env.CORS_ORIGIN.split(','), env.ADMIN_ORIGIN],
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
 }));
