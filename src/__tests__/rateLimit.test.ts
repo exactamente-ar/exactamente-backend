@@ -40,11 +40,11 @@ describe('rateLimit', () => {
   it('limites independientes por IP', async () => {
     const app = makeApp(1, 60_000);
     // IP A agota su cuota
-    await app.request('/test', { headers: { 'x-forwarded-for': '1.2.3.4' } });
-    const blocked = await app.request('/test', { headers: { 'x-forwarded-for': '1.2.3.4' } });
+    await app.request('/test', { headers: { 'x-real-ip': '1.2.3.4' } });
+    const blocked = await app.request('/test', { headers: { 'x-real-ip': '1.2.3.4' } });
     expect(blocked.status).toBe(429);
     // IP B todavía tiene cuota
-    const allowed = await app.request('/test', { headers: { 'x-forwarded-for': '5.6.7.8' } });
+    const allowed = await app.request('/test', { headers: { 'x-real-ip': '5.6.7.8' } });
     expect(allowed.status).toBe(200);
   });
 });
