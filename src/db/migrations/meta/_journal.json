@@ -50,6 +50,13 @@
       "when": 1748390400000,
       "tag": "0006_add_subtype_drop_examdate",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1748476800000,
+      "tag": "0007_enable_unaccent",
+      "breakpoints": true
     }
   ]
 }
