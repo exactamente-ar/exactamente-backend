@@ -89,7 +89,9 @@ src/
 
 ## API Reference
 
-**Base URL:** `/api/v1`
+**Base URL:**
+- Producción: `https://api.exactamente.com.ar/api/v1`
+- Local: `http://localhost:3000/api/v1`
 
 ### Convenciones
 
