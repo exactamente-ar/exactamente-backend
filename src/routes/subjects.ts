@@ -49,7 +49,12 @@ app.get('/', publicReadLimit, zValidator('query', subjectFiltersSchema), async (
   if (facultyId) conditions.push(eq(subjects.facultyId, facultyId));
   if (year) conditions.push(eq(subjects.year, year));
   if (quadmester) conditions.push(eq(subjects.quadmester, quadmester));
-  if (search) conditions.push(ilike(subjects.title, `%${search}%`));
+  if (search) {
+    const normalized = search.normalize('NFD').replace(/\p{Mn}/gu, '').toLowerCase();
+    conditions.push(
+      sql`translate(lower(${subjects.title}), 'áéíóúüñ', 'aeiouun') ILIKE ${`%${normalized}%`}`
+    );
+  }
   if (careerSubjectIds) conditions.push(inArray(subjects.id, careerSubjectIds));
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
