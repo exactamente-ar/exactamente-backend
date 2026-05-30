@@ -127,7 +127,7 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
   }
 
   try {
-    const { googleId, email, displayName } = await getGoogleUserInfo(code);
+    const { googleId, email, displayName, photoUrl } = await getGoogleUserInfo(code);
 
     let user = await db.query.users.findFirst({
       where: or(eq(users.googleId, googleId), eq(users.email, email)),
@@ -139,6 +139,7 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
         id,
         email,
         displayName,
+        photoUrl,
         googleId,
         passwordHash: null,
         role: 'user',
@@ -146,7 +147,12 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
       }).returning();
     } else if (!user.googleId) {
       [user] = await db.update(users)
-        .set({ googleId, emailVerified: true, updatedAt: new Date() })
+        .set({ googleId, photoUrl, emailVerified: true, updatedAt: new Date() })
+        .where(eq(users.id, user.id))
+        .returning();
+    } else {
+      [user] = await db.update(users)
+        .set({ photoUrl, updatedAt: new Date() })
         .where(eq(users.id, user.id))
         .returning();
     }

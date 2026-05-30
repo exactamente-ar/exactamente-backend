@@ -53,6 +53,7 @@ export interface PublicUser {
   id: string;
   email: string;
   displayName: string;
+  photoUrl: string | null;
   role: UserRole;
   emailVerified: boolean;
   createdAt: string;

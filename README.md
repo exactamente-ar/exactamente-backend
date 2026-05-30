@@ -210,9 +210,9 @@ Callback de Google después del consent. Intercambia el code por un JWT propio y
 1. Si hay `error` o falta `code` → redirect a `CORS_ORIGIN/login?error=oauth_denied`
 2. Intercambia `code` por access_token en Google
 3. Busca usuario por `googleId` o `email`:
-   - No existe → crea usuario (`emailVerified: true`, sin contraseña)
-   - Existe sin `googleId` → vincula la cuenta email/password con Google
-   - Existe con `googleId` → login normal
+   - No existe → crea usuario (`emailVerified: true`, sin contraseña, guarda `photoUrl`)
+   - Existe sin `googleId` → vincula la cuenta email/password con Google, guarda `photoUrl`
+   - Existe con `googleId` → login normal, actualiza `photoUrl`
 4. Firma JWT y redirige a `CORS_ORIGIN/auth/callback?token=<jwt>`
 5. Si falla el intercambio con Google → redirect a `CORS_ORIGIN/login?error=oauth_failed`
 
@@ -744,6 +744,7 @@ PublicUser {
   id: string           // UUID
   email: string
   displayName: string
+  photoUrl: string | null  // foto de perfil de Google; null si no se registró con Google
   role: 'user' | 'admin' | 'superadmin'
 }
 

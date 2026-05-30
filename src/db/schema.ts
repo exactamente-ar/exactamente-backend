@@ -115,6 +115,7 @@ export const users = pgTable('users', {
   passwordHash:   varchar('password_hash', { length: 255 }),
   googleId:       varchar('google_id', { length: 255 }).unique(),
   displayName:    varchar('display_name', { length: 100 }).notNull(),
+  photoUrl:       varchar('photo_url', { length: 500 }),
   role:           userRoleEnum('role').notNull().default('user'),
   adminFacultyId: text('admin_faculty_id').references(() => faculties.id),
   emailVerified:  boolean('email_verified').notNull().default(false),

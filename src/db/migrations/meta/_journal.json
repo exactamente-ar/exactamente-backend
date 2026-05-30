@@ -57,6 +57,13 @@
       "when": 1748476800000,
       "tag": "0007_enable_unaccent",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1748563200000,
+      "tag": "0008_add_photo_url_to_users",
+      "breakpoints": true
     }
   ]
 }

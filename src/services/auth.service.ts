@@ -8,6 +8,7 @@ export function toPublicUser(user: typeof users.$inferSelect): PublicUser {
     id: user.id,
     email: user.email,
     displayName: user.displayName,
+    photoUrl: user.photoUrl ?? null,
     role: user.role,
     emailVerified: user.emailVerified,
     createdAt: user.createdAt.toISOString(),
@@ -52,7 +53,7 @@ export function getGoogleAuthUrl(state: string): string {
 
 export async function getGoogleUserInfo(
   code: string,
-): Promise<{ googleId: string; email: string; displayName: string }> {
+): Promise<{ googleId: string; email: string; displayName: string; photoUrl: string | null }> {
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method:  'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -75,11 +76,12 @@ export async function getGoogleUserInfo(
 
   if (!userRes.ok) throw new Error('google_userinfo_failed');
 
-  const { id, email, name } = (await userRes.json()) as {
+  const { id, email, name, picture } = (await userRes.json()) as {
     id: string;
     email: string;
     name: string;
+    picture?: string;
   };
 
-  return { googleId: id, email, displayName: name };
+  return { googleId: id, email, displayName: name, photoUrl: picture ?? null };
 }
