@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { eq, and, inArray, sql } from 'drizzle-orm';
+import { eq, and, inArray, sql, ilike } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { db } from '@/db';
 import { subjects, careerSubjects, resources } from '@/db/schema';
@@ -49,7 +49,7 @@ app.get('/', publicReadLimit, zValidator('query', subjectFiltersSchema), async (
   if (facultyId) conditions.push(eq(subjects.facultyId, facultyId));
   if (year) conditions.push(eq(subjects.year, year));
   if (quadmester) conditions.push(eq(subjects.quadmester, quadmester));
-  if (search) conditions.push(sql`unaccent(${subjects.title}) ILIKE unaccent(${'%' + search + '%'})`);
+  if (search) conditions.push(ilike(subjects.title, `%${search}%`));
   if (careerSubjectIds) conditions.push(inArray(subjects.id, careerSubjectIds));
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
