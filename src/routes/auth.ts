@@ -165,7 +165,8 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
 
     const oauthCode = storeOneTimeCode(token);
     return c.redirect(`${frontendUrl}/auth/callback?code=${oauthCode}`);
-  } catch {
+  } catch (err) {
+    console.error('[oauth/callback] error:', err);
     return c.redirect(`${frontendUrl}/upload?error=oauth_failed`);
   }
 });
