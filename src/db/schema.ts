@@ -143,6 +143,7 @@ export const resources = pgTable('resources', {
   topic:           smallint('topic'),
   examYear:        smallint('exam_year'),
   examMonth:       smallint('exam_month'),
+  examDay:         smallint('exam_day'),
   notes:           text('notes'),
   rejectionReason: text('rejection_reason'),
   downloadCount:   integer('download_count').notNull().default(0),

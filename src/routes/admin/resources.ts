@@ -100,6 +100,7 @@ app.post('/', ...adminGuard, async (c) => {
   const topic     = formData.get('topic') as string | null;
   const examYear  = formData.get('examYear') as string | null;
   const examMonth = formData.get('examMonth') as string | null;
+  const examDay   = formData.get('examDay') as string | null;
   const notes     = formData.get('notes') as string | null;
 
   if (!(file instanceof File))
@@ -117,6 +118,7 @@ app.post('/', ...adminGuard, async (c) => {
     topic:     topic     ?? undefined,
     examYear:  examYear  ?? undefined,
     examMonth: examMonth ?? undefined,
+    examDay:   examDay   ?? undefined,
     notes:     notes     ?? undefined,
   });
   if (!parsed.success)
@@ -140,6 +142,7 @@ app.post('/', ...adminGuard, async (c) => {
         subtype:   parsed.data.subtype  ?? null,
         examYear:  parsed.data.examYear,
         examMonth: parsed.data.examMonth,
+        examDay:   parsed.data.examDay  ?? null,
         topic:     parsed.data.topic    ?? null,
       });
 
@@ -156,6 +159,7 @@ app.post('/', ...adminGuard, async (c) => {
     topic:       parsed.data.topic    ?? null,
     examYear:    parsed.data.examYear,
     examMonth:   parsed.data.examMonth,
+    examDay:     parsed.data.examDay  ?? null,
     notes:       parsed.data.notes    ?? null,
     publishedAt: now,
   }).returning();
@@ -248,6 +252,9 @@ app.get('/:id', ...adminGuard, async (c) => {
       ne(resources.status, 'rejected'),
       ne(resources.id, id),
       and(eq(resources.examYear, resource.examYear!), eq(resources.examMonth, resource.examMonth!))!,
+      ...(resource.type === 'final'
+        ? [sql`${resources.examDay} IS NOT DISTINCT FROM ${resource.examDay}`]
+        : []),
     ));
 
     similarResources = similarRows.map(r => ({
@@ -363,6 +370,7 @@ const updateBodySchema = z.object({
   topic:     z.number().int().min(1).max(5).nullable().optional(),
   examYear:  z.number().int().min(1900).max(2100).nullable().optional(),
   examMonth: z.number().int().min(1).max(12).nullable().optional(),
+  examDay:   z.number().int().min(1).max(31).nullable().optional(),
   notes:     z.string().nullable().optional(),
 });
 
@@ -379,6 +387,7 @@ app.patch('/:id', ...adminGuard, zValidator('json', updateBodySchema), async (c)
   const newSubtype   = 'subtype'  in body ? (body.subtype   ?? null) : resource.subtype;
   const newExamYear  = 'examYear'  in body ? (body.examYear  ?? null) : resource.examYear;
   const newExamMonth = 'examMonth' in body ? (body.examMonth ?? null) : resource.examMonth;
+  const newExamDay   = 'examDay'   in body ? (body.examDay   ?? null) : resource.examDay;
   const newTopic     = 'topic'     in body ? (body.topic     ?? null) : resource.topic;
 
   let newTitle: string;
@@ -389,6 +398,7 @@ app.patch('/:id', ...adminGuard, zValidator('json', updateBodySchema), async (c)
       subtype:   newSubtype,
       examYear:  newExamYear,
       examMonth: newExamMonth,
+      examDay:   newExamDay,
       topic:     newTopic,
     });
   }
@@ -399,6 +409,7 @@ app.patch('/:id', ...adminGuard, zValidator('json', updateBodySchema), async (c)
   if ('subtype'   in body) setFields.subtype   = body.subtype   ?? null;
   if ('examYear'  in body) setFields.examYear  = body.examYear  ?? null;
   if ('examMonth' in body) setFields.examMonth = body.examMonth ?? null;
+  if ('examDay'   in body) setFields.examDay   = body.examDay   ?? null;
   if ('topic'     in body) setFields.topic     = body.topic     ?? null;
   if ('notes'     in body) setFields.notes     = body.notes     ?? null;
 
@@ -428,6 +439,7 @@ function rowToAdminResource(
     status:          row.status,
     examYear:        row.examYear        ?? null,
     examMonth:       row.examMonth       ?? null,
+    examDay:         row.examDay         ?? null,
     topic:           row.topic           ?? null,
     notes:           row.notes           ?? null,
     rejectionReason: row.rejectionReason ?? null,

@@ -64,6 +64,13 @@
       "when": 1748563200000,
       "tag": "0008_add_photo_url_to_users",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1748736000000,
+      "tag": "0009_add_exam_day",
+      "breakpoints": true
     }
   ]
 }

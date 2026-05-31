@@ -11,8 +11,8 @@
 
 - `POST /api/v1/resources` — subir recurso (auth requerida)
   - Content-Type: `multipart/form-data`
-  - Fields: `file` (PDF, max 20 MB) · `subjectId` · `type` · `title` (requerido si type='resumen') · `subtype` (requerido si type='parcial') · `examYear` · `examMonth` · `topic?` (1-5) · `notes?`
-  - Response 201: `{ id, subjectId, title, type, subtype, status: 'pending', examYear, examMonth, topic, notes, createdAt }`
+  - Fields: `file` (PDF, max 20 MB) · `subjectId` · `type` · `title` (requerido si type='resumen') · `subtype` (requerido si type='parcial') · `examYear` · `examMonth` · `examDay` (requerido si type='final') · `topic?` (1-5) · `notes?`
+  - Response 201: `{ id, subjectId, title, type, subtype, status: 'pending', examYear, examMonth, examDay, topic, notes, createdAt }`
   - Errores: `400` (no es PDF / >20 MB / validación) · `404` materia no existe
 
 ### Admin (requieren `Authorization: Bearer <admin_token>`)
@@ -54,6 +54,7 @@ Resource {
   status: 'pending' | 'published' | 'rejected'
   examYear: number | null
   examMonth: number | null  // 1–12
+  examDay: number | null    // 1–31; requerido para type='final', null para parcial/resumen
   topic: number | null      // 1–5
   notes: string | null
   downloadCount: number
@@ -79,6 +80,7 @@ AdminResource extends Resource {
 - Solo se aceptan archivos PDF, máximo 20 MB.
 - `fileUrl` ya viene resuelta en la respuesta — no construir URLs manualmente.
 - `subtype` es requerido para `type='parcial'` y prohibido para otros tipos.
+- `examDay` es requerido para `type='final'` (hay varios finales por mes), null para parcial/resumen.
 - `examYear` y `examMonth` son requeridos en el upload; se usan para el título auto-generado y la detección de duplicados.
-- Detección de duplicados: solo aplica a `parcial` y `final` (no resúmenes). Coinciden si tienen misma materia + tipo + subtype + año + mes + tema.
+- Detección de duplicados: solo aplica a `parcial` y `final` (no resúmenes). Para parcial: materia + tipo + subtype + año + mes + tema. Para final: agrega `examDay` al match.
 - Aprobar/rechazar solo funciona sobre recursos en estado `pending`. Intentar sobre otro estado → `409`.
