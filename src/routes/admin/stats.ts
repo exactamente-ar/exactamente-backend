@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
-import { resources, subjects, careers, faculties, universities } from '@/db/schema';
+import { resources, subjects, careers, faculties, universities, users } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import type { AppContext } from '@/types';
@@ -20,6 +20,7 @@ app.get('/', ...adminGuard, async (c) => {
     [careerCount],
     [facultyCount],
     [universityCount],
+    [userCount],
   ] = await Promise.all([
     db.select({ status: resources.status, count: sql<number>`count(*)::int` })
       .from(resources)
@@ -34,6 +35,7 @@ app.get('/', ...adminGuard, async (c) => {
     db.select({ count: sql<number>`count(*)::int` }).from(careers),
     db.select({ count: sql<number>`count(*)::int` }).from(faculties),
     db.select({ count: sql<number>`count(*)::int` }).from(universities),
+    db.select({ count: sql<number>`count(*)::int` }).from(users),
   ]);
 
   const byStatus = { pending: 0, published: 0, rejected: 0 } as Record<string, number>;
@@ -56,6 +58,7 @@ app.get('/', ...adminGuard, async (c) => {
       subjectsWithoutResources: totalSubjects - withResources,
     },
     counts: {
+      users:        userCount?.count        ?? 0,
       subjects:     totalSubjects,
       careers:      careerCount?.count      ?? 0,
       faculties:    facultyCount?.count     ?? 0,
