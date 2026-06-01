@@ -3,7 +3,7 @@ import { env } from '@/env';
 
 const resend = new Resend(env.RESEND_API_KEY);
 
-const FROM = 'Exactamente <noreply@exactamente.ar>';
+const FROM = 'Exactamente <noreply@exactamente.com.ar>';
 
 export function sendApprovalEmail(to: string, displayName: string, resourceTitle: string): void {
   resend.emails.send({
