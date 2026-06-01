@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { eq, ne, and, sql, inArray, desc } from 'drizzle-orm';
 import { db } from '@/db';
 import { resources, subjects, users, careerSubjects, careers, careerPlans } from '@/db/schema';
-import { sendApprovalEmail } from '@/services/email';
+import { sendApprovalEmail, sendBulkApprovalEmail } from '@/services/email';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { storage } from '@/services/storage';
@@ -218,6 +218,22 @@ app.patch('/bulk-approve', ...adminGuard, zValidator('json', bulkApproveSchema),
   const foundIds = new Set(rows.map(r => r.id));
   for (const id of ids) {
     if (!foundIds.has(id)) errors.push({ id, reason: 'Recurso no encontrado' });
+  }
+
+  // Agrupar aprobados por uploader y mandar un solo email por persona
+  if (approved.length > 0) {
+    const approvedRows = rows.filter(r => approved.includes(r.id));
+    const byUploader = new Map<string, string[]>();
+    for (const r of approvedRows) {
+      if (!byUploader.has(r.uploadedBy)) byUploader.set(r.uploadedBy, []);
+      byUploader.get(r.uploadedBy)!.push(r.title);
+    }
+    const uploaderIds = [...byUploader.keys()];
+    const uploaders = await db.query.users.findMany({ where: inArray(users.id, uploaderIds) });
+    for (const uploader of uploaders) {
+      const titles = byUploader.get(uploader.id)!;
+      sendBulkApprovalEmail(uploader.email, uploader.displayName, titles);
+    }
   }
 
   return c.json({ approved, errors });

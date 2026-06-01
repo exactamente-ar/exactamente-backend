@@ -20,3 +20,24 @@ export function sendApprovalEmail(to: string, displayName: string, resourceTitle
     console.error('[email] Error al enviar email de aprobación:', err);
   });
 }
+
+export function sendBulkApprovalEmail(to: string, displayName: string, titles: string[]): void {
+  const list = titles.map(t => `<li>${t}</li>`).join('');
+  const subject = titles.length === 1
+    ? '¡Tu recurso fue aprobado!'
+    : `¡Tus ${titles.length} recursos fueron aprobados!`;
+  resend.emails.send({
+    from:    FROM,
+    to,
+    subject,
+    html: `
+      <p>Hola ${displayName},</p>
+      <p>Los siguientes recursos fueron revisados y aprobados. Ya están disponibles para todos los estudiantes.</p>
+      <ul>${list}</ul>
+      <p>¡Gracias por el aporte a la comunidad!</p>
+      <p>— El equipo de <a href="${env.APP_URL}">Exactamente</a></p>
+    `,
+  }).catch((err) => {
+    console.error('[email] Error al enviar email de aprobación masiva:', err);
+  });
+}
