@@ -21,9 +21,10 @@
   - Query: `{ status?: 'pending'|'published'|'rejected', subjectId?, careerId?, page?, limit? }`
   - Response: `PaginatedResponse<AdminResource>`
 
-- `POST /api/v1/admin/resources` — subir recurso auto-publicado
-  - Mismos campos que el upload de usuario
-  - Resultado: `status = 'published'` directamente (sin moderación)
+- `POST /api/v1/admin/resources` — subir recurso
+  - Mismos campos que el upload de usuario, más `autoPublish?: 'false'` (string, default publica directo)
+  - `autoPublish=false` → `status = 'pending'` (para revisar antes de publicar)
+  - Default (sin el campo o cualquier otro valor) → `status = 'published'` directamente
 
 - `GET /api/v1/admin/resources/:id/preview`
   - Response: `{ signedUrl: string }` — URL temporal firmada para previsualizar el PDF
