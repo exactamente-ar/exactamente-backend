@@ -88,20 +88,21 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
   ));
 });
 
-// ─── POST / — subir recurso (admin, auto-publicado) ───────────────────────────
+// ─── POST / — subir recurso (admin, auto-publicado por defecto) ───────────────
 
 app.post('/', ...adminGuard, async (c) => {
-  const formData = await c.req.formData();
-  const file      = formData.get('file');
-  const subjectId = formData.get('subjectId') as string | null;
-  const title     = formData.get('title') as string | null;
-  const type      = formData.get('type') as string | null;
-  const subtype   = formData.get('subtype') as string | null;
-  const topic     = formData.get('topic') as string | null;
-  const examYear  = formData.get('examYear') as string | null;
-  const examMonth = formData.get('examMonth') as string | null;
-  const examDay   = formData.get('examDay') as string | null;
-  const notes     = formData.get('notes') as string | null;
+  const formData    = await c.req.formData();
+  const file        = formData.get('file');
+  const subjectId   = formData.get('subjectId') as string | null;
+  const title       = formData.get('title') as string | null;
+  const type        = formData.get('type') as string | null;
+  const subtype     = formData.get('subtype') as string | null;
+  const topic       = formData.get('topic') as string | null;
+  const examYear    = formData.get('examYear') as string | null;
+  const examMonth   = formData.get('examMonth') as string | null;
+  const examDay     = formData.get('examDay') as string | null;
+  const notes       = formData.get('notes') as string | null;
+  const autoPublish = formData.get('autoPublish') !== 'false';
 
   if (!(file instanceof File))
     return c.json({ error: 'El campo file es requerido y debe ser un archivo' }, 400);
@@ -131,7 +132,9 @@ app.post('/', ...adminGuard, async (c) => {
 
   const resourceId = crypto.randomUUID();
   const now = new Date();
-  const key = `public/${parsed.data.subjectId}/${resourceId}.pdf`;
+  const key = autoPublish
+    ? `public/${parsed.data.subjectId}/${resourceId}.pdf`
+    : `pending/${resourceId}.pdf`;
   const buffer = Buffer.from(await file.arrayBuffer());
   await storage.uploadFile(key, buffer, 'application/pdf');
 
@@ -150,18 +153,18 @@ app.post('/', ...adminGuard, async (c) => {
     id:          resourceId,
     subjectId:   parsed.data.subjectId,
     uploadedBy:  user.sub,
-    reviewedBy:  user.sub,
+    reviewedBy:  autoPublish ? user.sub : null,
     title:       resourceTitle,
     type:        parsed.data.type,
     subtype:     parsed.data.subtype  ?? null,
-    status:      'published',
+    status:      autoPublish ? 'published' : 'pending',
     r2Key:       key,
     topic:       parsed.data.topic    ?? null,
     examYear:    parsed.data.examYear,
     examMonth:   parsed.data.examMonth,
     examDay:     parsed.data.examDay  ?? null,
     notes:       parsed.data.notes    ?? null,
-    publishedAt: now,
+    publishedAt: autoPublish ? now : null,
   }).returning();
 
   return c.json(rowToAdminResource(resource, subject.title), 201);
