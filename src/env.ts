@@ -17,6 +17,9 @@ const envSchema = z.object({
   R2_SECRET_ACCESS_KEY: z.string().min(1, 'R2_SECRET_ACCESS_KEY es requerida'),
   R2_BUCKET_NAME:      z.string().min(1, 'R2_BUCKET_NAME es requerida'),
   R2_PUBLIC_URL:       z.string().url('R2_PUBLIC_URL debe ser una URL válida'),
+  // Email
+  RESEND_API_KEY:      z.string().min(1, 'RESEND_API_KEY es requerida'),
+  APP_URL:             z.string().url('APP_URL debe ser una URL válida'),
 });
 
 const parsed = envSchema.safeParse(process.env);

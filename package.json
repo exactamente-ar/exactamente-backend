@@ -20,6 +20,7 @@
     "googleapis": "^171.4.0",
     "hono": "^4.6.0",
     "pg": "^8.13.0",
+    "resend": "^6.12.4",
     "zod": "^3.23.0"
   },
   "devDependencies": {

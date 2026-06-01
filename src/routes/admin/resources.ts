@@ -3,7 +3,8 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { eq, ne, and, sql, inArray, desc } from 'drizzle-orm';
 import { db } from '@/db';
-import { resources, subjects, careerSubjects, careers, careerPlans } from '@/db/schema';
+import { resources, subjects, users, careerSubjects, careers, careerPlans } from '@/db/schema';
+import { sendApprovalEmail } from '@/services/email';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { storage } from '@/services/storage';
@@ -313,6 +314,10 @@ app.patch('/:id/approve', ...adminGuard, async (c) => {
     })
     .where(eq(resources.id, id))
     .returning();
+
+  db.query.users.findFirst({ where: eq(users.id, resource.uploadedBy) }).then((uploader) => {
+    if (uploader) sendApprovalEmail(uploader.email, uploader.displayName, updated.title);
+  }).catch(() => {});
 
   return c.json(rowToAdminResource(updated));
 });
