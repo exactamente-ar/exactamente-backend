@@ -1,6 +1,7 @@
 {
   "name": "exactamente-backend",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "start": "bun src/index.ts",
