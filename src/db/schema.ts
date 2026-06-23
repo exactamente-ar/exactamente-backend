@@ -107,6 +107,28 @@ export const subjectPrerequisites = pgTable('subject_prerequisites', {
   pk: primaryKey({ columns: [t.subjectId, t.requiredId] }),
 }));
 
+// ─── GRUPOS DE MATERIAS ───────────────────────────────────────────────────────
+
+export const subjectGroups = pgTable('subject_groups', {
+  id:          text('id').primaryKey(),
+  name:        varchar('name', { length: 255 }).notNull(),
+  description: text('description').notNull().default(''),
+  createdAt:   timestamp('created_at').notNull().defaultNow(),
+  updatedAt:   timestamp('updated_at').notNull().defaultNow(),
+});
+
+export const subjectGroupMembers = pgTable('subject_group_members', {
+  id:        text('id').primaryKey(),
+  groupId:   text('group_id').notNull().references(() => subjectGroups.id, { onDelete: 'cascade' }),
+  subjectId: text('subject_id').notNull().references(() => subjects.id, { onDelete: 'cascade' }),
+  sortOrder: integer('sort_order').notNull().default(0),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (t) => ({
+  uniqueMember: unique().on(t.groupId, t.subjectId),
+  groupIdx:     index('sgm_group_idx').on(t.groupId),
+  subjectIdx:   index('sgm_subject_idx').on(t.subjectId),
+}));
+
 // ─── USUARIOS ─────────────────────────────────────────────────────────────────
 
 export const users = pgTable('users', {
@@ -187,6 +209,7 @@ export const subjectsRelations = relations(subjects, ({ one, many }) => ({
   prerequisites:  many(subjectPrerequisites, { relationName: 'subject' }),
   dependents:     many(subjectPrerequisites, { relationName: 'required' }),
   resources:      many(resources),
+  groupMembers:   many(subjectGroupMembers),
 }));
 
 export const careerSubjectsRelations = relations(careerSubjects, ({ one }) => ({
@@ -210,4 +233,13 @@ export const resourcesRelations = relations(resources, ({ one }) => ({
   subject:    one(subjects, { fields: [resources.subjectId],  references: [subjects.id] }),
   uploadedBy: one(users,    { fields: [resources.uploadedBy], references: [users.id], relationName: 'uploadedBy' }),
   reviewedBy: one(users,    { fields: [resources.reviewedBy], references: [users.id], relationName: 'reviewedBy' }),
+}));
+
+export const subjectGroupsRelations = relations(subjectGroups, ({ many }) => ({
+  members: many(subjectGroupMembers),
+}));
+
+export const subjectGroupMembersRelations = relations(subjectGroupMembers, ({ one }) => ({
+  group:   one(subjectGroups, { fields: [subjectGroupMembers.groupId],   references: [subjectGroups.id] }),
+  subject: one(subjects,      { fields: [subjectGroupMembers.subjectId], references: [subjects.id] }),
 }));
