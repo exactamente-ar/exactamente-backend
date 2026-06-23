@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { eq, and, inArray, sql, ilike } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { db } from '@/db';
-import { subjects, careerSubjects, resources } from '@/db/schema';
+import { subjects, careerSubjects, resources, subjectGroupMembers, subjectGroups } from '@/db/schema';
 import { subjectFiltersSchema } from '@/validators/subject.validators';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
 import { rateLimit } from '@/middleware/rateLimit';
@@ -25,6 +25,37 @@ function rowToSubject(row: typeof subjects.$inferSelect): Subject {
     quadmester: row.quadmester,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
+  };
+}
+
+async function getSubjectGroup(subjectId: string) {
+  const member = await db.query.subjectGroupMembers.findFirst({
+    where: eq(subjectGroupMembers.subjectId, subjectId),
+  });
+  if (!member) return null;
+
+  const group = await db.query.subjectGroups.findFirst({
+    where: eq(subjectGroups.id, member.groupId),
+    with: {
+      members: {
+        with: {
+          subject: { columns: { id: true, title: true, slug: true } },
+        },
+        orderBy: (m, { asc }) => [asc(m.sortOrder), asc(m.createdAt)],
+      },
+    },
+  });
+  if (!group) return null;
+
+  return {
+    id: group.id,
+    name: group.name,
+    members: group.members.map(m => ({
+      id:        m.subject.id,
+      title:     m.subject.title,
+      slug:      m.subject.slug,
+      sortOrder: m.sortOrder,
+    })),
   };
 }
 
@@ -148,6 +179,8 @@ app.get('/:id', publicReadLimit, async (c) => {
 
   if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
 
+  const group = await getSubjectGroup(subject.id);
+
   return c.json({
     subject: {
       ...rowToSubject(subject),
@@ -162,6 +195,7 @@ app.get('/:id', publicReadLimit, async (c) => {
         year: cs.year,
         quadmester: cs.quadmester,
       })),
+      ...(group ? { group } : {}),
     },
   });
 });

@@ -1,9 +1,9 @@
 import { Hono } from 'hono';
-import { eq, and, ne, sql } from 'drizzle-orm';
+import { eq, and, ne, inArray, sql } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { db } from '@/db';
-import { resources, subjects } from '@/db/schema';
+import { resources, subjects, subjectGroupMembers } from '@/db/schema';
 import { storage } from '@/services/storage';
 import { verifyToken } from '@/middleware/auth';
 import { rateLimit } from '@/middleware/rateLimit';
@@ -51,7 +51,24 @@ app.get('/', publicReadLimit, zValidator('query', resourceQuerySchema), async (c
   const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 
   const conditions = [eq(resources.status, 'published')];
-  if (subjectId) conditions.push(eq(resources.subjectId, subjectId));
+
+  if (subjectId) {
+    // Buscar si la materia pertenece a un grupo — si sí, incluir recursos de todas
+    const member = await db.query.subjectGroupMembers.findFirst({
+      where: eq(subjectGroupMembers.subjectId, subjectId),
+    });
+
+    if (member) {
+      const groupMembers = await db.query.subjectGroupMembers.findMany({
+        where: eq(subjectGroupMembers.groupId, member.groupId),
+      });
+      const subjectIds = groupMembers.map(m => m.subjectId);
+      conditions.push(inArray(resources.subjectId, subjectIds));
+    } else {
+      conditions.push(eq(resources.subjectId, subjectId));
+    }
+  }
+
   if (type) conditions.push(eq(resources.type, type));
 
   const whereClause = and(...conditions);
@@ -59,6 +76,7 @@ app.get('/', publicReadLimit, zValidator('query', resourceQuerySchema), async (c
   const [rows, countResult] = await Promise.all([
     db.query.resources.findMany({
       where: whereClause,
+      with: { subject: { columns: { title: true } } },
       limit: safeLimit,
       offset,
       orderBy: (r, { desc }) => [desc(r.publishedAt)],
@@ -73,6 +91,7 @@ app.get('/', publicReadLimit, zValidator('query', resourceQuerySchema), async (c
   const data = rows.map(r => ({
     id:            r.id,
     subjectId:     r.subjectId,
+    subjectTitle:  r.subject?.title ?? null,
     title:         r.title,
     type:          r.type,
     subtype:       r.subtype       ?? null,
