@@ -5,6 +5,9 @@
     "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
+    // Sin esto tsc no conoce `bun:test` ni el global `Bun`, aunque el
+    // runtime sí. El código andaba igual; simplemente nadie lo typecheckeaba.
+    "types": ["bun"],
     "paths": {
       "@/*": ["./src/*"]
     }

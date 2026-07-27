@@ -15,7 +15,7 @@ type MigrationResult = {
 };
 
 type DownloadResult =
-  | { ok: true;  buffer: Buffer; mimeType: string; ext: string }
+  | { ok: true; buffer: Buffer; mimeType: string; ext: string }
   | { ok: false; reason: 'not_found' | 'access_denied' | 'unknown_mime'; detail?: string };
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
@@ -28,9 +28,9 @@ const FAKE_IDS = new Set([
 
 const MIME_TO_EXT: Record<string, string> = {
   'application/pdf': 'pdf',
-  'image/jpeg':      'jpg',
-  'image/png':       'png',
-  'image/webp':      'webp',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
 };
 
 // ─── Utilidades ───────────────────────────────────────────────────────────────
@@ -38,18 +38,33 @@ const MIME_TO_EXT: Record<string, string> = {
 const DELAY_MS = 1000;
 
 function detectMime(buf: Buffer): { mime: string; ext: string } | null {
-  if (buf[0] === 0x25 && buf[1] === 0x50 && buf[2] === 0x44 && buf[3] === 0x46) // %PDF
+  if (buf[0] === 0x25 && buf[1] === 0x50 && buf[2] === 0x44 && buf[3] === 0x46)
+    // %PDF
     return { mime: 'application/pdf', ext: 'pdf' };
-  if (buf[0] === 0xFF && buf[1] === 0xD8 && buf[2] === 0xFF) // JPEG
+  if (buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff)
+    // JPEG
     return { mime: 'image/jpeg', ext: 'jpg' };
-  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4E && buf[3] === 0x47) // PNG
+  if (buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47)
+    // PNG
     return { mime: 'image/png', ext: 'png' };
-  if (buf[0] === 0x52 && buf[1] === 0x49 && buf[2] === 0x46 && buf[3] === 0x46 && buf[8] === 0x57 && buf[9] === 0x45 && buf[10] === 0x42 && buf[11] === 0x50) // WEBP
+  if (
+    buf[0] === 0x52 &&
+    buf[1] === 0x49 &&
+    buf[2] === 0x46 &&
+    buf[3] === 0x46 &&
+    buf[8] === 0x57 &&
+    buf[9] === 0x45 &&
+    buf[10] === 0x42 &&
+    buf[11] === 0x50
+  )
+    // WEBP
     return { mime: 'image/webp', ext: 'webp' };
   return null;
 }
 
-function sleep(ms: number) { return new Promise(r => setTimeout(r, ms)); }
+function sleep(ms: number) {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
 // ─── Descarga desde Drive ─────────────────────────────────────────────────────
 
@@ -88,9 +103,11 @@ async function downloadFromDrive(driveFileId: string, retries = 3): Promise<Down
 
 // ─── Migración por recurso ────────────────────────────────────────────────────
 
-async function migrateResource(
-  resource: { id: string; driveFileId: string; subjectId: string }
-): Promise<MigrationResult> {
+async function migrateResource(resource: {
+  id: string;
+  driveFileId: string;
+  subjectId: string;
+}): Promise<MigrationResult> {
   const { id, driveFileId, subjectId } = resource;
 
   // 1. Skip idempotente
@@ -121,7 +138,12 @@ async function migrateResource(
       return { id, driveFileId, status: 'deleted', reason: '404 en Drive' };
     }
     // Acceso denegado o MIME desconocido → failed (no borrar, requiere revisión)
-    return { id, driveFileId, status: 'failed', reason: `${download.reason}: ${download.detail ?? ''}` };
+    return {
+      id,
+      driveFileId,
+      status: 'failed',
+      reason: `${download.reason}: ${download.detail ?? ''}`,
+    };
   }
 
   const { buffer, mimeType, ext } = download;
@@ -135,9 +157,7 @@ async function migrateResource(
   }
 
   // 5. Actualizar DB
-  await db.update(resources)
-    .set({ r2Key, updatedAt: new Date() })
-    .where(eq(resources.id, id));
+  await db.update(resources).set({ r2Key, updatedAt: new Date() }).where(eq(resources.id, id));
 
   return { id, driveFileId, status: 'migrated', r2Key };
 }
@@ -145,10 +165,22 @@ async function migrateResource(
 // ─── Reescritura de resources.ts ─────────────────────────────────────────────
 
 async function rewriteResourcesFile(results: MigrationResult[]) {
-  const deletedIds = new Set(results.filter(r => r.status === 'deleted').map(r => r.id));
-  const r2ByID    = new Map(results.filter(r => r.r2Key).map(r => [r.id, r.r2Key!]));
+  const deletedIds = new Set(results.filter((r) => r.status === 'deleted').map((r) => r.id));
+  const r2ByID = new Map(results.filter((r) => r.r2Key).map((r) => [r.id, r.r2Key!]));
 
-  const surviving = (RESOURCES as any[]).filter((r: any) => !deletedIds.has(r.id));
+  // RESOURCES es una unión enorme de tipos literales; acá solo se leen los
+  // campos comunes a todos, así que se estrecha a lo que el bucle usa.
+  type SurvivingEntry = {
+    id: string;
+    subjectId: string;
+    uploadedBy: string;
+    title: string;
+    type: string;
+    status: string;
+    publishedAt: Date;
+  };
+
+  const surviving = (RESOURCES as readonly SurvivingEntry[]).filter((r) => !deletedIds.has(r.id));
 
   const lines = [
     '// Generado por scripts/xlsx-to-ts.ts + scripts/migrate-drive-to-r2.ts',
@@ -176,7 +208,9 @@ async function rewriteResourcesFile(results: MigrationResult[]) {
 
   const outPath = new URL('./data/resources.ts', import.meta.url).pathname;
   await Bun.write(outPath, lines.join('\n'));
-  console.log(`✍️  resources.ts reescrito: ${surviving.length} entradas (${deletedIds.size} eliminadas)`);
+  console.log(
+    `✍️  resources.ts reescrito: ${surviving.length} entradas (${deletedIds.size} eliminadas)`,
+  );
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -194,7 +228,9 @@ async function main() {
     console.log('✅ R2 OK\n');
   } catch (err) {
     console.error(`❌ R2 no disponible: ${err}`);
-    console.error('Verificá R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME en .env');
+    console.error(
+      'Verificá R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME en .env',
+    );
     process.exit(1);
   }
 
@@ -203,23 +239,34 @@ async function main() {
 
   const results: MigrationResult[] = [];
 
-  const limit = parseInt(process.argv.find(a => a.startsWith('--limit='))?.replace('--limit=', '') ?? '0') || RESOURCES.length;
+  const limit =
+    parseInt(process.argv.find((a) => a.startsWith('--limit='))?.replace('--limit=', '') ?? '0') ||
+    RESOURCES.length;
   const toProcess = RESOURCES.slice(0, limit);
   console.log(limit < RESOURCES.length ? `🔬 Smoke test: ${limit} de ${RESOURCES.length}\n` : '');
 
   for (let i = 0; i < toProcess.length; i++) {
     process.stdout.write(`\r⏳ ${i + 1}/${toProcess.length}...`);
-    results.push(await migrateResource(toProcess[i] as any));
+    // Esta migración YA CORRIÓ (ver scripts/migration-log-*.json) y al hacerlo
+    // reescribió data/resources.ts sin `driveFileId`. O sea que el script no
+    // puede volver a ejecutarse contra los datos actuales: queda como registro
+    // histórico. El cast pasa por `unknown` porque el tipo de entrada ya no
+    // existe en los datos. Si se confirma que no se necesita, se puede borrar.
+    results.push(
+      await migrateResource(
+        toProcess[i] as unknown as { id: string; driveFileId: string; subjectId: string },
+      ),
+    );
     if (i < toProcess.length - 1) await sleep(DELAY_MS);
   }
 
   console.log('\n');
 
-  const byStatus = (s: string) => results.filter(r => r.status === s);
+  const byStatus = (s: string) => results.filter((r) => r.status === s);
   const migrated = byStatus('migrated');
-  const skipped  = byStatus('skipped');
-  const deleted  = byStatus('deleted');
-  const failed   = byStatus('failed');
+  const skipped = byStatus('skipped');
+  const deleted = byStatus('deleted');
+  const failed = byStatus('failed');
 
   console.log('═══════════════════════════════════════');
   console.log('📊 RESULTADO DE MIGRACIÓN');
@@ -253,7 +300,7 @@ async function main() {
   process.exit(failed.length > 0 ? 1 : 0);
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error('❌ Error fatal:', err);
   process.exit(1);
 });
