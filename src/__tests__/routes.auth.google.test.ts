@@ -86,16 +86,16 @@ describe('GET /api/v1/auth/google', () => {
 });
 
 describe('GET /api/v1/auth/google/callback', () => {
-  it('redirige a /login?error=oauth_denied cuando Google devuelve error', async () => {
+  it('redirige a /upload?error=oauth_denied cuando Google devuelve error', async () => {
     const res = await app.request('/api/v1/auth/google/callback?error=access_denied');
     expect(res.status).toBe(302);
-    expect(res.headers.get('Location')).toContain('/login?error=oauth_denied');
+    expect(res.headers.get('Location')).toContain('/upload?error=oauth_denied');
   });
 
-  it('redirige a /login?error=oauth_denied sin code ni error', async () => {
+  it('redirige a /upload?error=oauth_denied sin code ni error', async () => {
     const res = await app.request('/api/v1/auth/google/callback');
     expect(res.status).toBe(302);
-    expect(res.headers.get('Location')).toContain('/login?error=oauth_denied');
+    expect(res.headers.get('Location')).toContain('/upload?error=oauth_denied');
   });
 
   it('crea usuario nuevo y redirige con state válido', async () => {
@@ -114,16 +114,16 @@ describe('GET /api/v1/auth/google/callback', () => {
   it('rechaza callback sin state', async () => {
     const res = await app.request('/api/v1/auth/google/callback?code=valid-code');
     expect(res.status).toBe(302);
-    expect(res.headers.get('Location')).toContain('/login?error=oauth_denied');
+    expect(res.headers.get('Location')).toContain('/upload?error=oauth_denied');
   });
 
   it('rechaza callback con state inválido', async () => {
     const res = await app.request('/api/v1/auth/google/callback?code=valid-code&state=fake-state');
     expect(res.status).toBe(302);
-    expect(res.headers.get('Location')).toContain('/login?error=oauth_denied');
+    expect(res.headers.get('Location')).toContain('/upload?error=oauth_denied');
   });
 
-  it('redirige a /login?error=oauth_failed si Google rechaza el code', async () => {
+  it('redirige a /upload?error=oauth_failed si Google rechaza el code', async () => {
     global.fetch = mock(() => Promise.resolve({
       ok:   false,
       json: () => Promise.resolve({ error: 'invalid_grant' }),
@@ -136,7 +136,7 @@ describe('GET /api/v1/auth/google/callback', () => {
 
     const res = await app.request(`/api/v1/auth/google/callback?code=bad-code&state=${state}`);
     expect(res.status).toBe(302);
-    expect(res.headers.get('Location')).toContain('/login?error=oauth_failed');
+    expect(res.headers.get('Location')).toContain('/upload?error=oauth_failed');
   });
 });
 
