@@ -1,0 +1,10 @@
+node_modules
+uploads
+bun.lock
+docs/superpowers
+.agents
+.worktrees
+
+# Las migraciones las genera drizzle-kit; reformatearlas confunde el diff
+# contra lo que la herramienta vuelve a escribir.
+src/db/migrations
