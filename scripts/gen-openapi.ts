@@ -9,7 +9,16 @@
  */
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
-import app from '@/app';
+import { applyPlaceholderEnv } from './lib/placeholder-env';
+
+// ANTES de importar la app: `src/env.ts` valida al importarse y corta el
+// proceso si falta algo. El spec se deriva de los schemas y las rutas, no de
+// la configuración, así que no hace falta ningún secreto real para generarlo —
+// y no debería: si no, el CI tendría que cargar credenciales de producción
+// para producir un archivo estático.
+applyPlaceholderEnv();
+
+const { default: app } = await import('@/app');
 
 const OUT = resolve(import.meta.dirname, '../openapi.json');
 
