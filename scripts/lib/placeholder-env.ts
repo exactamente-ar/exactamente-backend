@@ -37,11 +37,19 @@ export const PLACEHOLDER_ENV: Record<string, string> = {
 };
 
 /**
- * Aplica los placeholders SIN pisar lo que ya esté definido, para que un `.env`
- * local siga mandando cuando existe.
+ * Aplica los placeholders PISANDO lo que haya en el entorno.
+ *
+ * Es a propósito y no es negociable: si el `.env` del dev ganara, los tests
+ * darían distinto en cada máquina. Hay tests que afirman sobre estos valores
+ * exactos —`routes.auth.google.test.ts` chequea `client_id=test-google-client-id`
+ * en la URL de consent— y con un `.env` local encima fallan solo acá y pasan
+ * en CI, que es la peor combinación posible.
+ *
+ * Misma razón para el generador de OpenAPI: el spec tiene que salir idéntico
+ * en cualquier máquina.
  */
 export function applyPlaceholderEnv(): void {
   for (const [key, value] of Object.entries(PLACEHOLDER_ENV)) {
-    process.env[key] ??= value;
+    process.env[key] = value;
   }
 }
