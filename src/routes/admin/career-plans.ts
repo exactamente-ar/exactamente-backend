@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { describeRoute } from 'hono-openapi';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { asc, eq, sql } from 'drizzle-orm';
@@ -8,6 +9,12 @@ import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
 import type { AppContext } from '@/types';
+import {
+  CareerPlanSchema,
+  PaginatedCareerPlanSchema,
+  PaginatedCareerPlanSubjectSchema,
+} from '@/schemas';
+import { json, errors, bearerAuth } from '@/openapi/helpers';
 
 const app = new Hono<AppContext>();
 const adminGuard = [verifyToken, requireRole('admin')] as const;
@@ -19,24 +26,35 @@ const listSchema = z.object({
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
-app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
-  const { careerId, page, limit } = c.req.valid('query');
-  const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
-  const whereClause = careerId ? eq(careerPlans.careerId, careerId) : undefined;
-  const [data, countResult] = await Promise.all([
-    db.query.careerPlans.findMany({
-      where: whereClause,
-      orderBy: (p, { asc }) => [asc(p.year), asc(p.name)],
-      limit: safeLimit,
-      offset,
-    }),
-    db
-      .select({ count: sql<number>`count(*)::int` })
-      .from(careerPlans)
-      .where(whereClause),
-  ]);
-  return c.json(buildPaginatedResponse(data, countResult[0]?.count ?? 0, safePage, safeLimit));
-});
+app.get(
+  '/',
+  describeRoute({
+    tags: ['Admin'],
+    summary: 'Listar planes',
+    security: bearerAuth,
+    responses: { 200: json(PaginatedCareerPlanSchema, 'Listado paginado'), ...errors(401, 403) },
+  }),
+  ...adminGuard,
+  zValidator('query', listSchema),
+  async (c) => {
+    const { careerId, page, limit } = c.req.valid('query');
+    const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
+    const whereClause = careerId ? eq(careerPlans.careerId, careerId) : undefined;
+    const [data, countResult] = await Promise.all([
+      db.query.careerPlans.findMany({
+        where: whereClause,
+        orderBy: (p, { asc }) => [asc(p.year), asc(p.name)],
+        limit: safeLimit,
+        offset,
+      }),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(careerPlans)
+        .where(whereClause),
+    ]);
+    return c.json(buildPaginatedResponse(data, countResult[0]?.count ?? 0, safePage, safeLimit));
+  },
+);
 
 // POST / — crear
 const createSchema = z.object({
@@ -45,12 +63,23 @@ const createSchema = z.object({
   year: z.number().int().positive(),
 });
 
-app.post('/', ...adminGuard, zValidator('json', createSchema), async (c) => {
-  const { careerId, name, year } = c.req.valid('json');
-  const id = crypto.randomUUID();
-  const [plan] = await db.insert(careerPlans).values({ id, careerId, name, year }).returning();
-  return c.json(plan, 201);
-});
+app.post(
+  '/',
+  describeRoute({
+    tags: ['Admin'],
+    summary: 'Crear plan',
+    security: bearerAuth,
+    responses: { 201: json(CareerPlanSchema, 'Plan creada'), ...errors(400, 401, 403) },
+  }),
+  ...adminGuard,
+  zValidator('json', createSchema),
+  async (c) => {
+    const { careerId, name, year } = c.req.valid('json');
+    const id = crypto.randomUUID();
+    const [plan] = await db.insert(careerPlans).values({ id, careerId, name, year }).returning();
+    return c.json(plan, 201);
+  },
+);
 
 // GET /:id/subjects — materias del plan
 const subjectsQuerySchema = z.object({
@@ -58,50 +87,74 @@ const subjectsQuerySchema = z.object({
   limit: z.coerce.number().int().positive().max(100).default(100),
 });
 
-app.get('/:id/subjects', ...adminGuard, zValidator('query', subjectsQuerySchema), async (c) => {
-  const id = c.req.param('id');
-  const { page, limit } = c.req.valid('query');
-  const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
+app.get(
+  '/:id/subjects',
+  describeRoute({
+    tags: ['Admin'],
+    summary: 'Materias de un plan',
+    security: bearerAuth,
+    responses: {
+      200: json(PaginatedCareerPlanSubjectSchema, 'Materias del plan'),
+      ...errors(401, 403, 404),
+    },
+  }),
+  ...adminGuard,
+  zValidator('query', subjectsQuerySchema),
+  async (c) => {
+    const id = c.req.param('id');
+    const { page, limit } = c.req.valid('query');
+    const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 
-  const [data, countResult] = await Promise.all([
-    db
-      .select({
-        id: subjects.id,
-        facultyId: subjects.facultyId,
-        title: subjects.title,
-        description: subjects.description,
-        urlMoodle: subjects.urlMoodle,
-        urlPrograma: subjects.urlPrograma,
-        year: subjects.year,
-        quadmester: subjects.quadmester,
-        createdAt: subjects.createdAt,
-        resourceCount: sql<number>`count(case when ${resources.status} = 'published' then 1 end)::int`,
-      })
-      .from(subjects)
-      .innerJoin(careerSubjects, eq(careerSubjects.subjectId, subjects.id))
-      .leftJoin(resources, eq(resources.subjectId, subjects.id))
-      .where(eq(careerSubjects.planId, id))
-      .groupBy(subjects.id)
-      .orderBy(asc(subjects.year), asc(subjects.quadmester), asc(subjects.title))
-      .limit(safeLimit)
-      .offset(offset),
-    db
-      .select({ count: sql<number>`count(distinct ${subjects.id})::int` })
-      .from(subjects)
-      .innerJoin(careerSubjects, eq(careerSubjects.subjectId, subjects.id))
-      .where(eq(careerSubjects.planId, id)),
-  ]);
+    const [data, countResult] = await Promise.all([
+      db
+        .select({
+          id: subjects.id,
+          facultyId: subjects.facultyId,
+          title: subjects.title,
+          description: subjects.description,
+          urlMoodle: subjects.urlMoodle,
+          urlPrograma: subjects.urlPrograma,
+          year: subjects.year,
+          quadmester: subjects.quadmester,
+          createdAt: subjects.createdAt,
+          resourceCount: sql<number>`count(case when ${resources.status} = 'published' then 1 end)::int`,
+        })
+        .from(subjects)
+        .innerJoin(careerSubjects, eq(careerSubjects.subjectId, subjects.id))
+        .leftJoin(resources, eq(resources.subjectId, subjects.id))
+        .where(eq(careerSubjects.planId, id))
+        .groupBy(subjects.id)
+        .orderBy(asc(subjects.year), asc(subjects.quadmester), asc(subjects.title))
+        .limit(safeLimit)
+        .offset(offset),
+      db
+        .select({ count: sql<number>`count(distinct ${subjects.id})::int` })
+        .from(subjects)
+        .innerJoin(careerSubjects, eq(careerSubjects.subjectId, subjects.id))
+        .where(eq(careerSubjects.planId, id)),
+    ]);
 
-  return c.json(buildPaginatedResponse(data, countResult[0]?.count ?? 0, safePage, safeLimit));
-});
+    return c.json(buildPaginatedResponse(data, countResult[0]?.count ?? 0, safePage, safeLimit));
+  },
+);
 
 // GET /:id — detalle
-app.get('/:id', ...adminGuard, async (c) => {
-  const id = c.req.param('id');
-  const plan = await db.query.careerPlans.findFirst({ where: eq(careerPlans.id, id) });
-  if (!plan) return c.json({ error: 'Plan no encontrado' }, 404);
-  return c.json(plan);
-});
+app.get(
+  '/:id',
+  describeRoute({
+    tags: ['Admin'],
+    summary: 'Obtener plan por id',
+    security: bearerAuth,
+    responses: { 200: json(CareerPlanSchema, 'Plan encontrada'), ...errors(401, 403, 404) },
+  }),
+  ...adminGuard,
+  async (c) => {
+    const id = c.req.param('id');
+    const plan = await db.query.careerPlans.findFirst({ where: eq(careerPlans.id, id) });
+    if (!plan) return c.json({ error: 'Plan no encontrado' }, 404);
+    return c.json(plan);
+  },
+);
 
 // PATCH /:id — actualizar nombre o año
 const updateSchema = z.object({
@@ -109,37 +162,59 @@ const updateSchema = z.object({
   year: z.number().int().positive().optional(),
 });
 
-app.patch('/:id', ...adminGuard, zValidator('json', updateSchema), async (c) => {
-  const id = c.req.param('id');
-  const { name, year } = c.req.valid('json');
-  const updates: Record<string, unknown> = {};
-  if (name !== undefined) updates.name = name;
-  if (year !== undefined) updates.year = year;
-  if (Object.keys(updates).length === 0) {
-    return c.json({ error: 'Se debe proporcionar al menos un campo para actualizar' }, 400);
-  }
-  const [plan] = await db
-    .update(careerPlans)
-    .set(updates)
-    .where(eq(careerPlans.id, id))
-    .returning();
-  if (!plan) return c.json({ error: 'Plan no encontrado' }, 404);
-  return c.json(plan);
-});
+app.patch(
+  '/:id',
+  describeRoute({
+    tags: ['Admin'],
+    summary: 'Actualizar plan',
+    security: bearerAuth,
+    responses: { 200: json(CareerPlanSchema, 'Plan actualizada'), ...errors(400, 401, 403, 404) },
+  }),
+  ...adminGuard,
+  zValidator('json', updateSchema),
+  async (c) => {
+    const id = c.req.param('id');
+    const { name, year } = c.req.valid('json');
+    const updates: Record<string, unknown> = {};
+    if (name !== undefined) updates.name = name;
+    if (year !== undefined) updates.year = year;
+    if (Object.keys(updates).length === 0) {
+      return c.json({ error: 'Se debe proporcionar al menos un campo para actualizar' }, 400);
+    }
+    const [plan] = await db
+      .update(careerPlans)
+      .set(updates)
+      .where(eq(careerPlans.id, id))
+      .returning();
+    if (!plan) return c.json({ error: 'Plan no encontrado' }, 404);
+    return c.json(plan);
+  },
+);
 
 // DELETE /:id — eliminar (bloquea si tiene materias asignadas)
-app.delete('/:id', ...adminGuard, async (c) => {
-  const id = c.req.param('id');
-  const [{ count }] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(careerSubjects)
-    .where(eq(careerSubjects.planId, id));
-  if (count > 0) {
-    return c.json({ error: 'No se puede eliminar un plan con materias asignadas' }, 409);
-  }
-  const [plan] = await db.delete(careerPlans).where(eq(careerPlans.id, id)).returning();
-  if (!plan) return c.json({ error: 'Plan no encontrado' }, 404);
-  return new Response(null, { status: 204 });
-});
+app.delete(
+  '/:id',
+  describeRoute({
+    tags: ['Admin'],
+    summary: 'Eliminar plan',
+    security: bearerAuth,
+    responses: { 204: { description: 'Eliminada' }, ...errors(401, 403, 404, 409) },
+    description: 'Falla con 409 si tiene materias asignadas.',
+  }),
+  ...adminGuard,
+  async (c) => {
+    const id = c.req.param('id');
+    const [{ count }] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(careerSubjects)
+      .where(eq(careerSubjects.planId, id));
+    if (count > 0) {
+      return c.json({ error: 'No se puede eliminar un plan con materias asignadas' }, 409);
+    }
+    const [plan] = await db.delete(careerPlans).where(eq(careerPlans.id, id)).returning();
+    if (!plan) return c.json({ error: 'Plan no encontrado' }, 404);
+    return new Response(null, { status: 204 });
+  },
+);
 
 export default app;

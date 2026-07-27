@@ -74,6 +74,25 @@ export const AdminSubjectSchema = SubjectSchema.extend({
   resourceCount: z.number().int().describe('Recursos en estado published'),
 }).meta({ id: 'AdminSubject' });
 
+/**
+ * `GET /admin/career-plans/:id/subjects` proyecta un subconjunto: el SELECT no
+ * trae `slug` ni `updatedAt`. Es un shape propio, no un AdminSubject.
+ */
+export const CareerPlanSubjectSchema = z
+  .object({
+    id: z.string(),
+    facultyId: z.string(),
+    title: z.string(),
+    description: z.string(),
+    urlMoodle: z.string().nullable(),
+    urlPrograma: z.string().nullable(),
+    year: z.number().int(),
+    quadmester: z.number().int(),
+    createdAt: IsoDateTime,
+    resourceCount: z.number().int().describe('Recursos en estado published'),
+  })
+  .meta({ id: 'CareerPlanSubject' });
+
 export type Subject = z.infer<typeof SubjectSchema>;
 export type SubjectWithCareers = z.infer<typeof SubjectWithCareersSchema>;
 export type SubjectDetail = z.infer<typeof SubjectDetailSchema>;

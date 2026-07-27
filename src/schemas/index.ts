@@ -16,7 +16,7 @@ export * from './stats';
 
 import { paginated } from './common';
 import { UniversitySchema, FacultySchema, CareerSchema, CareerPlanSchema } from './catalog';
-import { SubjectWithCareersSchema, AdminSubjectSchema } from './subjects';
+import { SubjectWithCareersSchema, AdminSubjectSchema, CareerPlanSubjectSchema } from './subjects';
 import { ResourceSchema, AdminResourceSchema } from './resources';
 
 /**
@@ -32,6 +32,10 @@ export const PaginatedCareerSchema = paginated(CareerSchema, 'PaginatedCareer');
 export const PaginatedCareerPlanSchema = paginated(CareerPlanSchema, 'PaginatedCareerPlan');
 export const PaginatedSubjectSchema = paginated(SubjectWithCareersSchema, 'PaginatedSubject');
 export const PaginatedAdminSubjectSchema = paginated(AdminSubjectSchema, 'PaginatedAdminSubject');
+export const PaginatedCareerPlanSubjectSchema = paginated(
+  CareerPlanSubjectSchema,
+  'PaginatedCareerPlanSubject',
+);
 export const PaginatedResourceSchema = paginated(ResourceSchema, 'PaginatedResource');
 export const PaginatedAdminResourceSchema = paginated(
   AdminResourceSchema,

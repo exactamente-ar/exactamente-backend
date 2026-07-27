@@ -8,3 +8,7 @@ docs/superpowers
 # Las migraciones las genera drizzle-kit; reformatearlas confunde el diff
 # contra lo que la herramienta vuelve a escribir.
 src/db/migrations
+
+# Generado por `bun run gen:openapi`. Su formato lo define el script, no
+# Prettier — si ambos lo tocan, se pelean y el gate de CI nunca queda verde.
+openapi.json

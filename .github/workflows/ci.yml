@@ -29,6 +29,10 @@ jobs:
 
       - run: bun run format:check
 
+      # El contrato que consumen frontend, admin y mcp. Si el código cambió y
+      # openapi.json no, los tres siguen generando tipos viejos sin enterarse.
+      - run: bun run check:openapi
+
       # La suite actual no consulta la base: drizzle conecta lazy y estos
       # tests solo ejercitan guards de auth, middleware y utils. El día que
       # un test haga una query hay que agregar acá un service container de

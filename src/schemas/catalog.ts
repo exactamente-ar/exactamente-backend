@@ -51,12 +51,17 @@ export const CareerPlanSchema = z
   .meta({ id: 'CareerPlan' });
 
 /**
- * `GET /api/v1/careers` NO pagina — devuelve `{ data: [...] }` a secas.
+ * ⚠️ Dos rutas públicas NO paginan: devuelven `{ data: [...] }` a secas, sin
+ * `total` ni `totalPages`. Sus equivalentes bajo `/admin/*` sí paginan.
  * Es una excepción real del contrato, no un descuido: se documenta como es.
  */
 export const CareerListSchema = z
   .object({ data: z.array(CareerSchema) })
   .meta({ id: 'CareerList' });
+
+export const CareerPlanListSchema = z
+  .object({ data: z.array(CareerPlanSchema) })
+  .meta({ id: 'CareerPlanList' });
 
 export type University = z.infer<typeof UniversitySchema>;
 export type Faculty = z.infer<typeof FacultySchema>;
