@@ -1,91 +1,48 @@
-// ─── ENUMS ────────────────────────────────────────────────────────────────────
+/**
+ * Los tipos de la API se DERIVAN de los schemas en `src/schemas/`.
+ *
+ * Antes se escribían a mano acá y se desincronizaban: `ResourcePublic` no
+ * mencionaba `subtype`, `examYear`, `examMonth`, `examDay`, `topic` ni `notes`,
+ * y `University` / `Faculty` / `Career` se olvidaban de `shortName`. Todos esos
+ * campos sí salían por el cable.
+ *
+ * Regla: si querés cambiar la forma de una respuesta, tocá el schema. Este
+ * archivo solo re-exporta.
+ */
 
-export type UserRole = 'superadmin' | 'admin' | 'user';
-export type ResourceStatus = 'pending' | 'published' | 'rejected';
-export type ResourceType = 'resumen' | 'parcial' | 'final';
+// ─── CONTRATO DE LA API ───────────────────────────────────────────────────────
 
-// ─── ENTIDADES BASE ───────────────────────────────────────────────────────────
+export type {
+  University,
+  Faculty,
+  Career,
+  CareerPlan,
+  Subject,
+  SubjectWithCareers,
+  SubjectDetail,
+  AdminSubject,
+  Resource,
+  AdminResource,
+  PublicUser,
+  UserRole,
+  AdminStats,
+  ErrorResponse,
+} from '@/schemas';
 
-export interface University {
-  id: string;
-  name: string;
-  slug: string;
-  createdAt: string;
-}
+import type { z } from 'zod/v4';
+import type {
+  ResourceStatusSchema,
+  ResourceTypeSchema,
+  ResourceSubtypeSchema,
+} from '@/schemas/resources';
+import type { UserRole } from '@/schemas';
 
-export interface Faculty {
-  id: string;
-  universityId: string;
-  name: string;
-  slug: string;
-  createdAt: string;
-}
+export type ResourceStatus = z.infer<typeof ResourceStatusSchema>;
+export type ResourceType = z.infer<typeof ResourceTypeSchema>;
+export type ResourceSubtype = z.infer<typeof ResourceSubtypeSchema>;
 
-export interface Career {
-  id: string;
-  facultyId: string;
-  name: string;
-  slug: string;
-  createdAt: string;
-}
-
-export interface Subject {
-  id: string;
-  facultyId: string;
-  title: string;
-  slug: string;
-  description: string;
-  urlMoodle: string;
-  urlPrograma: string;
-  year: number;
-  quadmester: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface SubjectWithCareers extends Subject {
-  careers: Array<{ careerId: string; planId: string; year: number; quadmester: number }>;
-}
-
-// ─── USUARIOS ─────────────────────────────────────────────────────────────────
-
-export interface PublicUser {
-  id: string;
-  email: string;
-  displayName: string;
-  photoUrl: string | null;
-  role: UserRole;
-  emailVerified: boolean;
-  createdAt: string;
-}
-
-export interface AdminUser extends PublicUser {
-  adminFacultyId: string | null;
-  adminFaculty: Faculty | null;
-}
-
-// ─── RECURSOS ─────────────────────────────────────────────────────────────────
-
-export interface ResourcePublic {
-  id: string;
-  subjectId: string;
-  title: string;
-  type: ResourceType;
-  status: ResourceStatus;
-  downloadCount: number;
-  publishedAt: string | null;
-  createdAt: string;
-  fileUrl: string | null;
-}
-
-export interface ResourceDetail extends ResourcePublic {
-  subject: Subject;
-  uploadedBy: Pick<PublicUser, 'id' | 'displayName'>;
-  reviewedBy: Pick<PublicUser, 'id' | 'displayName'> | null;
-  rejectionReason: string | null;
-}
-
-// ─── JWT ──────────────────────────────────────────────────────────────────────
+// ─── INTERNOS ─────────────────────────────────────────────────────────────────
+// No forman parte del contrato público: no viajan en ninguna respuesta.
 
 export interface JwtPayload {
   sub: string;
@@ -95,8 +52,6 @@ export interface JwtPayload {
   exp: number;
 }
 
-// ─── CONTEXTO HONO ────────────────────────────────────────────────────────────
-
 export type AppContext = {
   Variables: {
     user: JwtPayload;
@@ -104,8 +59,10 @@ export type AppContext = {
   };
 };
 
-// ─── PAGINACIÓN ───────────────────────────────────────────────────────────────
-
+/**
+ * Forma genérica de `buildPaginatedResponse()`. En el OpenAPI cada uso concreto
+ * es un schema con nombre propio (`PaginatedResource`, etc.) — ver src/schemas.
+ */
 export interface PaginatedResponse<T> {
   data: T[];
   total: number;
