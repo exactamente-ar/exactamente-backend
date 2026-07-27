@@ -78,6 +78,30 @@ if (broken.length > 0) {
   process.exit(1);
 }
 
+/**
+ * Que el schema EXISTA no alcanza: tiene que describir algo.
+ *
+ * Pasó de verdad. Una versión anterior ponía `resolver()` en
+ * `documentation.components.schemas` y quedaba `{ "vendor": "zod" }`: JSON
+ * válido, todos los `$ref` resolvían, el spec parecía sano — y los clientes
+ * generaban `unknown` para los 21 tipos. El fallo más caro es el que no
+ * levanta ninguna alarma.
+ */
+const componentSchemas = ((spec.components as Record<string, unknown>)?.schemas ?? {}) as Record<
+  string,
+  Record<string, unknown>
+>;
+const SHAPE_KEYS = ['type', '$ref', 'anyOf', 'oneOf', 'allOf', 'enum', 'const'];
+const empty = Object.entries(componentSchemas)
+  .filter(([, schema]) => !SHAPE_KEYS.some((key) => key in schema))
+  .map(([name]) => name);
+
+if (empty.length > 0) {
+  console.error(`✗ Estos schemas no describen nada: ${empty.join(', ')}`);
+  console.error('  Los clientes generarían `unknown`. Revisá buildComponentSchemas().');
+  process.exit(1);
+}
+
 const output = JSON.stringify(spec, null, 2) + '\n';
 
 if (process.argv.includes('--check')) {

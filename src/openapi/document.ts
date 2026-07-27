@@ -5,8 +5,7 @@
  * hono-openapi genera `$ref: '#/components/schemas/X'` apuntando a un
  * `components` vacío y el spec queda roto — los clientes no pueden resolverlo.
  */
-import { resolver } from 'hono-openapi';
-import type { z } from 'zod/v4';
+import { z } from 'zod/v4';
 import * as S from '@/schemas';
 
 /**
@@ -42,6 +41,39 @@ const namedSchemas: Record<string, z.ZodType> = {
   ErrorResponse: S.ErrorResponseSchema,
 };
 
+/**
+ * Convierte los schemas a JSON Schema con `z.toJSONSchema()` de Zod v4.
+ *
+ * NO se puede usar `resolver()` acá: hono-openapi solo lo resuelve dentro de la
+ * definición de una ruta, no en `documentation.components.schemas`. Si se usa,
+ * queda el objeto crudo `{ vendor: 'zod' }` en el spec — que es válido como
+ * JSON, satisface los `$ref` y no rompe nada visible, pero hace que los
+ * clientes generen `unknown` para TODOS los tipos. Silencioso y letal.
+ *
+ * La forma de registry hace que las referencias entre schemas salgan como
+ * `$ref` a components en vez de inlinearse duplicadas.
+ */
+function buildComponentSchemas(): Record<string, unknown> {
+  const registry = z.registry<{ id: string }>();
+  for (const [id, schema] of Object.entries(namedSchemas)) {
+    registry.add(schema, { id });
+  }
+
+  const { schemas } = z.toJSONSchema(registry, {
+    uri: (id) => `#/components/schemas/${id}`,
+    io: 'output', // describen respuestas, no entradas
+  });
+
+  // `$schema` y `$id` son válidos en JSON Schema pero no dentro de un Schema
+  // Object de OpenAPI.
+  for (const schema of Object.values(schemas)) {
+    delete (schema as Record<string, unknown>).$schema;
+    delete (schema as Record<string, unknown>).$id;
+  }
+
+  return schemas;
+}
+
 export const openApiDocumentation = {
   info: {
     title: 'Exactamente API',
@@ -69,9 +101,7 @@ export const openApiDocumentation = {
     securitySchemes: {
       bearerAuth: { type: 'bearer', scheme: 'bearer', bearerFormat: 'JWT' },
     },
-    schemas: Object.fromEntries(
-      Object.entries(namedSchemas).map(([name, schema]) => [name, resolver(schema)]),
-    ),
+    schemas: buildComponentSchemas(),
   },
   tags: [
     { name: 'Auth', description: 'Registro, login y sesión' },

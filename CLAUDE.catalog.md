@@ -1,96 +1,33 @@
-# Catalog (Universities · Faculties · Careers · Career Plans)
+# Catalog — Universities · Faculties · Careers · Career Plans
 
-Jerarquía: `University → Faculty → Career → CareerPlan → Subject` (via `career_subjects`)
+**Endpoints, request/response y códigos de error:** `/docs` (o `openapi.json`).
 
-## Endpoints
+Jerarquía: `University → Faculty → Career → CareerPlan → Subject` (vía `career_subjects`).
 
-### Público
+## ⚠️ Dos rutas públicas NO paginan
 
-- `GET /api/v1/universities` — lista paginada
-  - Query: `{ page?, limit? }`
-  - Response: `PaginatedResponse<University>`
+`GET /careers` y `GET /career-plans` devuelven `{ data: [...] }` a secas, sin
+`total` ni `totalPages`. Sus equivalentes bajo `/admin/*` **sí** paginan.
 
-- `GET /api/v1/faculties` — lista paginada
-  - Query: `{ universityId?, page?, limit? }`
-  - Response: `PaginatedResponse<Faculty>`
+Es la trampa más fácil de este módulo: se asume la forma paginada, se lee
+`res.total` y sale `undefined` sin que nada falle.
 
-- `GET /api/v1/careers` — lista **sin paginación**
-  - Query: `{ facultyId? }`
-  - Response: `{ data: Career[] }` — array directo, sin `total`/`totalPages`
+## `shortName`
 
-### Admin — Universities (requieren `Authorization: Bearer <admin_token>`)
+Existe en University, Faculty y Career, y puede ser `null`. Cuando está, es el
+que se usa como nombre de display en las respuestas de subjects — el cliente no
+tiene que elegir, ya viene resuelto.
 
-- `GET /api/v1/admin/universities` — `{ page?, limit? }` → `PaginatedResponse<University>`
-- `POST /api/v1/admin/universities` — `{ name }` → `University` (201)
-- `GET /api/v1/admin/universities/:id` → `University`
-- `PATCH /api/v1/admin/universities/:id` — `{ name }` → `University`
-- `DELETE /api/v1/admin/universities/:id` — Errores: `409` si tiene facultades
+## Slugs
 
-### Admin — Faculties
+Se auto-generan desde `name` y son únicos **dentro del padre**: el slug de una
+facultad es único por universidad, no globalmente. Dos universidades pueden
+tener cada una su facultad `exactas`.
 
-- `GET /api/v1/admin/faculties` — `{ universityId?, page?, limit? }` → `PaginatedResponse<Faculty>`
-- `POST /api/v1/admin/faculties` — `{ universityId, name }` → `Faculty` (201)
-- `GET /api/v1/admin/faculties/:id` → `Faculty`
-- `PATCH /api/v1/admin/faculties/:id` — `{ name }` → `Faculty`
-- `DELETE /api/v1/admin/faculties/:id` — Errores: `409` si tiene carreras
+## Eliminación
 
-### Admin — Careers
+Cascada protegida: no se puede borrar nada que tenga hijos. El error siempre es
+`409`, con un mensaje que dice qué lo está reteniendo.
 
-- `GET /api/v1/admin/careers` — `{ facultyId?, page?, limit? }` → `PaginatedResponse<Career>`
-- `POST /api/v1/admin/careers` — `{ facultyId, name }` → `Career` (201)
-- `GET /api/v1/admin/careers/:id` → `Career`
-- `PATCH /api/v1/admin/careers/:id` — `{ name }` → `Career`
-- `DELETE /api/v1/admin/careers/:id` — Errores: `409` si tiene planes
-
-### Admin — Career Plans
-
-- `GET /api/v1/admin/career-plans` — `{ careerId?, page?, limit? }` → `PaginatedResponse<CareerPlan>`
-- `POST /api/v1/admin/career-plans` — `{ careerId, name, year }` → `CareerPlan` (201)
-- `GET /api/v1/admin/career-plans/:id` → `CareerPlan`
-- `PATCH /api/v1/admin/career-plans/:id` — `{ name?, year? }` → `CareerPlan`
-- `DELETE /api/v1/admin/career-plans/:id` — Errores: `409` si tiene materias asignadas
-
-## Schemas / Tipos principales
-
-```ts
-University {
-  id: string
-  name: string
-  shortName: string | null  // nombre corto, ej: "UNICEN"
-  slug: string
-  createdAt: string
-}
-
-Faculty {
-  id: string
-  universityId: string
-  name: string
-  shortName: string | null  // ej: "FACET"
-  slug: string
-  createdAt: string
-}
-
-Career {
-  id: string
-  facultyId: string
-  name: string
-  shortName: string | null
-  slug: string
-  createdAt: string
-}
-
-CareerPlan {
-  id: string
-  careerId: string
-  name: string   // ej: "Plan 2023"
-  year: number   // año del plan, ej: 2023
-  createdAt: string
-}
-```
-
-## Reglas de negocio relevantes
-
-- `shortName` existe en University, Faculty y Career pero puede ser null. Cuando existe, se usa como nombre de display en las respuestas de subjects.
-- `slug` se auto-genera desde `name` y es único dentro del padre (ej: slug de facultad es único por universidad).
-- Eliminación es cascada protegida: no se puede borrar si hay hijos — el error siempre es `409`.
-- `GET /api/v1/careers` **no tiene paginación** — devuelve todos los resultados en `data[]`.
+Hay que vaciar de abajo hacia arriba: materias → planes → carreras → facultades
+→ universidad.

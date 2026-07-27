@@ -29,67 +29,1235 @@
     },
     "schemas": {
       "University": {
-        "vendor": "zod"
+        "id": "University",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "description": "Nombre corto, ej: \"UNICEN\"",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "slug": {
+            "description": "Auto-generado desde name, único",
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "shortName",
+          "slug",
+          "createdAt"
+        ],
+        "additionalProperties": false
       },
       "Faculty": {
-        "vendor": "zod"
+        "id": "Faculty",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "universityId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "description": "Ej: \"FACET\"",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "slug": {
+            "description": "Único dentro de su universidad",
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "id",
+          "universityId",
+          "name",
+          "shortName",
+          "slug",
+          "createdAt"
+        ],
+        "additionalProperties": false
       },
       "Career": {
-        "vendor": "zod"
+        "id": "Career",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "facultyId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "slug": {
+            "description": "Único dentro de su facultad",
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "id",
+          "facultyId",
+          "name",
+          "shortName",
+          "slug",
+          "createdAt"
+        ],
+        "additionalProperties": false
       },
       "CareerPlan": {
-        "vendor": "zod"
+        "id": "CareerPlan",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "careerId": {
+            "type": "string"
+          },
+          "name": {
+            "description": "Ej: \"Plan 2023\"",
+            "type": "string"
+          },
+          "year": {
+            "description": "Año del plan",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "id",
+          "careerId",
+          "name",
+          "year",
+          "createdAt"
+        ],
+        "additionalProperties": false
       },
       "Subject": {
-        "vendor": "zod"
+        "id": "Subject",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "facultyId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "description": "Se regenera si cambia el title",
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "urlMoodle": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "urlPrograma": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "year": {
+            "description": "Año de cursada en el plan",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "quadmester": {
+            "description": "1 o 2",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "id",
+          "facultyId",
+          "title",
+          "slug",
+          "description",
+          "urlMoodle",
+          "urlPrograma",
+          "year",
+          "quadmester",
+          "createdAt",
+          "updatedAt"
+        ],
+        "additionalProperties": false
       },
       "SubjectCareer": {
-        "vendor": "zod"
+        "id": "SubjectCareer",
+        "type": "object",
+        "properties": {
+          "careerId": {
+            "type": "string"
+          },
+          "careerName": {
+            "type": "string"
+          },
+          "facultyId": {
+            "type": "string"
+          },
+          "facultyName": {
+            "type": "string"
+          },
+          "universityId": {
+            "type": "string"
+          },
+          "universityName": {
+            "type": "string"
+          },
+          "planId": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "quadmester": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "careerId",
+          "careerName",
+          "facultyId",
+          "facultyName",
+          "universityId",
+          "universityName",
+          "planId",
+          "year",
+          "quadmester"
+        ],
+        "additionalProperties": false
       },
       "ResourceCounts": {
-        "vendor": "zod"
+        "id": "ResourceCounts",
+        "type": "object",
+        "properties": {
+          "resumen": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "parcial": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "final": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "resumen",
+          "parcial",
+          "final"
+        ],
+        "additionalProperties": false
       },
       "SubjectWithCareers": {
-        "vendor": "zod"
+        "id": "SubjectWithCareers",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "facultyId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "description": "Se regenera si cambia el title",
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "urlMoodle": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "urlPrograma": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "year": {
+            "description": "Año de cursada en el plan",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "quadmester": {
+            "description": "1 o 2",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "careers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectCareer"
+            }
+          },
+          "resourceCounts": {
+            "$ref": "#/components/schemas/ResourceCounts"
+          }
+        },
+        "required": [
+          "id",
+          "facultyId",
+          "title",
+          "slug",
+          "description",
+          "urlMoodle",
+          "urlPrograma",
+          "year",
+          "quadmester",
+          "createdAt",
+          "updatedAt",
+          "careers",
+          "resourceCounts"
+        ],
+        "additionalProperties": false
       },
       "SubjectDetail": {
-        "vendor": "zod"
+        "id": "SubjectDetail",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "facultyId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "description": "Se regenera si cambia el title",
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "urlMoodle": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "urlPrograma": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "year": {
+            "description": "Año de cursada en el plan",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "quadmester": {
+            "description": "1 o 2",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "careers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubjectCareer"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "facultyId",
+          "title",
+          "slug",
+          "description",
+          "urlMoodle",
+          "urlPrograma",
+          "year",
+          "quadmester",
+          "createdAt",
+          "updatedAt",
+          "careers"
+        ],
+        "additionalProperties": false
       },
       "AdminSubject": {
-        "vendor": "zod"
+        "id": "AdminSubject",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "facultyId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slug": {
+            "description": "Se regenera si cambia el title",
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "urlMoodle": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "urlPrograma": {
+            "description": "Puede ser cadena vacía, nunca null",
+            "type": "string"
+          },
+          "year": {
+            "description": "Año de cursada en el plan",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "quadmester": {
+            "description": "1 o 2",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "resourceCount": {
+            "description": "Recursos en estado published",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "facultyId",
+          "title",
+          "slug",
+          "description",
+          "urlMoodle",
+          "urlPrograma",
+          "year",
+          "quadmester",
+          "createdAt",
+          "updatedAt",
+          "resourceCount"
+        ],
+        "additionalProperties": false
       },
       "CareerPlanSubject": {
-        "vendor": "zod"
+        "id": "CareerPlanSubject",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "facultyId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "urlMoodle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "urlPrograma": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "quadmester": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "resourceCount": {
+            "description": "Recursos en estado published",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "facultyId",
+          "title",
+          "description",
+          "urlMoodle",
+          "urlPrograma",
+          "year",
+          "quadmester",
+          "createdAt",
+          "resourceCount"
+        ],
+        "additionalProperties": false
       },
       "ResourceType": {
-        "vendor": "zod"
+        "id": "ResourceType",
+        "type": "string",
+        "enum": [
+          "resumen",
+          "parcial",
+          "final"
+        ]
       },
       "ResourceSubtype": {
-        "vendor": "zod"
+        "id": "ResourceSubtype",
+        "type": "string",
+        "enum": [
+          "parcial",
+          "recuperatorio",
+          "prefinal",
+          "parcialito"
+        ]
       },
       "ResourceStatus": {
-        "vendor": "zod"
+        "id": "ResourceStatus",
+        "type": "string",
+        "enum": [
+          "pending",
+          "published",
+          "rejected"
+        ]
       },
       "Resource": {
-        "vendor": "zod"
+        "id": "Resource",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subjectId": {
+            "type": "string"
+          },
+          "title": {
+            "description": "Para resúmenes lo pone el usuario; para parcial/final se auto-genera",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ResourceType"
+          },
+          "subtype": {
+            "description": "Solo para type=parcial",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceSubtype"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/ResourceStatus"
+          },
+          "examYear": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "examMonth": {
+            "description": "1–12",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "examDay": {
+            "description": "1–31; requerido para type=final",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "topic": {
+            "description": "Tema, 1–5",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "downloadCount": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "publishedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "fileUrl": {
+            "description": "URL pública ya resuelta. No construir URLs a mano; null si no está publicado",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "subjectId",
+          "title",
+          "type",
+          "subtype",
+          "status",
+          "examYear",
+          "examMonth",
+          "examDay",
+          "topic",
+          "notes",
+          "downloadCount",
+          "publishedAt",
+          "createdAt",
+          "fileUrl"
+        ],
+        "additionalProperties": false
       },
       "AdminResource": {
-        "vendor": "zod"
+        "id": "AdminResource",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subjectId": {
+            "type": "string"
+          },
+          "title": {
+            "description": "Para resúmenes lo pone el usuario; para parcial/final se auto-genera",
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ResourceType"
+          },
+          "subtype": {
+            "description": "Solo para type=parcial",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResourceSubtype"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/ResourceStatus"
+          },
+          "examYear": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "examMonth": {
+            "description": "1–12",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "examDay": {
+            "description": "1–31; requerido para type=final",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "topic": {
+            "description": "Tema, 1–5",
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "downloadCount": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "publishedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "fileUrl": {
+            "description": "URL pública ya resuelta. No construir URLs a mano; null si no está publicado",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "subjectTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "careerName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "planName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "planYear": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "uploadedBy": {
+            "description": "ID del usuario que lo subió",
+            "type": "string"
+          },
+          "reviewedBy": {
+            "description": "ID del admin que lo moderó",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rejectionReason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "id",
+          "subjectId",
+          "title",
+          "type",
+          "subtype",
+          "status",
+          "examYear",
+          "examMonth",
+          "examDay",
+          "topic",
+          "notes",
+          "downloadCount",
+          "publishedAt",
+          "createdAt",
+          "fileUrl",
+          "subjectTitle",
+          "careerName",
+          "planName",
+          "planYear",
+          "uploadedBy",
+          "reviewedBy",
+          "rejectionReason",
+          "updatedAt"
+        ],
+        "additionalProperties": false
       },
       "DuplicateSimilar": {
-        "vendor": "zod"
+        "id": "DuplicateSimilar",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ResourceStatus"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "status"
+        ],
+        "additionalProperties": false
       },
       "UserRole": {
-        "vendor": "zod"
+        "id": "UserRole",
+        "type": "string",
+        "enum": [
+          "superadmin",
+          "admin",
+          "user"
+        ]
       },
       "PublicUser": {
-        "vendor": "zod"
+        "id": "PublicUser",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "photoUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "role": {
+            "description": "Los registros nuevos siempre son user",
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "emailVerified": {
+            "description": "Existe en DB pero hoy ningún flujo de producto lo usa",
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "displayName",
+          "photoUrl",
+          "role",
+          "emailVerified",
+          "createdAt"
+        ],
+        "additionalProperties": false
       },
       "AdminStats": {
-        "vendor": "zod"
+        "id": "AdminStats",
+        "type": "object",
+        "properties": {
+          "resources": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "byStatus": {
+                "type": "object",
+                "properties": {
+                  "pending": {
+                    "description": "Recursos esperando moderación",
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "published": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "rejected": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "pending",
+                  "published",
+                  "rejected"
+                ],
+                "additionalProperties": false
+              },
+              "byType": {
+                "type": "object",
+                "properties": {
+                  "resumen": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "parcial": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "final": {
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "resumen",
+                  "parcial",
+                  "final"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "total",
+              "byStatus",
+              "byType"
+            ],
+            "additionalProperties": false
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "subjectsWithResources": {
+                "description": "Materias con ≥1 recurso publicado — solo cuenta published",
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "subjectsWithoutResources": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "subjectsWithResources",
+              "subjectsWithoutResources"
+            ],
+            "additionalProperties": false
+          },
+          "counts": {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "subjects": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "careers": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "faculties": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              },
+              "universities": {
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 9007199254740991
+              }
+            },
+            "required": [
+              "users",
+              "subjects",
+              "careers",
+              "faculties",
+              "universities"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "resources",
+          "coverage",
+          "counts"
+        ],
+        "additionalProperties": false
       },
       "ErrorResponse": {
-        "vendor": "zod"
+        "id": "ErrorResponse",
+        "type": "object",
+        "properties": {
+          "error": {
+            "description": "Mensaje descriptivo, apto para mostrar al usuario",
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": false
       }
     }
   },
@@ -5747,16 +6915,16 @@
                       "type": "string"
                     },
                     "year": {
-                      "description": "Año de cursada en el plan (1–5)",
+                      "description": "Año de cursada en el plan",
                       "type": "integer",
-                      "minimum": -9007199254740991,
-                      "maximum": 9007199254740991
+                      "minimum": 1,
+                      "maximum": 5
                     },
                     "quadmester": {
                       "description": "1 o 2",
                       "type": "integer",
-                      "minimum": -9007199254740991,
-                      "maximum": 9007199254740991
+                      "minimum": 1,
+                      "maximum": 2
                     },
                     "createdAt": {
                       "type": "string",
@@ -5888,16 +7056,16 @@
                       "type": "string"
                     },
                     "year": {
-                      "description": "Año de cursada en el plan (1–5)",
+                      "description": "Año de cursada en el plan",
                       "type": "integer",
-                      "minimum": -9007199254740991,
-                      "maximum": 9007199254740991
+                      "minimum": 1,
+                      "maximum": 5
                     },
                     "quadmester": {
                       "description": "1 o 2",
                       "type": "integer",
-                      "minimum": -9007199254740991,
-                      "maximum": 9007199254740991
+                      "minimum": 1,
+                      "maximum": 2
                     },
                     "createdAt": {
                       "type": "string",
@@ -6037,16 +7205,16 @@
                       "type": "string"
                     },
                     "year": {
-                      "description": "Año de cursada en el plan (1–5)",
+                      "description": "Año de cursada en el plan",
                       "type": "integer",
-                      "minimum": -9007199254740991,
-                      "maximum": 9007199254740991
+                      "minimum": 1,
+                      "maximum": 5
                     },
                     "quadmester": {
                       "description": "1 o 2",
                       "type": "integer",
-                      "minimum": -9007199254740991,
-                      "maximum": 9007199254740991
+                      "minimum": 1,
+                      "maximum": 2
                     },
                     "createdAt": {
                       "type": "string",
