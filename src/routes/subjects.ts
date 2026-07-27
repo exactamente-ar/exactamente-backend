@@ -39,7 +39,17 @@ async function getSubjectGroup(subjectId: string) {
     with: {
       members: {
         with: {
-          subject: { columns: { id: true, title: true, slug: true } },
+          subject: {
+            columns: { id: true, title: true, slug: true },
+            with: {
+              careerSubjects: {
+                with: {
+                  career: { columns: { name: true, shortName: true } },
+                  plan:   { columns: { name: true, year: true } },
+                },
+              },
+            },
+          },
         },
         orderBy: (m, { asc }) => [asc(m.sortOrder), asc(m.createdAt)],
       },
@@ -50,12 +60,17 @@ async function getSubjectGroup(subjectId: string) {
   return {
     id: group.id,
     name: group.name,
-    members: group.members.map(m => ({
-      id:        m.subject.id,
-      title:     m.subject.title,
-      slug:      m.subject.slug,
-      sortOrder: m.sortOrder,
-    })),
+    members: group.members.map(m => {
+      const cs = m.subject.careerSubjects[0];
+      return {
+        id:         m.subject.id,
+        title:      m.subject.title,
+        slug:       m.subject.slug,
+        sortOrder:  m.sortOrder,
+        careerName: cs ? (cs.career.shortName ?? cs.career.name) : null,
+        planYear:   cs?.plan.year ?? null,
+      };
+    }),
   };
 }
 

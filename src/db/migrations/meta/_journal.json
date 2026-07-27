@@ -71,6 +71,13 @@
       "when": 1748736000000,
       "tag": "0009_add_exam_day",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1748822400000,
+      "tag": "0010_add_subject_groups",
+      "breakpoints": true
     }
   ]
 }

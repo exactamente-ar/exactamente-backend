@@ -105,14 +105,14 @@ app.get('/:id', ...adminGuard, async (c) => {
   });
 });
 
-// ─── PUT /:id — editar grupo ─────────────────────────────────────────────────
+// ─── PATCH /:id — editar grupo ───────────────────────────────────────────────
 
 const updateSchema = z.object({
   name:        z.string().min(1).max(255).optional(),
   description: z.string().optional(),
 });
 
-app.put('/:id', ...adminGuard, zValidator('json', updateSchema), async (c) => {
+app.patch('/:id', ...adminGuard, zValidator('json', updateSchema), async (c) => {
   const id = c.req.param('id');
   const data = c.req.valid('json');
 
