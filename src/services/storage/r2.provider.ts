@@ -26,39 +26,45 @@ export class R2StorageProvider implements StorageService {
   }
 
   async uploadFile(key: string, buffer: Buffer, mimeType: string): Promise<void> {
-    await this.client.send(new PutObjectCommand({
-      Bucket: this.bucket,
-      Key: key,
-      Body: buffer,
-      ContentType: mimeType,
-    }));
+    await this.client.send(
+      new PutObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+        Body: buffer,
+        ContentType: mimeType,
+      }),
+    );
   }
 
   async moveFile(sourceKey: string, destKey: string): Promise<void> {
-    await this.client.send(new CopyObjectCommand({
-      Bucket: this.bucket,
-      CopySource: `${this.bucket}/${sourceKey}`,
-      Key: destKey,
-    }));
-    await this.client.send(new DeleteObjectCommand({
-      Bucket: this.bucket,
-      Key: sourceKey,
-    }));
+    await this.client.send(
+      new CopyObjectCommand({
+        Bucket: this.bucket,
+        CopySource: `${this.bucket}/${sourceKey}`,
+        Key: destKey,
+      }),
+    );
+    await this.client.send(
+      new DeleteObjectCommand({
+        Bucket: this.bucket,
+        Key: sourceKey,
+      }),
+    );
   }
 
   async deleteFile(key: string): Promise<void> {
-    await this.client.send(new DeleteObjectCommand({
-      Bucket: this.bucket,
-      Key: key,
-    }));
+    await this.client.send(
+      new DeleteObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+      }),
+    );
   }
 
   async getSignedUrl(key: string, expiresIn = 900): Promise<string> {
-    return awsGetSignedUrl(
-      this.client,
-      new GetObjectCommand({ Bucket: this.bucket, Key: key }),
-      { expiresIn },
-    );
+    return awsGetSignedUrl(this.client, new GetObjectCommand({ Bucket: this.bucket, Key: key }), {
+      expiresIn,
+    });
   }
 
   getPublicUrl(key: string): string {

@@ -4,15 +4,22 @@ import { eq, or } from 'drizzle-orm';
 import { env } from '@/env';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { hashPassword, verifyPassword, signToken, toPublicUser, getGoogleAuthUrl, getGoogleUserInfo } from '@/services/auth.service';
+import {
+  hashPassword,
+  verifyPassword,
+  signToken,
+  toPublicUser,
+  getGoogleAuthUrl,
+  getGoogleUserInfo,
+} from '@/services/auth.service';
 import { registerSchema, loginSchema } from '@/validators/auth.validators';
 import { verifyToken } from '@/middleware/auth';
 import { rateLimit } from '@/middleware/rateLimit';
 import type { AppContext } from '@/types';
 
-const loginRateLimit    = rateLimit({ limit: 10, windowMs: 15 * 60 * 1000 });  // 10 / 15 min
-const registerRateLimit = rateLimit({ limit: 5,  windowMs: 60 * 60 * 1000 });  // 5 / 1 hora
-const oauthRateLimit    = rateLimit({ limit: 20, windowMs: 15 * 60 * 1000 }); // 20 / 15 min
+const loginRateLimit = rateLimit({ limit: 10, windowMs: 15 * 60 * 1000 }); // 10 / 15 min
+const registerRateLimit = rateLimit({ limit: 5, windowMs: 60 * 60 * 1000 }); // 5 / 1 hora
+const oauthRateLimit = rateLimit({ limit: 20, windowMs: 15 * 60 * 1000 }); // 20 / 15 min
 
 // In-memory store for OAuth state tokens (TTL 10 min)
 const oauthStateStore = new Map<string, number>(); // state → expiresAt
@@ -55,19 +62,25 @@ auth.post('/register', registerRateLimit, zValidator('json', registerSchema), as
     where: eq(users.email, email),
   });
   if (existing) {
-    return c.json({ message: 'Si el email no estaba registrado, recibirás un email de confirmación.' }, 201);
+    return c.json(
+      { message: 'Si el email no estaba registrado, recibirás un email de confirmación.' },
+      201,
+    );
   }
 
   const passwordHash = await hashPassword(password);
   const id = crypto.randomUUID();
 
-  const [user] = await db.insert(users).values({
-    id,
-    email,
-    passwordHash,
-    displayName,
-    role: 'user',
-  }).returning();
+  const [user] = await db
+    .insert(users)
+    .values({
+      id,
+      email,
+      passwordHash,
+      displayName,
+      role: 'user',
+    })
+    .returning();
 
   const token = await signToken({
     sub: user.id,
@@ -116,7 +129,7 @@ auth.get('/google', oauthRateLimit, (c) => {
 });
 
 auth.get('/google/callback', oauthRateLimit, async (c) => {
-  const code  = c.req.query('code');
+  const code = c.req.query('code');
   const error = c.req.query('error');
   const state = c.req.query('state');
 
@@ -135,31 +148,36 @@ auth.get('/google/callback', oauthRateLimit, async (c) => {
 
     if (!user) {
       const id = crypto.randomUUID();
-      [user] = await db.insert(users).values({
-        id,
-        email,
-        displayName,
-        photoUrl,
-        googleId,
-        passwordHash: null,
-        role: 'user',
-        emailVerified: true,
-      }).returning();
+      [user] = await db
+        .insert(users)
+        .values({
+          id,
+          email,
+          displayName,
+          photoUrl,
+          googleId,
+          passwordHash: null,
+          role: 'user',
+          emailVerified: true,
+        })
+        .returning();
     } else if (!user.googleId) {
-      [user] = await db.update(users)
+      [user] = await db
+        .update(users)
         .set({ googleId, photoUrl, emailVerified: true, updatedAt: new Date() })
         .where(eq(users.id, user.id))
         .returning();
     } else {
-      [user] = await db.update(users)
+      [user] = await db
+        .update(users)
         .set({ photoUrl, updatedAt: new Date() })
         .where(eq(users.id, user.id))
         .returning();
     }
 
     const token = await signToken({
-      sub:       user.id,
-      role:      user.role,
+      sub: user.id,
+      role: user.role,
       facultyId: user.adminFacultyId ?? null,
     });
 

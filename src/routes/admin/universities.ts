@@ -15,7 +15,7 @@ const adminGuard = [verifyToken, requireRole('admin')] as const;
 
 // GET / — lista paginada
 const listSchema = z.object({
-  page:  z.coerce.number().int().positive().default(1),
+  page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 

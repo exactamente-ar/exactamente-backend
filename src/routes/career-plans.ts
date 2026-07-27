@@ -16,10 +16,10 @@ app.get('/', zValidator('query', querySchema), async (c) => {
 
   const data = await db
     .select({
-      id:       careerPlans.id,
+      id: careerPlans.id,
       careerId: careerPlans.careerId,
-      name:     careerPlans.name,
-      year:     careerPlans.year,
+      name: careerPlans.name,
+      year: careerPlans.year,
     })
     .from(careerPlans)
     .where(eq(careerPlans.careerId, careerId))

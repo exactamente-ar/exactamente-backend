@@ -4,7 +4,12 @@ beforeAll(() => {
   process.env.JWT_SECRET = 'test-secret-key-exactly-32-chars!!';
 });
 
-import { hashPassword, verifyPassword, signToken, verifyTokenPayload } from '@/services/auth.service';
+import {
+  hashPassword,
+  verifyPassword,
+  signToken,
+  verifyTokenPayload,
+} from '@/services/auth.service';
 
 describe('hashPassword / verifyPassword', () => {
   it('produce un hash diferente a la contraseña original', async () => {

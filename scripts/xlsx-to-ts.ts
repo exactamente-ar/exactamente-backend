@@ -3,21 +3,34 @@ import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 const MONTH_NAMES: Record<string, number> = {
-  enero: 1, ene: 1,
-  febrero: 2, feb: 2,
-  marzo: 3, mar: 3,
-  abril: 4, abr: 4,
+  enero: 1,
+  ene: 1,
+  febrero: 2,
+  feb: 2,
+  marzo: 3,
+  mar: 3,
+  abril: 4,
+  abr: 4,
   mayo: 5,
-  junio: 6, jun: 6,
-  julio: 7, jul: 7,
-  agosto: 8, ago: 8,
-  septiembre: 9, sep: 9,
-  octubre: 10, oct: 10,
-  noviembre: 11, nov: 11,
-  diciembre: 12, dic: 12,
+  junio: 6,
+  jun: 6,
+  julio: 7,
+  jul: 7,
+  agosto: 8,
+  ago: 8,
+  septiembre: 9,
+  sep: 9,
+  octubre: 10,
+  oct: 10,
+  noviembre: 11,
+  nov: 11,
+  diciembre: 12,
+  dic: 12,
 };
 
-const MONTH_PATTERN = Object.keys(MONTH_NAMES).sort((a, b) => b.length - a.length).join('|');
+const MONTH_PATTERN = Object.keys(MONTH_NAMES)
+  .sort((a, b) => b.length - a.length)
+  .join('|');
 const MONTH_RE = new RegExp(`\\b(${MONTH_PATTERN})\\b`, 'i');
 
 function parseFromTitle(title: string): { examYear?: number; examMonth?: number; topic?: number } {
@@ -37,8 +50,8 @@ function parseFromTitle(title: string): { examYear?: number; examMonth?: number;
 function parseSubtype(title: string): string {
   const t = title.toLowerCase();
   if (t.startsWith('recuperatorio')) return 'recuperatorio';
-  if (t.startsWith('prefinal'))      return 'prefinal';
-  if (t.startsWith('parcialito'))    return 'parcialito';
+  if (t.startsWith('prefinal')) return 'prefinal';
+  if (t.startsWith('parcialito')) return 'parcialito';
   return 'parcial';
 }
 
@@ -59,7 +72,7 @@ function parsePlanId(args: string[]): string | null {
 }
 
 function main() {
-  const args = process.argv.slice(2).filter(a => !a.startsWith('--'));
+  const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
   const xlsxPath = args[0];
   if (!xlsxPath) {
     console.error('Uso: bun scripts/xlsx-to-ts.ts /ruta/al/archivo.xlsx [--planId <id>]');
@@ -100,26 +113,25 @@ function main() {
 
       const id = crypto.randomUUID();
       const parsed = parseFromTitle(title);
-      const subtypeField = type === 'parcial'
-        ? `    subtype: '${parseSubtype(title)}' as const,\n`
-        : '';
+      const subtypeField =
+        type === 'parcial' ? `    subtype: '${parseSubtype(title)}' as const,\n` : '';
       const optionalFields =
         subtypeField +
-        (parsed.examYear  ? `    examYear: ${parsed.examYear},\n`  : '') +
+        (parsed.examYear ? `    examYear: ${parsed.examYear},\n` : '') +
         (parsed.examMonth ? `    examMonth: ${parsed.examMonth},\n` : '') +
-        (parsed.topic     ? `    topic: ${parsed.topic},\n`         : '');
+        (parsed.topic ? `    topic: ${parsed.topic},\n` : '');
       entries.push(
         `  {\n` +
-        `    id: '${id}',\n` +
-        `    subjectId: '${idMateria}',\n` +
-        `    uploadedBy: 'SEED_ADMIN',\n` +
-        `    title: ${JSON.stringify(title)},\n` +
-        `    type: '${type}' as const,\n` +
-        `    status: 'published' as const,\n` +
-        `    driveFileId: '${driveFileId}',\n` +
-        optionalFields +
-        `    publishedAt: new Date('2024-01-01'),\n` +
-        `  }`
+          `    id: '${id}',\n` +
+          `    subjectId: '${idMateria}',\n` +
+          `    uploadedBy: 'SEED_ADMIN',\n` +
+          `    title: ${JSON.stringify(title)},\n` +
+          `    type: '${type}' as const,\n` +
+          `    status: 'published' as const,\n` +
+          `    driveFileId: '${driveFileId}',\n` +
+          optionalFields +
+          `    publishedAt: new Date('2024-01-01'),\n` +
+          `  }`,
       );
       total++;
     }
@@ -127,16 +139,18 @@ function main() {
 
   if (skipped.length > 0) {
     console.warn('\n⚠️  Filas saltadas:');
-    skipped.forEach(s => console.warn(' -', s));
+    skipped.forEach((s) => console.warn(' -', s));
   }
 
   const planComment = planId ? `// Plan: ${planId}\n` : '';
   const output =
     `// Generado automáticamente por scripts/xlsx-to-ts.ts\n` +
     `// No editar manualmente — regenerar desde el Excel original\n` +
-    planComment + `\n` +
+    planComment +
+    `\n` +
     `export const RESOURCES = [\n` +
-    entries.join(',\n') + '\n' +
+    entries.join(',\n') +
+    '\n' +
     `];\n`;
 
   const outPath = resolve('scripts/data/resources.ts');

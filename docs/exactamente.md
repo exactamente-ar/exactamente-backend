@@ -11,18 +11,23 @@ El problema que resuelve: los materiales de estudio están dispersos en grupos d
 ## Usuarios
 
 ### Estudiante (user)
+
 El usuario principal de la plataforma. Puede:
+
 - Explorar el catálogo de materias de su carrera
 - Ver los recursos publicados de cada materia (resúmenes, parciales, finales)
 - Descargar o previsualizar archivos desde Google Drive
 - Subir sus propios recursos para que sean revisados por un admin
 
 ### Admin
+
 Administrador de una facultad específica. Puede:
+
 - Revisar recursos pendientes de aprobación (publicar o rechazar)
 - Gestionar carpetas en Google Drive donde se almacenan los archivos
 
 ### Superadmin
+
 Control total del sistema. Puede hacer todo lo que hace el admin más gestión de usuarios y roles.
 
 ---
@@ -39,6 +44,7 @@ Universidad
 ```
 
 Ejemplo concreto:
+
 ```
 UNICEN
   └── FACET (Facultad de Ciencias Exactas)
@@ -55,12 +61,14 @@ UNICEN
 ## Entidades clave
 
 ### Materia (Subject)
+
 - Tiene título, año de cursado (1-5) y cuatrimestre (1-2)
 - Puede pertenecer a múltiples carreras (una materia compartida entre Sistemas e Industrial, por ejemplo)
 - Tiene prerequisitos (materias que hay que aprobar antes) y correlativas (materias que habilita)
 - Puede tener links a Moodle y al programa oficial
 
 ### Recurso (Resource)
+
 - Pertenece a una materia
 - Tiene un tipo: `resumen`, `parcial` o `final`
 - Pasa por estados: `pending` → `published` / `rejected`
@@ -100,14 +108,14 @@ UNICEN
 
 ## Roles y permisos
 
-| Accion                          | user | admin | superadmin |
-|---------------------------------|------|-------|------------|
-| Ver materias y recursos         | si   | si    | si         |
-| Descargar recursos              | si   | si    | si         |
-| Subir recursos                  | si   | si    | si         |
-| Publicar / rechazar recursos    | no   | si    | si         |
-| Gestionar Drive                 | no   | si    | si         |
-| Gestionar usuarios y roles      | no   | no    | si         |
+| Accion                       | user | admin | superadmin |
+| ---------------------------- | ---- | ----- | ---------- |
+| Ver materias y recursos      | si   | si    | si         |
+| Descargar recursos           | si   | si    | si         |
+| Subir recursos               | si   | si    | si         |
+| Publicar / rechazar recursos | no   | si    | si         |
+| Gestionar Drive              | no   | si    | si         |
+| Gestionar usuarios y roles   | no   | no    | si         |
 
 Los admins están asociados a una facultad específica (`adminFacultyId`). Solo moderan recursos de esa facultad.
 
@@ -129,6 +137,7 @@ Google Drive/
 ```
 
 Cada recurso guarda el `driveFileId` del archivo en Drive, y la plataforma construye dos URLs:
+
 - **Preview**: para ver el archivo embebido en el navegador
 - **Download**: para descarga directa
 

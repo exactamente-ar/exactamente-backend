@@ -30,6 +30,7 @@ src/
 ## Variables de entorno
 
 Crear `.env`:
+
 ```
 VITE_API_URL=http://localhost:3000/api/v1
 ```
@@ -74,6 +75,7 @@ Implementar ABM completo con **navegación jerárquica**:
 ### Comportamiento por sección
 
 Cada sección muestra:
+
 - Breadcrumb: ej. "UNICEN > FACET > Sistemas de Información"
 - Tabla paginada con nombre, fecha de creación, acciones
 - Botón "Nuevo" → abre modal con formulario de creación
@@ -93,71 +95,80 @@ Validación mínima: campos requeridos no vacíos. Mostrar errores del backend e
 ## Referencia completa de endpoints
 
 ### Auth
-| Método | Ruta | Body |
-|--------|------|------|
-| POST | `/auth/login` | `{ email, password }` |
-| GET | `/auth/me` | — |
+
+| Método | Ruta          | Body                  |
+| ------ | ------------- | --------------------- |
+| POST   | `/auth/login` | `{ email, password }` |
+| GET    | `/auth/me`    | —                     |
 
 ### Universidades
-| Método | Ruta | Body / Query |
-|--------|------|------|
-| GET | `/admin/universities` | `?page&limit` |
-| POST | `/admin/universities` | `{ name }` |
-| GET | `/admin/universities/:id` | — |
-| PATCH | `/admin/universities/:id` | `{ name }` |
-| DELETE | `/admin/universities/:id` | — |
+
+| Método | Ruta                      | Body / Query  |
+| ------ | ------------------------- | ------------- |
+| GET    | `/admin/universities`     | `?page&limit` |
+| POST   | `/admin/universities`     | `{ name }`    |
+| GET    | `/admin/universities/:id` | —             |
+| PATCH  | `/admin/universities/:id` | `{ name }`    |
+| DELETE | `/admin/universities/:id` | —             |
 
 ### Facultades
-| Método | Ruta | Body / Query |
-|--------|------|------|
-| GET | `/admin/faculties` | `?universityId&page&limit` |
-| POST | `/admin/faculties` | `{ universityId, name }` |
-| GET | `/admin/faculties/:id` | — |
-| PATCH | `/admin/faculties/:id` | `{ name }` |
-| DELETE | `/admin/faculties/:id` | — |
+
+| Método | Ruta                   | Body / Query               |
+| ------ | ---------------------- | -------------------------- |
+| GET    | `/admin/faculties`     | `?universityId&page&limit` |
+| POST   | `/admin/faculties`     | `{ universityId, name }`   |
+| GET    | `/admin/faculties/:id` | —                          |
+| PATCH  | `/admin/faculties/:id` | `{ name }`                 |
+| DELETE | `/admin/faculties/:id` | —                          |
 
 ### Carreras
-| Método | Ruta | Body / Query |
-|--------|------|------|
-| GET | `/admin/careers` | `?facultyId&page&limit` |
-| POST | `/admin/careers` | `{ facultyId, name }` |
-| GET | `/admin/careers/:id` | — |
-| PATCH | `/admin/careers/:id` | `{ name }` |
-| DELETE | `/admin/careers/:id` | — |
+
+| Método | Ruta                 | Body / Query            |
+| ------ | -------------------- | ----------------------- |
+| GET    | `/admin/careers`     | `?facultyId&page&limit` |
+| POST   | `/admin/careers`     | `{ facultyId, name }`   |
+| GET    | `/admin/careers/:id` | —                       |
+| PATCH  | `/admin/careers/:id` | `{ name }`              |
+| DELETE | `/admin/careers/:id` | —                       |
 
 ### Planes
-| Método | Ruta | Body / Query |
-|--------|------|------|
-| GET | `/admin/career-plans` | `?careerId&page&limit` |
-| POST | `/admin/career-plans` | `{ careerId, name, year }` |
-| GET | `/admin/career-plans/:id` | — |
-| PATCH | `/admin/career-plans/:id` | `{ name?, year? }` |
-| DELETE | `/admin/career-plans/:id` | — |
+
+| Método | Ruta                      | Body / Query               |
+| ------ | ------------------------- | -------------------------- |
+| GET    | `/admin/career-plans`     | `?careerId&page&limit`     |
+| POST   | `/admin/career-plans`     | `{ careerId, name, year }` |
+| GET    | `/admin/career-plans/:id` | —                          |
+| PATCH  | `/admin/career-plans/:id` | `{ name?, year? }`         |
+| DELETE | `/admin/career-plans/:id` | —                          |
 
 ### Materias
-| Método | Ruta | Body / Query |
-|--------|------|------|
-| GET | `/admin/subjects` | `?facultyId&page&limit` |
-| POST | `/admin/subjects` | `{ facultyId, title, year, quadmester, description?, urlMoodle?, urlPrograma? }` |
-| GET | `/admin/subjects/:id` | — |
-| PATCH | `/admin/subjects/:id` | campos parciales del POST |
-| DELETE | `/admin/subjects/:id` | — |
+
+| Método | Ruta                  | Body / Query                                                                     |
+| ------ | --------------------- | -------------------------------------------------------------------------------- |
+| GET    | `/admin/subjects`     | `?facultyId&page&limit`                                                          |
+| POST   | `/admin/subjects`     | `{ facultyId, title, year, quadmester, description?, urlMoodle?, urlPrograma? }` |
+| GET    | `/admin/subjects/:id` | —                                                                                |
+| PATCH  | `/admin/subjects/:id` | campos parciales del POST                                                        |
+| DELETE | `/admin/subjects/:id` | —                                                                                |
 
 ### Carpetas Drive
-| Método | Ruta | Body / Query |
-|--------|------|------|
-| GET | `/admin/drive/tree` | `?depth=2` |
-| GET | `/admin/drive/folder/:folderId` | — |
-| POST | `/admin/drive/folder` | `{ parentId, name }` |
-| PATCH | `/admin/drive/folder/:folderId` | `{ name }` |
-| DELETE | `/admin/drive/folder/:folderId` | — |
+
+| Método | Ruta                            | Body / Query         |
+| ------ | ------------------------------- | -------------------- |
+| GET    | `/admin/drive/tree`             | `?depth=2`           |
+| GET    | `/admin/drive/folder/:folderId` | —                    |
+| POST   | `/admin/drive/folder`           | `{ parentId, name }` |
+| PATCH  | `/admin/drive/folder/:folderId` | `{ name }`           |
+| DELETE | `/admin/drive/folder/:folderId` | —                    |
 
 ### Formato de respuesta — lista paginada
+
 ```json
 { "data": [...], "total": 100, "page": 1, "totalPages": 5 }
 ```
 
 ### Errores
+
 ```json
 { "error": "Mensaje descriptivo" }
 ```

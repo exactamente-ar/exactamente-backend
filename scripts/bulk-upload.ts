@@ -28,11 +28,11 @@ import { storage } from '../src/services/storage';
 
 const entrySchema = z.object({
   subjectId: z.string().min(1),
-  type:      z.enum(['resumen', 'parcial', 'final']),
-  subtype:   z.enum(['parcial', 'recuperatorio', 'prefinal', 'parcialito']).optional(),
-  filePath:  z.string().min(1),
-  period:    z.string().max(20).optional(),
-  notes:     z.string().optional(),
+  type: z.enum(['resumen', 'parcial', 'final']),
+  subtype: z.enum(['parcial', 'recuperatorio', 'prefinal', 'parcialito']).optional(),
+  filePath: z.string().min(1),
+  period: z.string().max(20).optional(),
+  notes: z.string().optional(),
 });
 
 const manifestSchema = z.array(entrySchema).min(1);
@@ -90,17 +90,17 @@ async function main() {
         : `${typeLabel} - ${subject.title}`;
 
       await db.insert(resources).values({
-        id:          resourceId,
-        subjectId:   entry.subjectId,
-        uploadedBy:  adminUser.id,
-        reviewedBy:  adminUser.id,
+        id: resourceId,
+        subjectId: entry.subjectId,
+        uploadedBy: adminUser.id,
+        reviewedBy: adminUser.id,
         title,
-        type:        entry.type,
-        subtype:     entry.subtype   ?? null,
-        status:      'published',
+        type: entry.type,
+        subtype: entry.subtype ?? null,
+        status: 'published',
         r2Key,
-        period:      entry.period    ?? null,
-        notes:       entry.notes     ?? null,
+        period: entry.period ?? null,
+        notes: entry.notes ?? null,
         publishedAt: new Date(),
       });
 
