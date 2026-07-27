@@ -1,0 +1,39 @@
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: '*.{ts,mjs,json,md}'
+      run: bunx prettier --write {staged_files}
+      stage_fixed: true
+      skip:
+        - merge
+        - rebase
+    lint:
+      glob: '*.ts'
+      run: bunx eslint {staged_files}
+      skip:
+        - merge
+        - rebase
+
+# `bun test` corre la suite entera en menos de un segundo, así que no vale la
+# pena filtrar por archivos afectados en el pre-commit: va completa acá.
+pre-push:
+  commands:
+    typecheck:
+      run: bun run typecheck
+      skip:
+        - merge
+        - rebase
+    test:
+      run: bun test
+      skip:
+        - merge
+        - rebase
+
+commit-msg:
+  commands:
+    commitlint:
+      run: bunx commitlint --edit {1}
+      skip:
+        - merge
+        - rebase

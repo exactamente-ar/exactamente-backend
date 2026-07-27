@@ -12,7 +12,7 @@ const app = new Hono();
 const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 }); // 100 req/min
 
 const universitiesQuerySchema = z.object({
-  page:  z.coerce.number().int().positive().default(1),
+  page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 

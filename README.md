@@ -4,14 +4,14 @@ API REST del proyecto **Exactamente**, construida con [Hono](https://hono.dev/),
 
 ## Stack
 
-| Capa | Tecnología |
-|------|-----------|
-| Runtime | Bun |
-| Framework | Hono v4.6 |
-| DB | PostgreSQL 16 (Docker) + Drizzle ORM |
-| Validación | Zod + @hono/zod-validator |
-| Auth | JWT (HS256, 7 días) |
-| Storage | Cloudflare R2 (S3-compatible) |
+| Capa       | Tecnología                           |
+| ---------- | ------------------------------------ |
+| Runtime    | Bun                                  |
+| Framework  | Hono v4.6                            |
+| DB         | PostgreSQL 16 (Docker) + Drizzle ORM |
+| Validación | Zod + @hono/zod-validator            |
+| Auth       | JWT (HS256, 7 días)                  |
+| Storage    | Cloudflare R2 (S3-compatible)        |
 
 ---
 
@@ -34,19 +34,19 @@ bun seed               # datos de ejemplo (opcional)
 
 ### Variables de entorno
 
-| Variable | Requerida | Descripción | Default |
-|----------|-----------|-------------|---------|
-| `DATABASE_URL` | Sí | URL de conexión a PostgreSQL | `postgresql://postgres:postgres@localhost:5432/exactamente` |
-| `JWT_SECRET` | Sí | Clave secreta para firmar JWTs | — |
-| `PORT` | No | Puerto del servidor | `3000` |
-| `NODE_ENV` | No | Entorno de ejecución | `development` |
-| `CORS_ORIGIN` | No | Origen(es) permitido(s) para CORS (separados por coma) | `http://localhost:4321` |
-| `GOOGLE_CLIENT_ID` | No | Client ID de Google OAuth | — |
-| `GOOGLE_CLIENT_SECRET` | No | Client Secret de Google OAuth | — |
-| `R2_ACCOUNT_ID` | No | Account ID de Cloudflare R2 | — |
-| `R2_ACCESS_KEY_ID` | No | Access Key de R2 | — |
-| `R2_SECRET_ACCESS_KEY` | No | Secret Key de R2 | — |
-| `R2_BUCKET_NAME` | No | Nombre del bucket de R2 | — |
+| Variable               | Requerida | Descripción                                            | Default                                                     |
+| ---------------------- | --------- | ------------------------------------------------------ | ----------------------------------------------------------- |
+| `DATABASE_URL`         | Sí        | URL de conexión a PostgreSQL                           | `postgresql://postgres:postgres@localhost:5432/exactamente` |
+| `JWT_SECRET`           | Sí        | Clave secreta para firmar JWTs                         | —                                                           |
+| `PORT`                 | No        | Puerto del servidor                                    | `3000`                                                      |
+| `NODE_ENV`             | No        | Entorno de ejecución                                   | `development`                                               |
+| `CORS_ORIGIN`          | No        | Origen(es) permitido(s) para CORS (separados por coma) | `http://localhost:4321`                                     |
+| `GOOGLE_CLIENT_ID`     | No        | Client ID de Google OAuth                              | —                                                           |
+| `GOOGLE_CLIENT_SECRET` | No        | Client Secret de Google OAuth                          | —                                                           |
+| `R2_ACCOUNT_ID`        | No        | Account ID de Cloudflare R2                            | —                                                           |
+| `R2_ACCESS_KEY_ID`     | No        | Access Key de R2                                       | —                                                           |
+| `R2_SECRET_ACCESS_KEY` | No        | Secret Key de R2                                       | —                                                           |
+| `R2_BUCKET_NAME`       | No        | Nombre del bucket de R2                                | —                                                           |
 
 ### Setup adicional (una sola vez)
 
@@ -58,15 +58,15 @@ psql $DATABASE_URL -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
 ### Comandos
 
-| Comando | Descripción |
-|---------|-------------|
-| `bun dev` | Servidor con hot-reload |
-| `bun start` | Servidor en producción |
-| `bun test` | Tests unitarios |
+| Comando           | Descripción                    |
+| ----------------- | ------------------------------ |
+| `bun dev`         | Servidor con hot-reload        |
+| `bun start`       | Servidor en producción         |
+| `bun test`        | Tests unitarios                |
 | `bun db:generate` | Generar migración desde schema |
-| `bun db:migrate` | Aplicar migraciones |
-| `bun db:studio` | Drizzle Studio (UI para la DB) |
-| `bun seed` | Cargar datos de ejemplo |
+| `bun db:migrate`  | Aplicar migraciones            |
+| `bun db:studio`   | Drizzle Studio (UI para la DB) |
+| `bun seed`        | Cargar datos de ejemplo        |
 
 ---
 
@@ -90,36 +90,41 @@ src/
 ## API Reference
 
 **Base URL:**
+
 - Producción: `https://api.exactamente.com.ar/api/v1`
 - Local: `http://localhost:3000/api/v1`
 
 ### Convenciones
 
 **Auth:** todas las rutas protegidas requieren header:
+
 ```
 Authorization: Bearer <jwt_token>
 ```
 
 **Paginación** (respuesta estándar):
+
 ```json
 { "data": [...], "total": 100, "page": 1, "totalPages": 10 }
 ```
+
 Excepción: `GET /api/v1/careers` devuelve `{ "data": [...] }` sin paginación.
 
 **Errores:**
+
 ```json
 { "error": "Mensaje descriptivo" }
 ```
 
-| Código | Causa |
-|--------|-------|
-| 400 | Validación fallida |
-| 401 | Sin token o token inválido |
-| 403 | Rol insuficiente |
-| 404 | Recurso no encontrado |
-| 409 | Conflicto de estado |
-| 429 | Rate limit excedido |
-| 500 | Error interno |
+| Código | Causa                      |
+| ------ | -------------------------- |
+| 400    | Validación fallida         |
+| 401    | Sin token o token inválido |
+| 403    | Rol insuficiente           |
+| 404    | Recurso no encontrado      |
+| 409    | Conflicto de estado        |
+| 429    | Rate limit excedido        |
+| 500    | Error interno              |
 
 **Roles:** `user` < `admin` < `superadmin` — rutas `/admin/*` requieren al menos `admin`.
 
@@ -143,13 +148,14 @@ Registra un nuevo usuario. Rate limit: 5 req/hora por IP.
 
 **Body (JSON):**
 
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
-| `email` | string | Sí | Email válido |
-| `password` | string | Sí | Mínimo 8 caracteres |
-| `displayName` | string | Sí | 2–100 caracteres |
+| Campo         | Tipo   | Requerido | Descripción         |
+| ------------- | ------ | --------- | ------------------- |
+| `email`       | string | Sí        | Email válido        |
+| `password`    | string | Sí        | Mínimo 8 caracteres |
+| `displayName` | string | Sí        | 2–100 caracteres    |
 
 **Respuesta `201`:**
+
 ```json
 {
   "user": { "id": "uuid", "email": "...", "displayName": "...", "role": "user" },
@@ -167,10 +173,10 @@ Inicia sesión con email y contraseña. Rate limit: 10 req/15 min por IP.
 
 **Body (JSON):**
 
-| Campo | Tipo | Requerido |
-|-------|------|-----------|
-| `email` | string | Sí |
-| `password` | string | Sí |
+| Campo      | Tipo   | Requerido |
+| ---------- | ------ | --------- |
+| `email`    | string | Sí        |
+| `password` | string | Sí        |
 
 **Respuesta `200`:** igual que register.
 
@@ -183,6 +189,7 @@ Inicia sesión con email y contraseña. Rate limit: 10 req/15 min por IP.
 Devuelve el usuario autenticado.
 
 **Respuesta `200`:**
+
 ```json
 { "user": { "id": "uuid", "email": "...", "displayName": "...", "role": "user" } }
 ```
@@ -201,12 +208,13 @@ Callback de Google después del consent. Intercambia el code por un JWT propio y
 
 **Query params:**
 
-| Param | Descripción |
-|-------|-------------|
-| `code` | Authorization code de Google (si el usuario aceptó) |
+| Param   | Descripción                                           |
+| ------- | ----------------------------------------------------- |
+| `code`  | Authorization code de Google (si el usuario aceptó)   |
 | `error` | Presente si el usuario rechazó o hubo error en Google |
 
 **Flujo:**
+
 1. Si hay `error` o falta `code` → redirect a `CORS_ORIGIN/login?error=oauth_denied`
 2. Intercambia `code` por access_token en Google
 3. Busca usuario por `googleId` o `email`:
@@ -229,16 +237,21 @@ Lista universidades paginadas.
 **Query params:** `page` (default 1), `limit` (default 20, max 100)
 
 **Respuesta `200`:**
+
 ```json
 {
-  "data": [{
-    "id": "uuid",
-    "name": "Universidad de Buenos Aires",
-    "shortName": "UBA",
-    "slug": "uba",
-    "createdAt": "2025-01-01T00:00:00.000Z"
-  }],
-  "total": 5, "page": 1, "totalPages": 1
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Universidad de Buenos Aires",
+      "shortName": "UBA",
+      "slug": "uba",
+      "createdAt": "2025-01-01T00:00:00.000Z"
+    }
+  ],
+  "total": 5,
+  "page": 1,
+  "totalPages": 1
 }
 ```
 
@@ -252,24 +265,29 @@ Lista facultades paginadas.
 
 **Query params:**
 
-| Param | Tipo | Descripción |
-|-------|------|-------------|
+| Param          | Tipo   | Descripción                       |
+| -------------- | ------ | --------------------------------- |
 | `universityId` | string | (opcional) Filtra por universidad |
-| `page` | number | Default 1 |
-| `limit` | number | Default 20, max 100 |
+| `page`         | number | Default 1                         |
+| `limit`        | number | Default 20, max 100               |
 
 **Respuesta `200`:**
+
 ```json
 {
-  "data": [{
-    "id": "uuid",
-    "universityId": "uuid",
-    "name": "Facultad de Ciencias Exactas y Naturales",
-    "shortName": "Exactas",
-    "slug": "exactas",
-    "createdAt": "2025-01-01T00:00:00.000Z"
-  }],
-  "total": 3, "page": 1, "totalPages": 1
+  "data": [
+    {
+      "id": "uuid",
+      "universityId": "uuid",
+      "name": "Facultad de Ciencias Exactas y Naturales",
+      "shortName": "Exactas",
+      "slug": "exactas",
+      "createdAt": "2025-01-01T00:00:00.000Z"
+    }
+  ],
+  "total": 3,
+  "page": 1,
+  "totalPages": 1
 }
 ```
 
@@ -283,21 +301,24 @@ Lista **todas** las carreras (sin paginación).
 
 **Query params:**
 
-| Param | Tipo | Descripción |
-|-------|------|-------------|
+| Param       | Tipo   | Descripción                    |
+| ----------- | ------ | ------------------------------ |
 | `facultyId` | string | (opcional) Filtra por facultad |
 
 **Respuesta `200`:**
+
 ```json
 {
-  "data": [{
-    "id": "uuid",
-    "facultyId": "uuid",
-    "name": "Ingeniería en Sistemas",
-    "shortName": null,
-    "slug": "ingenieria-en-sistemas",
-    "createdAt": "2025-01-01T00:00:00.000Z"
-  }]
+  "data": [
+    {
+      "id": "uuid",
+      "facultyId": "uuid",
+      "name": "Ingeniería en Sistemas",
+      "shortName": null,
+      "slug": "ingenieria-en-sistemas",
+      "createdAt": "2025-01-01T00:00:00.000Z"
+    }
+  ]
 }
 ```
 
@@ -311,44 +332,51 @@ Lista materias con sus carreras asociadas.
 
 **Query params:**
 
-| Param | Tipo | Descripción |
-|-------|------|-------------|
-| `careerId` | string | (opcional) Filtra por carrera |
-| `facultyId` | string | (opcional) Filtra por facultad |
-| `year` | number | (opcional) Año de cursada (1–5) |
-| `quadmester` | number | (opcional) Cuatrimestre (1–2) |
-| `search` | string | (opcional) Búsqueda por título (accent-insensitive) |
-| `page` | number | Default 1 |
-| `limit` | number | Default 20, max 100 |
+| Param        | Tipo   | Descripción                                         |
+| ------------ | ------ | --------------------------------------------------- |
+| `careerId`   | string | (opcional) Filtra por carrera                       |
+| `facultyId`  | string | (opcional) Filtra por facultad                      |
+| `year`       | number | (opcional) Año de cursada (1–5)                     |
+| `quadmester` | number | (opcional) Cuatrimestre (1–2)                       |
+| `search`     | string | (opcional) Búsqueda por título (accent-insensitive) |
+| `page`       | number | Default 1                                           |
+| `limit`      | number | Default 20, max 100                                 |
 
 **Respuesta `200`:**
+
 ```json
 {
-  "data": [{
-    "id": "uuid",
-    "facultyId": "uuid",
-    "title": "Algoritmos y Estructuras de Datos",
-    "slug": "algoritmos-y-estructuras-de-datos",
-    "description": "...",
-    "urlMoodle": "https://...",
-    "urlPrograma": "https://...",
-    "year": 2,
-    "quadmester": 1,
-    "createdAt": "2025-01-01T00:00:00.000Z",
-    "updatedAt": "2025-01-01T00:00:00.000Z",
-    "careers": [{
-      "careerId": "uuid",
-      "careerName": "Ingeniería en Sistemas",
+  "data": [
+    {
+      "id": "uuid",
       "facultyId": "uuid",
-      "facultyName": "Exactas",
-      "universityId": "uuid",
-      "universityName": "UBA",
-      "planId": "uuid",
+      "title": "Algoritmos y Estructuras de Datos",
+      "slug": "algoritmos-y-estructuras-de-datos",
+      "description": "...",
+      "urlMoodle": "https://...",
+      "urlPrograma": "https://...",
       "year": 2,
-      "quadmester": 1
-    }]
-  }],
-  "total": 42, "page": 1, "totalPages": 3
+      "quadmester": 1,
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z",
+      "careers": [
+        {
+          "careerId": "uuid",
+          "careerName": "Ingeniería en Sistemas",
+          "facultyId": "uuid",
+          "facultyName": "Exactas",
+          "universityId": "uuid",
+          "universityName": "UBA",
+          "planId": "uuid",
+          "year": 2,
+          "quadmester": 1
+        }
+      ]
+    }
+  ],
+  "total": 42,
+  "page": 1,
+  "totalPages": 3
 }
 ```
 
@@ -359,6 +387,7 @@ Lista materias con sus carreras asociadas.
 Detalle de una materia.
 
 **Respuesta `200`:**
+
 ```json
 {
   "subject": {
@@ -390,35 +419,40 @@ Lista recursos publicados.
 
 **Query params:**
 
-| Param | Tipo | Descripción |
-|-------|------|-------------|
-| `subjectId` | string | (opcional) Filtra por materia |
-| `type` | `resumen` \| `parcial` \| `final` | (opcional) Filtra por tipo |
-| `page` | number | Default 1 |
-| `limit` | number | Default 20, max 100 |
+| Param       | Tipo                              | Descripción                   |
+| ----------- | --------------------------------- | ----------------------------- |
+| `subjectId` | string                            | (opcional) Filtra por materia |
+| `type`      | `resumen` \| `parcial` \| `final` | (opcional) Filtra por tipo    |
+| `page`      | number                            | Default 1                     |
+| `limit`     | number                            | Default 20, max 100           |
 
 Solo devuelve `status = 'published'`, ordenados por `publishedAt` desc.
 
 **Respuesta `200`:**
+
 ```json
 {
-  "data": [{
-    "id": "uuid",
-    "subjectId": "uuid",
-    "title": "Recuperatorio - Álgebra - Jun 2024 (Tema 2)",
-    "type": "parcial",
-    "subtype": "recuperatorio",
-    "status": "published",
-    "examYear": 2024,
-    "examMonth": 6,
-    "topic": 2,
-    "notes": null,
-    "downloadCount": 17,
-    "publishedAt": "2025-01-01T00:00:00.000Z",
-    "createdAt": "2025-01-01T00:00:00.000Z",
-    "fileUrl": "https://r2.example.com/..."
-  }],
-  "total": 8, "page": 1, "totalPages": 1
+  "data": [
+    {
+      "id": "uuid",
+      "subjectId": "uuid",
+      "title": "Recuperatorio - Álgebra - Jun 2024 (Tema 2)",
+      "type": "parcial",
+      "subtype": "recuperatorio",
+      "status": "published",
+      "examYear": 2024,
+      "examMonth": 6,
+      "topic": 2,
+      "notes": null,
+      "downloadCount": 17,
+      "publishedAt": "2025-01-01T00:00:00.000Z",
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "fileUrl": "https://r2.example.com/..."
+    }
+  ],
+  "total": 8,
+  "page": 1,
+  "totalPages": 1
 }
 ```
 
@@ -430,19 +464,20 @@ Sube un recurso para moderación.
 
 **Content-Type:** `multipart/form-data`
 
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
-| `file` | File | Sí | PDF, máximo 20 MB |
-| `subjectId` | string | Sí | UUID de la materia |
-| `type` | `resumen` \| `parcial` \| `final` | Sí | Tipo de recurso |
-| `title` | string | Si `type='resumen'` | Título del recurso |
-| `subtype` | `parcial` \| `recuperatorio` \| `prefinal` \| `parcialito` | Si `type='parcial'` | Subtipo |
-| `examYear` | number | Sí | Año del examen |
-| `examMonth` | number | Sí | Mes del examen (1–12) |
-| `topic` | number | No | Tema (1–5) |
-| `notes` | string | No | Notas adicionales |
+| Campo       | Tipo                                                       | Requerido           | Descripción           |
+| ----------- | ---------------------------------------------------------- | ------------------- | --------------------- |
+| `file`      | File                                                       | Sí                  | PDF, máximo 20 MB     |
+| `subjectId` | string                                                     | Sí                  | UUID de la materia    |
+| `type`      | `resumen` \| `parcial` \| `final`                          | Sí                  | Tipo de recurso       |
+| `title`     | string                                                     | Si `type='resumen'` | Título del recurso    |
+| `subtype`   | `parcial` \| `recuperatorio` \| `prefinal` \| `parcialito` | Si `type='parcial'` | Subtipo               |
+| `examYear`  | number                                                     | Sí                  | Año del examen        |
+| `examMonth` | number                                                     | Sí                  | Mes del examen (1–12) |
+| `topic`     | number                                                     | No                  | Tema (1–5)            |
+| `notes`     | string                                                     | No                  | Notas adicionales     |
 
 **Respuesta `201`:**
+
 ```json
 {
   "id": "uuid",
@@ -475,41 +510,45 @@ Lista recursos de todos los estados.
 
 **Query params:**
 
-| Param | Tipo | Descripción |
-|-------|------|-------------|
-| `status` | `pending` \| `published` \| `rejected` | (opcional) Filtra por estado |
-| `subjectId` | string | (opcional) Filtra por materia |
-| `careerId` | string | (opcional) Filtra por carrera |
-| `page` | number | Default 1 |
-| `limit` | number | Default 20, max 100 |
+| Param       | Tipo                                   | Descripción                   |
+| ----------- | -------------------------------------- | ----------------------------- |
+| `status`    | `pending` \| `published` \| `rejected` | (opcional) Filtra por estado  |
+| `subjectId` | string                                 | (opcional) Filtra por materia |
+| `careerId`  | string                                 | (opcional) Filtra por carrera |
+| `page`      | number                                 | Default 1                     |
+| `limit`     | number                                 | Default 20, max 100           |
 
 **Respuesta `200`:** `PaginatedResponse<AdminResource>`
 
 ```json
 {
-  "data": [{
-    "id": "uuid",
-    "subjectId": "uuid",
-    "subjectTitle": "Álgebra",
-    "title": "...",
-    "type": "parcial",
-    "subtype": "recuperatorio",
-    "status": "pending",
-    "examYear": 2024,
-    "examMonth": 6,
-    "topic": null,
-    "notes": null,
-    "downloadCount": 0,
-    "publishedAt": null,
-    "createdAt": "...",
-    "updatedAt": "...",
-    "fileUrl": null,
-    "uploadedBy": "uuid",
-    "reviewedBy": null,
-    "r2Key": "uploads/...",
-    "rejectionReason": null
-  }],
-  "total": 5, "page": 1, "totalPages": 1
+  "data": [
+    {
+      "id": "uuid",
+      "subjectId": "uuid",
+      "subjectTitle": "Álgebra",
+      "title": "...",
+      "type": "parcial",
+      "subtype": "recuperatorio",
+      "status": "pending",
+      "examYear": 2024,
+      "examMonth": 6,
+      "topic": null,
+      "notes": null,
+      "downloadCount": 0,
+      "publishedAt": null,
+      "createdAt": "...",
+      "updatedAt": "...",
+      "fileUrl": null,
+      "uploadedBy": "uuid",
+      "reviewedBy": null,
+      "r2Key": "uploads/...",
+      "rejectionReason": null
+    }
+  ],
+  "total": 5,
+  "page": 1,
+  "totalPages": 1
 }
 ```
 
@@ -528,6 +567,7 @@ Sube un recurso que queda **publicado directamente** (sin moderación). Mismos c
 Obtiene URL temporal firmada para previsualizar el PDF.
 
 **Respuesta `200`:**
+
 ```json
 { "signedUrl": "https://r2.example.com/...?X-Amz-Expires=3600&..." }
 ```
@@ -550,9 +590,9 @@ Rechaza un recurso en estado `pending`.
 
 **Body (JSON):**
 
-| Campo | Tipo | Requerido |
-|-------|------|-----------|
-| `reason` | string | Sí |
+| Campo    | Tipo   | Requerido |
+| -------- | ------ | --------- |
+| `reason` | string | Sí        |
 
 **Respuesta `200`:** `AdminResource` actualizado con `status: 'rejected'`.
 
@@ -566,11 +606,12 @@ Aprueba múltiples recursos en lote. Operación parcial: procesa todos, los erro
 
 **Body (JSON):**
 
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
+| Campo | Tipo     | Descripción                       |
+| ----- | -------- | --------------------------------- |
 | `ids` | string[] | 1–100 UUIDs de recursos `pending` |
 
 **Respuesta `200`:**
+
 ```json
 {
   "approved": ["uuid1", "uuid2"],
@@ -600,15 +641,15 @@ Crea una materia.
 
 **Body (JSON):**
 
-| Campo | Tipo | Requerido |
-|-------|------|-----------|
-| `facultyId` | string | Sí |
-| `title` | string | Sí |
-| `description` | string | No |
-| `urlMoodle` | string | No |
-| `urlPrograma` | string | No |
-| `year` | number (1–5) | Sí |
-| `quadmester` | number (1–2) | Sí |
+| Campo         | Tipo         | Requerido |
+| ------------- | ------------ | --------- |
+| `facultyId`   | string       | Sí        |
+| `title`       | string       | Sí        |
+| `description` | string       | No        |
+| `urlMoodle`   | string       | No        |
+| `urlPrograma` | string       | No        |
+| `year`        | number (1–5) | Sí        |
+| `quadmester`  | number (1–2) | Sí        |
 
 **Respuesta `201`:** `Subject`
 
@@ -637,18 +678,23 @@ Actualización parcial. Todos los campos opcionales. Actualizar `title` regenera
 ### Admin — Universidades 🔒
 
 #### `GET /api/v1/admin/universities`
+
 Query: `page`, `limit` → `PaginatedResponse<University>`
 
 #### `POST /api/v1/admin/universities`
+
 Body: `{ name }` → `University` (201)
 
 #### `GET /api/v1/admin/universities/:id`
+
 → `University` · `404`
 
 #### `PATCH /api/v1/admin/universities/:id`
+
 Body: `{ name }` → `University`
 
 #### `DELETE /api/v1/admin/universities/:id`
+
 `409` si tiene facultades
 
 ---
@@ -656,18 +702,23 @@ Body: `{ name }` → `University`
 ### Admin — Facultades 🔒
 
 #### `GET /api/v1/admin/faculties`
+
 Query: `universityId?`, `page`, `limit` → `PaginatedResponse<Faculty>`
 
 #### `POST /api/v1/admin/faculties`
+
 Body: `{ universityId, name }` → `Faculty` (201)
 
 #### `GET /api/v1/admin/faculties/:id`
+
 → `Faculty` · `404`
 
 #### `PATCH /api/v1/admin/faculties/:id`
+
 Body: `{ name }` → `Faculty`
 
 #### `DELETE /api/v1/admin/faculties/:id`
+
 `409` si tiene carreras
 
 ---
@@ -675,18 +726,23 @@ Body: `{ name }` → `Faculty`
 ### Admin — Carreras 🔒
 
 #### `GET /api/v1/admin/careers`
+
 Query: `facultyId?`, `page`, `limit` → `PaginatedResponse<Career>`
 
 #### `POST /api/v1/admin/careers`
+
 Body: `{ facultyId, name }` → `Career` (201)
 
 #### `GET /api/v1/admin/careers/:id`
+
 → `Career` · `404`
 
 #### `PATCH /api/v1/admin/careers/:id`
+
 Body: `{ name }` → `Career`
 
 #### `DELETE /api/v1/admin/careers/:id`
+
 `409` si tiene planes
 
 ---
@@ -694,18 +750,23 @@ Body: `{ name }` → `Career`
 ### Admin — Planes de carrera 🔒
 
 #### `GET /api/v1/admin/career-plans`
+
 Query: `careerId?`, `page`, `limit` → `PaginatedResponse<CareerPlan>`
 
 #### `POST /api/v1/admin/career-plans`
+
 Body: `{ careerId, name, year }` → `CareerPlan` (201)
 
 #### `GET /api/v1/admin/career-plans/:id`
+
 → `CareerPlan` · `404`
 
 #### `PATCH /api/v1/admin/career-plans/:id`
+
 Body: `{ name?, year? }` → `CareerPlan`
 
 #### `DELETE /api/v1/admin/career-plans/:id`
+
 `409` si tiene materias asignadas
 
 ---
@@ -715,12 +776,13 @@ Body: `{ name?, year? }` → `CareerPlan`
 #### `GET /api/v1/admin/stats`
 
 **Respuesta `200`:**
+
 ```json
 {
   "resources": {
     "total": 150,
     "byStatus": { "pending": 12, "published": 130, "rejected": 8 },
-    "byType":   { "resumen": 40, "parcial": 80, "final": 30 }
+    "byType": { "resumen": 40, "parcial": 80, "final": 30 }
   },
   "coverage": {
     "subjectsWithResources": 25,

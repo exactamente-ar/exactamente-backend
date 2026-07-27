@@ -22,6 +22,7 @@
 ## Google OAuth
 
 ### GET /api/v1/auth/google
+
 Redirige al consent screen de Google (302).
 
 No requiere body ni auth.
@@ -31,13 +32,16 @@ Rate limit: 20 req / 15 min por IP.
 ---
 
 ### GET /api/v1/auth/google/callback
+
 Recibe el callback de Google después del consent. Intercambia el `code` por un JWT propio y redirige al frontend.
 
 **Query params:**
+
 - `code` — authorization code de Google (presente si el usuario aceptó)
 - `error` — presente si el usuario rechazó o hubo error en Google
 
 **Flujo:**
+
 1. Si hay `error` o falta `code` → redirect a `CORS_ORIGIN/login?error=oauth_denied`
 2. Intercambia `code` por access_token en Google
 3. Obtiene perfil del usuario desde Google (`id`, `email`, `name`)
@@ -67,6 +71,7 @@ PublicUser {
 ```
 
 El token es un JWT — incluir en todas las rutas protegidas:
+
 ```
 Authorization: Bearer <token>
 ```

@@ -36,6 +36,7 @@ La idea tiene sentido estratégico a mediano plazo, pero hoy tiene un problema d
 ### Incluir en v1
 
 **Perfil de tutor (publicación)**
+
 - Nombre y foto (opcional)
 - Contacto directo: WhatsApp, email, o Instagram (el estudiante contacta por fuera de la app — sin mensajería in-app)
 - Materias que da, vinculadas al catálogo existente de `subjects` (FK directa — esta es la ventaja clave)
@@ -45,26 +46,28 @@ La idea tiene sentido estratégico a mediano plazo, pero hoy tiene un problema d
 - Ciudad/zona si es presencial
 
 **Listado de tutores (búsqueda)**
+
 - Filtro por materia (el más importante)
 - Filtro por modalidad
 - Ordenamiento por fecha de publicación (los más nuevos primero)
 - Vista de tarjeta con los datos clave y botón "Contactar" (abre WhatsApp/email/Instagram)
 
 **Gestión básica**
+
 - Tutor puede editar y desactivar su perfil
 - Admin puede dar de baja un perfil con motivo
 
 ### Excluir de v1 (con justificación)
 
-| Feature | Por qué no en v1 |
-|---------|-----------------|
-| Mensajería in-app | Complejidad alta, bajo valor si el volumen es pequeño. WhatsApp resuelve esto. |
-| Sistema de pagos in-app (MercadoPago/Stripe) | Requiere integración de pagos, compliance, y soporte. No vale la pena hasta tener volumen. |
-| Reviews y ratings | Requieren masa crítica de interacciones para ser útiles. Con poco volumen, la mayoría tendría 0 reviews. |
-| Calendario de disponibilidad | Complejidad innecesaria. El tutor puede aclararlo en la descripción o al contacto. |
-| Verificación de identidad o credenciales | Útil más adelante para generar confianza. En v1, el tutor es responsable de su propia reputación. |
-| Match/recomendación automática | Requiere datos de comportamiento del usuario. No hay suficiente para entrenar o reglas simples útiles. |
-| Notificaciones push | Infraestructura que no existe en la app aún. |
+| Feature                                      | Por qué no en v1                                                                                         |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Mensajería in-app                            | Complejidad alta, bajo valor si el volumen es pequeño. WhatsApp resuelve esto.                           |
+| Sistema de pagos in-app (MercadoPago/Stripe) | Requiere integración de pagos, compliance, y soporte. No vale la pena hasta tener volumen.               |
+| Reviews y ratings                            | Requieren masa crítica de interacciones para ser útiles. Con poco volumen, la mayoría tendría 0 reviews. |
+| Calendario de disponibilidad                 | Complejidad innecesaria. El tutor puede aclararlo en la descripción o al contacto.                       |
+| Verificación de identidad o credenciales     | Útil más adelante para generar confianza. En v1, el tutor es responsable de su propia reputación.        |
+| Match/recomendación automática               | Requiere datos de comportamiento del usuario. No hay suficiente para entrenar o reglas simples útiles.   |
+| Notificaciones push                          | Infraestructura que no existe en la app aún.                                                             |
 
 ---
 
@@ -135,20 +138,20 @@ No hay cambios a tablas existentes. Todo es aditivo.
 
 ### Antes de construir (validación de idea)
 
-| Métrica | Cómo medirla | Umbral para proceder |
-|---------|-------------|---------------------|
-| Intención de búsqueda de tutores | Encuesta a usuarios actuales: "¿Buscaste o contrataste un tutor en el último cuatrimestre?" | >30% responde "sí" |
-| Intención de publicar | Encuesta/landing a tutores potenciales: "¿Publicarías tu perfil gratis?" | >20 respuestas positivas en 2 semanas |
+| Métrica                          | Cómo medirla                                                                                | Umbral para proceder                  |
+| -------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------- |
+| Intención de búsqueda de tutores | Encuesta a usuarios actuales: "¿Buscaste o contrataste un tutor en el último cuatrimestre?" | >30% responde "sí"                    |
+| Intención de publicar            | Encuesta/landing a tutores potenciales: "¿Publicarías tu perfil gratis?"                    | >20 respuestas positivas en 2 semanas |
 
 ### Post-lanzamiento (v1 gratuita)
 
-| Métrica | Qué indica | Target 30 días |
-|---------|-----------|----------------|
-| Tutores registrados activos | Supply del marketplace | ≥15 para la facultad principal |
-| Clicks en botón "Contactar" | Demanda real (intent) | ≥50 clicks únicos |
-| Ratio clicks/perfiles vistos | Calidad del match | ≥15% |
-| Tutores que actualizan su perfil en 30 días | Engagement del lado supply | ≥50% de los registrados |
-| Quejas o reportes de perfiles | Calidad del contenido | 0 casos graves |
+| Métrica                                     | Qué indica                 | Target 30 días                 |
+| ------------------------------------------- | -------------------------- | ------------------------------ |
+| Tutores registrados activos                 | Supply del marketplace     | ≥15 para la facultad principal |
+| Clicks en botón "Contactar"                 | Demanda real (intent)      | ≥50 clicks únicos              |
+| Ratio clicks/perfiles vistos                | Calidad del match          | ≥15%                           |
+| Tutores que actualizan su perfil en 30 días | Engagement del lado supply | ≥50% de los registrados        |
+| Quejas o reportes de perfiles               | Calidad del contenido      | 0 casos graves                 |
 
 ### Para decidir si monetizar
 
@@ -176,4 +179,4 @@ El orden correcto es:
 
 ---
 
-*Este documento es un análisis de viabilidad. No implica una decisión de desarrollo.*
+_Este documento es un análisis de viabilidad. No implica una decisión de desarrollo._

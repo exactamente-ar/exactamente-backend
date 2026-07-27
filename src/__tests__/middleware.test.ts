@@ -102,6 +102,8 @@ describe('security headers', () => {
 
   it('incluye Strict-Transport-Security', async () => {
     const res = await app.request('/health');
-    expect(res.headers.get('Strict-Transport-Security')).toBe('max-age=31536000; includeSubDomains');
+    expect(res.headers.get('Strict-Transport-Security')).toBe(
+      'max-age=31536000; includeSubDomains',
+    );
   });
 });

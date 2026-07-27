@@ -11,7 +11,10 @@ export const verifyToken = createMiddleware<AppContext>(async (c, next) => {
 
   const token = authHeader.slice(7);
   try {
-    const payload = await verify(token, env.JWT_SECRET, 'HS256') as JwtPayload;
+    // `verify` devuelve el JWTPayload genérico de hono; la forma concreta la
+    // garantizamos nosotros al firmar en auth.service. Pasa por `unknown`
+    // porque los dos tipos no se solapan lo suficiente para TS.
+    const payload = (await verify(token, env.JWT_SECRET, 'HS256')) as unknown as JwtPayload;
     c.set('user', payload);
     await next();
   } catch {

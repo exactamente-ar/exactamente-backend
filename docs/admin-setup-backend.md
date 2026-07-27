@@ -2,18 +2,18 @@
 
 ## Variables de entorno
 
-| Variable | Requerida | Descripción |
-|----------|-----------|-------------|
-| `DATABASE_URL` | Siempre | URL de conexión PostgreSQL |
-| `JWT_SECRET` | Siempre | Mínimo 32 caracteres, aleatorio en producción |
-| `PORT` | No (default: 3000) | Puerto del servidor |
-| `NODE_ENV` | No (default: development) | `development` o `production` |
-| `CORS_ORIGIN` | Siempre | Origen del frontend principal |
-| `ADMIN_ORIGIN` | Siempre | Origen del admin frontend |
-| `STORAGE_PROVIDER` | No (default: local) | `local` o `drive` |
-| `STORAGE_PATH` | No (default: ./storage) | Ruta local para archivos (modo local) |
+| Variable                      | Requerida                        | Descripción                                         |
+| ----------------------------- | -------------------------------- | --------------------------------------------------- |
+| `DATABASE_URL`                | Siempre                          | URL de conexión PostgreSQL                          |
+| `JWT_SECRET`                  | Siempre                          | Mínimo 32 caracteres, aleatorio en producción       |
+| `PORT`                        | No (default: 3000)               | Puerto del servidor                                 |
+| `NODE_ENV`                    | No (default: development)        | `development` o `production`                        |
+| `CORS_ORIGIN`                 | Siempre                          | Origen del frontend principal                       |
+| `ADMIN_ORIGIN`                | Siempre                          | Origen del admin frontend                           |
+| `STORAGE_PROVIDER`            | No (default: local)              | `local` o `drive`                                   |
+| `STORAGE_PATH`                | No (default: ./storage)          | Ruta local para archivos (modo local)               |
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | Solo si `STORAGE_PROVIDER=drive` | JSON de la service account completo (stringificado) |
-| `DRIVE_ROOT_FOLDER_ID` | Solo si `STORAGE_PROVIDER=drive` | ID de la carpeta raíz en Google Drive |
+| `DRIVE_ROOT_FOLDER_ID`        | Solo si `STORAGE_PROVIDER=drive` | ID de la carpeta raíz en Google Drive               |
 
 ## Cómo crear el primer usuario admin
 
@@ -51,88 +51,90 @@ Todos los endpoints requieren header: `Authorization: Bearer <token>` con rol `a
 
 ### Autenticación
 
-| Método | Ruta | Descripción | Body |
-|--------|------|-------------|------|
-| `POST` | `/api/v1/auth/login` | Login, devuelve JWT | `{ email, password }` |
-| `GET` | `/api/v1/auth/me` | Datos del usuario autenticado | — |
+| Método | Ruta                 | Descripción                   | Body                  |
+| ------ | -------------------- | ----------------------------- | --------------------- |
+| `POST` | `/api/v1/auth/login` | Login, devuelve JWT           | `{ email, password }` |
+| `GET`  | `/api/v1/auth/me`    | Datos del usuario autenticado | —                     |
 
 ### Universidades
 
-| Método | Ruta | Descripción | Body / Params |
-|--------|------|-------------|---------------|
-| `GET` | `/api/v1/admin/universities` | Lista paginada | `?page&limit` |
-| `POST` | `/api/v1/admin/universities` | Crear | `{ name }` |
-| `GET` | `/api/v1/admin/universities/:id` | Detalle | — |
-| `PATCH` | `/api/v1/admin/universities/:id` | Actualizar nombre | `{ name }` |
-| `DELETE` | `/api/v1/admin/universities/:id` | Eliminar (409 si tiene facultades) | — |
+| Método   | Ruta                             | Descripción                        | Body / Params |
+| -------- | -------------------------------- | ---------------------------------- | ------------- |
+| `GET`    | `/api/v1/admin/universities`     | Lista paginada                     | `?page&limit` |
+| `POST`   | `/api/v1/admin/universities`     | Crear                              | `{ name }`    |
+| `GET`    | `/api/v1/admin/universities/:id` | Detalle                            | —             |
+| `PATCH`  | `/api/v1/admin/universities/:id` | Actualizar nombre                  | `{ name }`    |
+| `DELETE` | `/api/v1/admin/universities/:id` | Eliminar (409 si tiene facultades) | —             |
 
 ### Facultades
 
-| Método | Ruta | Descripción | Body / Params |
-|--------|------|-------------|---------------|
-| `GET` | `/api/v1/admin/faculties` | Lista paginada | `?universityId&page&limit` |
-| `POST` | `/api/v1/admin/faculties` | Crear | `{ universityId, name }` |
-| `GET` | `/api/v1/admin/faculties/:id` | Detalle | — |
-| `PATCH` | `/api/v1/admin/faculties/:id` | Actualizar nombre | `{ name }` |
-| `DELETE` | `/api/v1/admin/faculties/:id` | Eliminar (409 si tiene carreras) | — |
+| Método   | Ruta                          | Descripción                      | Body / Params              |
+| -------- | ----------------------------- | -------------------------------- | -------------------------- |
+| `GET`    | `/api/v1/admin/faculties`     | Lista paginada                   | `?universityId&page&limit` |
+| `POST`   | `/api/v1/admin/faculties`     | Crear                            | `{ universityId, name }`   |
+| `GET`    | `/api/v1/admin/faculties/:id` | Detalle                          | —                          |
+| `PATCH`  | `/api/v1/admin/faculties/:id` | Actualizar nombre                | `{ name }`                 |
+| `DELETE` | `/api/v1/admin/faculties/:id` | Eliminar (409 si tiene carreras) | —                          |
 
 ### Carreras
 
-| Método | Ruta | Descripción | Body / Params |
-|--------|------|-------------|---------------|
-| `GET` | `/api/v1/admin/careers` | Lista paginada | `?facultyId&page&limit` |
-| `POST` | `/api/v1/admin/careers` | Crear | `{ facultyId, name }` |
-| `GET` | `/api/v1/admin/careers/:id` | Detalle | — |
-| `PATCH` | `/api/v1/admin/careers/:id` | Actualizar nombre | `{ name }` |
-| `DELETE` | `/api/v1/admin/careers/:id` | Eliminar (409 si tiene planes) | — |
+| Método   | Ruta                        | Descripción                    | Body / Params           |
+| -------- | --------------------------- | ------------------------------ | ----------------------- |
+| `GET`    | `/api/v1/admin/careers`     | Lista paginada                 | `?facultyId&page&limit` |
+| `POST`   | `/api/v1/admin/careers`     | Crear                          | `{ facultyId, name }`   |
+| `GET`    | `/api/v1/admin/careers/:id` | Detalle                        | —                       |
+| `PATCH`  | `/api/v1/admin/careers/:id` | Actualizar nombre              | `{ name }`              |
+| `DELETE` | `/api/v1/admin/careers/:id` | Eliminar (409 si tiene planes) | —                       |
 
 ### Planes de carrera
 
-| Método | Ruta | Descripción | Body / Params |
-|--------|------|-------------|---------------|
-| `GET` | `/api/v1/admin/career-plans` | Lista paginada | `?careerId&page&limit` |
-| `POST` | `/api/v1/admin/career-plans` | Crear | `{ careerId, name, year }` |
-| `GET` | `/api/v1/admin/career-plans/:id` | Detalle | — |
-| `PATCH` | `/api/v1/admin/career-plans/:id` | Actualizar | `{ name?, year? }` |
-| `DELETE` | `/api/v1/admin/career-plans/:id` | Eliminar (409 si tiene materias asignadas) | — |
+| Método   | Ruta                             | Descripción                                | Body / Params              |
+| -------- | -------------------------------- | ------------------------------------------ | -------------------------- |
+| `GET`    | `/api/v1/admin/career-plans`     | Lista paginada                             | `?careerId&page&limit`     |
+| `POST`   | `/api/v1/admin/career-plans`     | Crear                                      | `{ careerId, name, year }` |
+| `GET`    | `/api/v1/admin/career-plans/:id` | Detalle                                    | —                          |
+| `PATCH`  | `/api/v1/admin/career-plans/:id` | Actualizar                                 | `{ name?, year? }`         |
+| `DELETE` | `/api/v1/admin/career-plans/:id` | Eliminar (409 si tiene materias asignadas) | —                          |
 
 ### Materias
 
-| Método | Ruta | Descripción | Body / Params |
-|--------|------|-------------|---------------|
-| `GET` | `/api/v1/admin/subjects` | Lista paginada | `?facultyId&page&limit` |
-| `POST` | `/api/v1/admin/subjects` | Crear | `{ facultyId, title, year, quadmester, description?, urlMoodle?, urlPrograma? }` |
-| `GET` | `/api/v1/admin/subjects/:id` | Detalle | — |
-| `PATCH` | `/api/v1/admin/subjects/:id` | Actualizar (parcial) | `{ title?, description?, urlMoodle?, urlPrograma?, year?, quadmester? }` |
-| `DELETE` | `/api/v1/admin/subjects/:id` | Eliminar (409 si tiene recursos publicados) | — |
+| Método   | Ruta                         | Descripción                                 | Body / Params                                                                    |
+| -------- | ---------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------- |
+| `GET`    | `/api/v1/admin/subjects`     | Lista paginada                              | `?facultyId&page&limit`                                                          |
+| `POST`   | `/api/v1/admin/subjects`     | Crear                                       | `{ facultyId, title, year, quadmester, description?, urlMoodle?, urlPrograma? }` |
+| `GET`    | `/api/v1/admin/subjects/:id` | Detalle                                     | —                                                                                |
+| `PATCH`  | `/api/v1/admin/subjects/:id` | Actualizar (parcial)                        | `{ title?, description?, urlMoodle?, urlPrograma?, year?, quadmester? }`         |
+| `DELETE` | `/api/v1/admin/subjects/:id` | Eliminar (409 si tiene recursos publicados) | —                                                                                |
 
 ### Recursos (ya existían)
 
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| `GET` | `/api/v1/admin/resources` | Lista todos los recursos (todos los estados) |
-| `POST` | `/api/v1/admin/resources` | Subir recurso a staging (multipart/form-data) |
-| `POST` | `/api/v1/admin/resources/:id/publish` | Publicar recurso pendiente |
-| `POST` | `/api/v1/admin/resources/:id/reject` | Rechazar recurso (`{ reason }`) |
+| Método | Ruta                                  | Descripción                                   |
+| ------ | ------------------------------------- | --------------------------------------------- |
+| `GET`  | `/api/v1/admin/resources`             | Lista todos los recursos (todos los estados)  |
+| `POST` | `/api/v1/admin/resources`             | Subir recurso a staging (multipart/form-data) |
+| `POST` | `/api/v1/admin/resources/:id/publish` | Publicar recurso pendiente                    |
+| `POST` | `/api/v1/admin/resources/:id/reject`  | Rechazar recurso (`{ reason }`)               |
 
 ### Carpetas Drive
 
-| Método | Ruta | Descripción | Body / Params |
-|--------|------|-------------|---------------|
-| `GET` | `/api/v1/admin/drive/tree` | Árbol recursivo desde raíz | `?depth=2` (1–5) |
-| `GET` | `/api/v1/admin/drive/folder/:folderId` | Contenido de carpeta (1 nivel) | — |
-| `POST` | `/api/v1/admin/drive/folder` | Crear carpeta | `{ parentId, name }` |
-| `PATCH` | `/api/v1/admin/drive/folder/:folderId` | Renombrar carpeta | `{ name }` |
-| `DELETE` | `/api/v1/admin/drive/folder/:folderId` | Eliminar carpeta (400 si es raíz) | — |
+| Método   | Ruta                                   | Descripción                       | Body / Params        |
+| -------- | -------------------------------------- | --------------------------------- | -------------------- |
+| `GET`    | `/api/v1/admin/drive/tree`             | Árbol recursivo desde raíz        | `?depth=2` (1–5)     |
+| `GET`    | `/api/v1/admin/drive/folder/:folderId` | Contenido de carpeta (1 nivel)    | —                    |
+| `POST`   | `/api/v1/admin/drive/folder`           | Crear carpeta                     | `{ parentId, name }` |
+| `PATCH`  | `/api/v1/admin/drive/folder/:folderId` | Renombrar carpeta                 | `{ name }`           |
+| `DELETE` | `/api/v1/admin/drive/folder/:folderId` | Eliminar carpeta (400 si es raíz) | —                    |
 
 ## Formato de respuestas
 
 **Lista paginada:**
+
 ```json
 { "data": [...], "total": 100, "page": 1, "totalPages": 5 }
 ```
 
 **Error:**
+
 ```json
 { "error": "Mensaje descriptivo" }
 ```

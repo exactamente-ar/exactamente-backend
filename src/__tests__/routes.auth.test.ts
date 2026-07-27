@@ -1,4 +1,4 @@
-import { describe, it, expect, mock, beforeAll } from 'bun:test';
+import { describe, it, expect, mock } from 'bun:test';
 
 // Variables para controlar el estado del mock
 const registeredEmails = new Set<string>();
@@ -8,7 +8,7 @@ mock.module('@/db', () => ({
   db: {
     query: {
       users: {
-        findFirst: mock((opts) => {
+        findFirst: mock((_opts) => {
           // Simula que algunos emails ya estaban registrados
           if (registeredEmails.has('existing@example.com')) {
             return Promise.resolve({
@@ -31,17 +31,19 @@ mock.module('@/db', () => ({
       values: mock((vals) => ({
         returning: mock(() => {
           registeredEmails.add(vals.email);
-          return Promise.resolve([{
-            id: 'user-1',
-            email: vals.email || 'test@example.com',
-            displayName: vals.displayName || 'Test User',
-            role: 'user',
-            emailVerified: false,
-            adminFacultyId: null,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            passwordHash: vals.passwordHash || 'hash',
-          }]);
+          return Promise.resolve([
+            {
+              id: 'user-1',
+              email: vals.email || 'test@example.com',
+              displayName: vals.displayName || 'Test User',
+              role: 'user',
+              emailVerified: false,
+              adminFacultyId: null,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              passwordHash: vals.passwordHash || 'hash',
+            },
+          ]);
         }),
       })),
     })),
@@ -85,11 +87,17 @@ describe('POST /api/v1/auth/register', () => {
     const res = await app.request('/api/v1/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: 'existing@example.com', password: 'password123', displayName: 'Test' }),
+      body: JSON.stringify({
+        email: 'existing@example.com',
+        password: 'password123',
+        displayName: 'Test',
+      }),
     });
     expect(res.status).toBe(201);
     const body = await res.json();
-    expect(body.message).toBe('Si el email no estaba registrado, recibirás un email de confirmación.');
+    expect(body.message).toBe(
+      'Si el email no estaba registrado, recibirás un email de confirmación.',
+    );
     expect(body.error).toBeUndefined();
   });
 });

@@ -12,14 +12,14 @@ Base URL: `/api/v1` · Runtime: Bun + Hono · DB: PostgreSQL + Drizzle ORM · St
 
 ## Stack
 
-| Capa | Tecnología |
-|------|-----------|
-| Runtime | Bun |
-| Framework | Hono v4.6 |
-| DB | PostgreSQL 16 (Docker) + Drizzle ORM |
-| Validación | Zod + @hono/zod-validator |
-| Auth | JWT via hono/jwt |
-| Storage | Cloudflare R2 (AWS S3-compatible) |
+| Capa       | Tecnología                           |
+| ---------- | ------------------------------------ |
+| Runtime    | Bun                                  |
+| Framework  | Hono v4.6                            |
+| DB         | PostgreSQL 16 (Docker) + Drizzle ORM |
+| Validación | Zod + @hono/zod-validator            |
+| Auth       | JWT via hono/jwt                     |
+| Storage    | Cloudflare R2 (AWS S3-compatible)    |
 
 ## Variables de entorno que el frontend necesita conocer
 
@@ -30,6 +30,7 @@ Solo la URL base de la API. Los archivos PDF se sirven desde la URL pública de 
 ### Auth
 
 Todas las rutas protegidas requieren:
+
 ```
 Authorization: Bearer <jwt_token>
 ```
@@ -39,6 +40,7 @@ Authorization: Bearer <jwt_token>
 Query params: `page` (default 1) · `limit` (default 20, max 100)
 
 Response:
+
 ```json
 { "data": [...], "total": 100, "page": 1, "totalPages": 10 }
 ```
@@ -51,15 +53,15 @@ Response:
 { "error": "Mensaje descriptivo" }
 ```
 
-| Código | Causa |
-|--------|-------|
-| 400 | Validación fallida |
-| 401 | Sin token o token inválido |
-| 403 | Rol insuficiente |
-| 404 | Recurso no encontrado |
-| 409 | Conflicto de estado (ej: aprobar algo que no está pending) |
-| 429 | Rate limit excedido |
-| 500 | Error interno |
+| Código | Causa                                                      |
+| ------ | ---------------------------------------------------------- |
+| 400    | Validación fallida                                         |
+| 401    | Sin token o token inválido                                 |
+| 403    | Rol insuficiente                                           |
+| 404    | Recurso no encontrado                                      |
+| 409    | Conflicto de estado (ej: aprobar algo que no está pending) |
+| 429    | Rate limit excedido                                        |
+| 500    | Error interno                                              |
 
 ### Roles
 

@@ -27,25 +27,22 @@ export async function signToken(
   payload: Pick<JwtPayload, 'sub' | 'role' | 'facultyId'>,
 ): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
-  return sign(
-    { ...payload, iat: now, exp: now + 60 * 60 * 24 },
-    env.JWT_SECRET,
-    'HS256',
-  );
+  return sign({ ...payload, iat: now, exp: now + 60 * 60 * 24 }, env.JWT_SECRET, 'HS256');
 }
 
 export async function verifyTokenPayload(token: string): Promise<JwtPayload> {
-  return verify(token, env.JWT_SECRET, 'HS256') as Promise<JwtPayload>;
+  // Ver la nota en middleware/auth.ts: la forma la garantiza signToken.
+  return verify(token, env.JWT_SECRET, 'HS256') as unknown as Promise<JwtPayload>;
 }
 
 export function getGoogleAuthUrl(state: string): string {
   const params = new URLSearchParams({
-    client_id:     env.GOOGLE_CLIENT_ID,
-    redirect_uri:  env.GOOGLE_REDIRECT_URI,
+    client_id: env.GOOGLE_CLIENT_ID,
+    redirect_uri: env.GOOGLE_REDIRECT_URI,
     response_type: 'code',
-    scope:         'openid email profile',
-    access_type:   'offline',
-    prompt:        'select_account',
+    scope: 'openid email profile',
+    access_type: 'offline',
+    prompt: 'select_account',
     state,
   });
   return `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
@@ -55,14 +52,14 @@ export async function getGoogleUserInfo(
   code: string,
 ): Promise<{ googleId: string; email: string; displayName: string; photoUrl: string | null }> {
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
-    method:  'POST',
+    method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       code,
-      client_id:     env.GOOGLE_CLIENT_ID,
+      client_id: env.GOOGLE_CLIENT_ID,
       client_secret: env.GOOGLE_CLIENT_SECRET,
-      redirect_uri:  env.GOOGLE_REDIRECT_URI,
-      grant_type:    'authorization_code',
+      redirect_uri: env.GOOGLE_REDIRECT_URI,
+      grant_type: 'authorization_code',
     }),
   });
 

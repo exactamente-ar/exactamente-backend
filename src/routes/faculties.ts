@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { eq, and, sql } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
 import { faculties } from '@/db/schema';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
@@ -13,8 +13,8 @@ const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 }); // 100 r
 
 const facultiesQuerySchema = z.object({
   universityId: z.string().optional(),
-  page:         z.coerce.number().int().positive().default(1),
-  limit:        z.coerce.number().int().positive().max(100).default(20),
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
 app.get('/', publicReadLimit, zValidator('query', facultiesQuerySchema), async (c) => {
@@ -30,7 +30,8 @@ app.get('/', publicReadLimit, zValidator('query', facultiesQuerySchema), async (
       limit: safeLimit,
       offset,
     }),
-    db.select({ count: sql<number>`count(*)::int` })
+    db
+      .select({ count: sql<number>`count(*)::int` })
       .from(faculties)
       .where(whereClause),
   ]);

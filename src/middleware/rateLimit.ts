@@ -28,10 +28,7 @@ export function rateLimit({ limit, windowMs }: RateLimitOptions) {
   }, windowMs);
 
   return createMiddleware(async (c, next) => {
-    const ip =
-      c.req.header('x-real-ip') ??
-      c.req.header('cf-connecting-ip') ??
-      'unknown';
+    const ip = c.req.header('x-real-ip') ?? c.req.header('cf-connecting-ip') ?? 'unknown';
 
     const now = Date.now();
     const entry = store.get(ip);

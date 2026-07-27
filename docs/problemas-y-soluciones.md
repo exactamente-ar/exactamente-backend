@@ -76,7 +76,7 @@ No existe ningún endpoint de escritura (`POST`, `PUT`, `DELETE`) en las rutas a
 // En schema.ts, agregar a cada tabla de la jerarquía:
 export const faculties = pgTable('faculties', {
   // ...campos existentes...
-  driveFolderId: text('drive_folder_id'),  // nullable — se llena al crear la carpeta
+  driveFolderId: text('drive_folder_id'), // nullable — se llena al crear la carpeta
 });
 
 // Mismo patrón para: careers, careerPlans, subjects
@@ -120,11 +120,11 @@ Si la creación de carpeta falla, la entidad queda en BD sin `driveFolderId`. Un
 
 Al crear una entidad, el `parentFolderId` se obtiene de la entidad padre ya guardada en BD:
 
-| Entidad que se crea | parentFolderId viene de |
-|---------------------|------------------------|
-| Faculty             | `universities.driveFolderId` |
-| Career              | `faculties.driveFolderId` |
-| CareerPlan          | `careers.driveFolderId` |
+| Entidad que se crea | parentFolderId viene de                                                |
+| ------------------- | ---------------------------------------------------------------------- |
+| Faculty             | `universities.driveFolderId`                                           |
+| Career              | `faculties.driveFolderId`                                              |
+| CareerPlan          | `careers.driveFolderId`                                                |
 | Subject             | `careerPlans.driveFolderId` (o `careers.driveFolderId` si no hay plan) |
 
 Si el padre no tiene `driveFolderId` todavía, usar la carpeta raíz de la universidad como fallback.
@@ -253,13 +253,13 @@ async function resolveSubjectFolder(subjectId: string): Promise<string> {
 // src/services/storage/types.ts
 
 export interface StorageFolder {
-  id: string;       // ID de la carpeta en el provider
+  id: string; // ID de la carpeta en el provider
   name: string;
   parentId: string | null;
 }
 
 export interface StorageFile {
-  id: string;       // ID del archivo en el provider
+  id: string; // ID del archivo en el provider
   name: string;
   mimeType: string;
   size: number;
@@ -290,13 +290,11 @@ export interface StorageProvider {
 
 export class LocalStorageProvider implements StorageProvider {
   private basePath: string;
-  private baseUrl: string;  // ej: http://localhost:3000/files
+  private baseUrl: string; // ej: http://localhost:3000/files
 
   async createFolder(name: string, parentId: string | null): Promise<StorageFolder> {
     const id = slugify(name) + '-' + Date.now();
-    const path = parentId
-      ? join(this.basePath, parentId, id)
-      : join(this.basePath, id);
+    const path = parentId ? join(this.basePath, parentId, id) : join(this.basePath, id);
     await mkdir(path, { recursive: true });
     return { id, name, parentId };
   }
@@ -306,7 +304,7 @@ export class LocalStorageProvider implements StorageProvider {
     await copyFile(localPath, destPath);
     const stat = await statFile(destPath);
     return {
-      id: join(folderId, fileName),  // path relativo como ID
+      id: join(folderId, fileName), // path relativo como ID
       name: fileName,
       mimeType: detectMimeType(fileName),
       size: stat.size,
@@ -335,7 +333,7 @@ export class LocalStorageProvider implements StorageProvider {
 // src/services/storage/drive.provider.ts
 
 export class DriveStorageProvider implements StorageProvider {
-  private driveClient: GoogleDriveClient;  // @googleapis/drive
+  private driveClient: GoogleDriveClient; // @googleapis/drive
 
   async createFolder(name: string, parentId: string | null): Promise<StorageFolder> {
     const res = await this.driveClient.files.create({
@@ -371,8 +369,12 @@ export class DriveStorageProvider implements StorageProvider {
     };
   }
 
-  getPreviewUrl(fileId: string): string { return buildPreviewUrl(fileId); }
-  getDownloadUrl(fileId: string): string { return buildDownloadUrl(fileId); }
+  getPreviewUrl(fileId: string): string {
+    return buildPreviewUrl(fileId);
+  }
+  getDownloadUrl(fileId: string): string {
+    return buildDownloadUrl(fileId);
+  }
 
   async deleteFile(fileId: string): Promise<void> {
     await this.driveClient.files.delete({ fileId });
@@ -385,7 +387,7 @@ export class DriveStorageProvider implements StorageProvider {
 ```typescript
 // src/services/storage/index.ts
 
-import { env } from '@/env';  // validación Zod existente
+import { env } from '@/env'; // validación Zod existente
 import { LocalStorageProvider } from './local.provider';
 import { DriveStorageProvider } from './drive.provider';
 import type { StorageProvider } from './types';
@@ -393,7 +395,10 @@ import type { StorageProvider } from './types';
 export const storage: StorageProvider =
   env.NODE_ENV === 'production'
     ? new DriveStorageProvider()
-    : new LocalStorageProvider({ basePath: './storage', baseUrl: `http://localhost:${env.PORT}/files` });
+    : new LocalStorageProvider({
+        basePath: './storage',
+        baseUrl: `http://localhost:${env.PORT}/files`,
+      });
 ```
 
 #### Variable de entorno adicional para producción
@@ -408,19 +413,20 @@ GOOGLE_SERVICE_ACCOUNT_JSON=  # JSON de credenciales de service account (en una 
 
 ## Orden de implementación recomendado
 
-| Paso | Problema | Tarea | Dependencias |
-|------|----------|-------|--------------|
-| 1 | 4 | Definir interface `StorageProvider` y tipos | Ninguna |
-| 2 | 4 | Implementar `LocalStorageProvider` | Paso 1 |
-| 3 | 3 | Endpoint `POST /admin/resources/upload` (usa local storage) | Paso 2 |
-| 4 | 3 | Endpoints `POST /admin/resources/:id/publish` y `/reject` | Paso 3 |
-| 5 | 2 | Agregar `driveFolderId` al schema + migración | Ninguna |
-| 6 | 2 | Endpoints de creación de entidades (`POST /admin/faculties`, etc.) | Paso 5 |
-| 7 | 4 | Implementar `DriveStorageProvider` | Paso 1 |
-| 8 | 2+3 | Integrar `DriveStorageProvider` en producción | Pasos 6 y 7 |
-| 9 | 1 | Reorganizar carpetas existentes en Drive manualmente | Paso 8 |
+| Paso | Problema | Tarea                                                              | Dependencias |
+| ---- | -------- | ------------------------------------------------------------------ | ------------ |
+| 1    | 4        | Definir interface `StorageProvider` y tipos                        | Ninguna      |
+| 2    | 4        | Implementar `LocalStorageProvider`                                 | Paso 1       |
+| 3    | 3        | Endpoint `POST /admin/resources/upload` (usa local storage)        | Paso 2       |
+| 4    | 3        | Endpoints `POST /admin/resources/:id/publish` y `/reject`          | Paso 3       |
+| 5    | 2        | Agregar `driveFolderId` al schema + migración                      | Ninguna      |
+| 6    | 2        | Endpoints de creación de entidades (`POST /admin/faculties`, etc.) | Paso 5       |
+| 7    | 4        | Implementar `DriveStorageProvider`                                 | Paso 1       |
+| 8    | 2+3      | Integrar `DriveStorageProvider` en producción                      | Pasos 6 y 7  |
+| 9    | 1        | Reorganizar carpetas existentes en Drive manualmente               | Paso 8       |
 
 **Criterio del orden:**
+
 - Empezar con la abstracción (Paso 1-2) para que todo lo que se construya después sea compatible con ambos providers.
 - El upload local (Pasos 3-4) permite probar el flujo completo sin credenciales de Drive.
 - La creación de carpetas (Pasos 5-6) se puede hacer en paralelo con el upload, pero la integración final (Paso 8) necesita ambos.

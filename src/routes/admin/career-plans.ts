@@ -15,8 +15,8 @@ const adminGuard = [verifyToken, requireRole('admin')] as const;
 // GET / — lista paginada, filtrable por carrera
 const listSchema = z.object({
   careerId: z.string().optional(),
-  page:     z.coerce.number().int().positive().default(1),
-  limit:    z.coerce.number().int().positive().max(100).default(20),
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
 app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
@@ -30,7 +30,10 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
       limit: safeLimit,
       offset,
     }),
-    db.select({ count: sql<number>`count(*)::int` }).from(careerPlans).where(whereClause),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(careerPlans)
+      .where(whereClause),
   ]);
   return c.json(buildPaginatedResponse(data, countResult[0]?.count ?? 0, safePage, safeLimit));
 });
@@ -38,8 +41,8 @@ app.get('/', ...adminGuard, zValidator('query', listSchema), async (c) => {
 // POST / — crear
 const createSchema = z.object({
   careerId: z.string().min(1),
-  name:     z.string().min(1).max(100),
-  year:     z.number().int().positive(),
+  name: z.string().min(1).max(100),
+  year: z.number().int().positive(),
 });
 
 app.post('/', ...adminGuard, zValidator('json', createSchema), async (c) => {
@@ -51,7 +54,7 @@ app.post('/', ...adminGuard, zValidator('json', createSchema), async (c) => {
 
 // GET /:id/subjects — materias del plan
 const subjectsQuerySchema = z.object({
-  page:  z.coerce.number().int().positive().default(1),
+  page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(100),
 });
 
@@ -61,27 +64,29 @@ app.get('/:id/subjects', ...adminGuard, zValidator('query', subjectsQuerySchema)
   const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 
   const [data, countResult] = await Promise.all([
-    db.select({
-      id:            subjects.id,
-      facultyId:     subjects.facultyId,
-      title:         subjects.title,
-      description:   subjects.description,
-      urlMoodle:     subjects.urlMoodle,
-      urlPrograma:   subjects.urlPrograma,
-      year:          subjects.year,
-      quadmester:    subjects.quadmester,
-      createdAt:     subjects.createdAt,
-      resourceCount: sql<number>`count(case when ${resources.status} = 'published' then 1 end)::int`,
-    })
-    .from(subjects)
-    .innerJoin(careerSubjects, eq(careerSubjects.subjectId, subjects.id))
-    .leftJoin(resources, eq(resources.subjectId, subjects.id))
-    .where(eq(careerSubjects.planId, id))
-    .groupBy(subjects.id)
-    .orderBy(asc(subjects.year), asc(subjects.quadmester), asc(subjects.title))
-    .limit(safeLimit)
-    .offset(offset),
-    db.select({ count: sql<number>`count(distinct ${subjects.id})::int` })
+    db
+      .select({
+        id: subjects.id,
+        facultyId: subjects.facultyId,
+        title: subjects.title,
+        description: subjects.description,
+        urlMoodle: subjects.urlMoodle,
+        urlPrograma: subjects.urlPrograma,
+        year: subjects.year,
+        quadmester: subjects.quadmester,
+        createdAt: subjects.createdAt,
+        resourceCount: sql<number>`count(case when ${resources.status} = 'published' then 1 end)::int`,
+      })
+      .from(subjects)
+      .innerJoin(careerSubjects, eq(careerSubjects.subjectId, subjects.id))
+      .leftJoin(resources, eq(resources.subjectId, subjects.id))
+      .where(eq(careerSubjects.planId, id))
+      .groupBy(subjects.id)
+      .orderBy(asc(subjects.year), asc(subjects.quadmester), asc(subjects.title))
+      .limit(safeLimit)
+      .offset(offset),
+    db
+      .select({ count: sql<number>`count(distinct ${subjects.id})::int` })
       .from(subjects)
       .innerJoin(careerSubjects, eq(careerSubjects.subjectId, subjects.id))
       .where(eq(careerSubjects.planId, id)),
@@ -109,11 +114,15 @@ app.patch('/:id', ...adminGuard, zValidator('json', updateSchema), async (c) => 
   const { name, year } = c.req.valid('json');
   const updates: Record<string, unknown> = {};
   if (name !== undefined) updates.name = name;
-  if (year !== undefined) updates.year  = year;
+  if (year !== undefined) updates.year = year;
   if (Object.keys(updates).length === 0) {
     return c.json({ error: 'Se debe proporcionar al menos un campo para actualizar' }, 400);
   }
-  const [plan] = await db.update(careerPlans).set(updates).where(eq(careerPlans.id, id)).returning();
+  const [plan] = await db
+    .update(careerPlans)
+    .set(updates)
+    .where(eq(careerPlans.id, id))
+    .returning();
   if (!plan) return c.json({ error: 'Plan no encontrado' }, 404);
   return c.json(plan);
 });

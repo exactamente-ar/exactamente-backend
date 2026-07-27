@@ -1,6 +1,15 @@
 import {
-  pgTable, text, varchar, integer, smallint, boolean,
-  timestamp, pgEnum, primaryKey, index, unique,
+  pgTable,
+  text,
+  varchar,
+  integer,
+  smallint,
+  boolean,
+  timestamp,
+  pgEnum,
+  primaryKey,
+  index,
+  unique,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -8,17 +17,9 @@ import { relations } from 'drizzle-orm';
 
 export const userRoleEnum = pgEnum('user_role', ['superadmin', 'admin', 'user']);
 
-export const resourceStatusEnum = pgEnum('resource_status', [
-  'pending',
-  'published',
-  'rejected',
-]);
+export const resourceStatusEnum = pgEnum('resource_status', ['pending', 'published', 'rejected']);
 
-export const resourceTypeEnum = pgEnum('resource_type', [
-  'resumen',
-  'parcial',
-  'final',
-]);
+export const resourceTypeEnum = pgEnum('resource_type', ['resumen', 'parcial', 'final']);
 
 export const resourceSubtypeEnum = pgEnum('resource_subtype', [
   'parcial',
@@ -30,132 +31,186 @@ export const resourceSubtypeEnum = pgEnum('resource_subtype', [
 // ─── JERARQUÍA ────────────────────────────────────────────────────────────────
 
 export const universities = pgTable('universities', {
-  id:        text('id').primaryKey(),
-  name:      varchar('name', { length: 255 }).notNull().unique(),
+  id: text('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull().unique(),
   shortName: varchar('short_name', { length: 50 }),
-  slug:      varchar('slug', { length: 100 }).notNull().unique(),
+  slug: varchar('slug', { length: 100 }).notNull().unique(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
-export const faculties = pgTable('faculties', {
-  id:           text('id').primaryKey(),
-  universityId: text('university_id').notNull().references(() => universities.id),
-  name:         varchar('name', { length: 255 }).notNull(),
-  shortName:    varchar('short_name', { length: 50 }),
-  slug:         varchar('slug', { length: 100 }).notNull(),
-  createdAt:    timestamp('created_at').notNull().defaultNow(),
-}, (t) => ({
-  uniqueSlugPerUniversity: unique().on(t.universityId, t.slug),
-  universityIdx:           index('faculties_university_idx').on(t.universityId),
-}));
+export const faculties = pgTable(
+  'faculties',
+  {
+    id: text('id').primaryKey(),
+    universityId: text('university_id')
+      .notNull()
+      .references(() => universities.id),
+    name: varchar('name', { length: 255 }).notNull(),
+    shortName: varchar('short_name', { length: 50 }),
+    slug: varchar('slug', { length: 100 }).notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    uniqueSlugPerUniversity: unique().on(t.universityId, t.slug),
+    universityIdx: index('faculties_university_idx').on(t.universityId),
+  }),
+);
 
-export const careers = pgTable('careers', {
-  id:        text('id').primaryKey(),
-  facultyId: text('faculty_id').notNull().references(() => faculties.id),
-  name:      varchar('name', { length: 255 }).notNull(),
-  shortName: varchar('short_name', { length: 50 }),
-  slug:      varchar('slug', { length: 100 }).notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-}, (t) => ({
-  uniqueSlugPerFaculty: unique().on(t.facultyId, t.slug),
-  facultyIdx:           index('careers_faculty_idx').on(t.facultyId),
-}));
+export const careers = pgTable(
+  'careers',
+  {
+    id: text('id').primaryKey(),
+    facultyId: text('faculty_id')
+      .notNull()
+      .references(() => faculties.id),
+    name: varchar('name', { length: 255 }).notNull(),
+    shortName: varchar('short_name', { length: 50 }),
+    slug: varchar('slug', { length: 100 }).notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    uniqueSlugPerFaculty: unique().on(t.facultyId, t.slug),
+    facultyIdx: index('careers_faculty_idx').on(t.facultyId),
+  }),
+);
 
-export const careerPlans = pgTable('career_plans', {
-  id:        text('id').primaryKey(),
-  careerId:  text('career_id').notNull().references(() => careers.id),
-  name:      varchar('name', { length: 100 }).notNull(),
-  year:      smallint('year').notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-}, (t) => ({
-  careerIdx: index('career_plans_career_idx').on(t.careerId),
-}));
+export const careerPlans = pgTable(
+  'career_plans',
+  {
+    id: text('id').primaryKey(),
+    careerId: text('career_id')
+      .notNull()
+      .references(() => careers.id),
+    name: varchar('name', { length: 100 }).notNull(),
+    year: smallint('year').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    careerIdx: index('career_plans_career_idx').on(t.careerId),
+  }),
+);
 
-export const subjects = pgTable('subjects', {
-  id:          text('id').primaryKey(),
-  facultyId:   text('faculty_id').notNull().references(() => faculties.id),
-  title:       varchar('title', { length: 255 }).notNull(),
-  slug:        varchar('slug', { length: 100 }).notNull(),
-  description: text('description').notNull().default(''),
-  urlMoodle:   varchar('url_moodle', { length: 512 }).default(''),
-  urlPrograma: varchar('url_programa', { length: 512 }).default(''),
-  year:        smallint('year').notNull(),
-  quadmester:  smallint('quadmester').notNull(),
-  createdAt:   timestamp('created_at').notNull().defaultNow(),
-  updatedAt:   timestamp('updated_at').notNull().defaultNow(),
-}, (t) => ({
-  facultyIdx: index('subjects_faculty_idx').on(t.facultyId),
-  slugIdx:    index('subjects_slug_idx').on(t.slug),
-}));
+export const subjects = pgTable(
+  'subjects',
+  {
+    id: text('id').primaryKey(),
+    facultyId: text('faculty_id')
+      .notNull()
+      .references(() => faculties.id),
+    title: varchar('title', { length: 255 }).notNull(),
+    slug: varchar('slug', { length: 100 }).notNull(),
+    description: text('description').notNull().default(''),
+    urlMoodle: varchar('url_moodle', { length: 512 }).default(''),
+    urlPrograma: varchar('url_programa', { length: 512 }).default(''),
+    year: smallint('year').notNull(),
+    quadmester: smallint('quadmester').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    facultyIdx: index('subjects_faculty_idx').on(t.facultyId),
+    slugIdx: index('subjects_slug_idx').on(t.slug),
+  }),
+);
 
-export const careerSubjects = pgTable('career_subjects', {
-  careerId:   text('career_id').notNull().references(() => careers.id, { onDelete: 'cascade' }),
-  planId:     text('plan_id').notNull().references(() => careerPlans.id, { onDelete: 'cascade' }),
-  subjectId:  text('subject_id').notNull().references(() => subjects.id, { onDelete: 'cascade' }),
-  year:       smallint('year').notNull(),
-  quadmester: smallint('quadmester').notNull(),
-}, (t) => ({
-  pk:         primaryKey({ columns: [t.careerId, t.planId, t.subjectId] }),
-  subjectIdx: index('career_subjects_subject_idx').on(t.subjectId),
-  planIdx:    index('career_subjects_plan_idx').on(t.planId),
-}));
+export const careerSubjects = pgTable(
+  'career_subjects',
+  {
+    careerId: text('career_id')
+      .notNull()
+      .references(() => careers.id, { onDelete: 'cascade' }),
+    planId: text('plan_id')
+      .notNull()
+      .references(() => careerPlans.id, { onDelete: 'cascade' }),
+    subjectId: text('subject_id')
+      .notNull()
+      .references(() => subjects.id, { onDelete: 'cascade' }),
+    year: smallint('year').notNull(),
+    quadmester: smallint('quadmester').notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.careerId, t.planId, t.subjectId] }),
+    subjectIdx: index('career_subjects_subject_idx').on(t.subjectId),
+    planIdx: index('career_subjects_plan_idx').on(t.planId),
+  }),
+);
 
-export const subjectPrerequisites = pgTable('subject_prerequisites', {
-  subjectId:  text('subject_id').notNull().references(() => subjects.id, { onDelete: 'cascade' }),
-  requiredId: text('required_id').notNull().references(() => subjects.id, { onDelete: 'cascade' }),
-}, (t) => ({
-  pk: primaryKey({ columns: [t.subjectId, t.requiredId] }),
-}));
+export const subjectPrerequisites = pgTable(
+  'subject_prerequisites',
+  {
+    subjectId: text('subject_id')
+      .notNull()
+      .references(() => subjects.id, { onDelete: 'cascade' }),
+    requiredId: text('required_id')
+      .notNull()
+      .references(() => subjects.id, { onDelete: 'cascade' }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.subjectId, t.requiredId] }),
+  }),
+);
 
 // ─── USUARIOS ─────────────────────────────────────────────────────────────────
 
-export const users = pgTable('users', {
-  id:             text('id').primaryKey(),
-  email:          varchar('email', { length: 255 }).notNull().unique(),
-  passwordHash:   varchar('password_hash', { length: 255 }),
-  googleId:       varchar('google_id', { length: 255 }).unique(),
-  displayName:    varchar('display_name', { length: 100 }).notNull(),
-  photoUrl:       varchar('photo_url', { length: 500 }),
-  role:           userRoleEnum('role').notNull().default('user'),
-  adminFacultyId: text('admin_faculty_id').references(() => faculties.id),
-  emailVerified:  boolean('email_verified').notNull().default(false),
-  createdAt:      timestamp('created_at').notNull().defaultNow(),
-  updatedAt:      timestamp('updated_at').notNull().defaultNow(),
-}, (t) => ({
-  emailIdx:    index('users_email_idx').on(t.email),
-  facultyIdx:  index('users_faculty_idx').on(t.adminFacultyId),
-  googleIdIdx: index('users_google_id_idx').on(t.googleId),
-}));
+export const users = pgTable(
+  'users',
+  {
+    id: text('id').primaryKey(),
+    email: varchar('email', { length: 255 }).notNull().unique(),
+    passwordHash: varchar('password_hash', { length: 255 }),
+    googleId: varchar('google_id', { length: 255 }).unique(),
+    displayName: varchar('display_name', { length: 100 }).notNull(),
+    photoUrl: varchar('photo_url', { length: 500 }),
+    role: userRoleEnum('role').notNull().default('user'),
+    adminFacultyId: text('admin_faculty_id').references(() => faculties.id),
+    emailVerified: boolean('email_verified').notNull().default(false),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    emailIdx: index('users_email_idx').on(t.email),
+    facultyIdx: index('users_faculty_idx').on(t.adminFacultyId),
+    googleIdIdx: index('users_google_id_idx').on(t.googleId),
+  }),
+);
 
 // ─── RECURSOS ─────────────────────────────────────────────────────────────────
 
-export const resources = pgTable('resources', {
-  id:              text('id').primaryKey(),
-  subjectId:       text('subject_id').notNull().references(() => subjects.id),
-  uploadedBy:      text('uploaded_by').notNull().references(() => users.id),
-  reviewedBy:      text('reviewed_by').references(() => users.id),
-  title:           varchar('title', { length: 255 }).notNull(),
-  type:            resourceTypeEnum('type').notNull(),
-  subtype:         resourceSubtypeEnum('subtype'),
-  status:          resourceStatusEnum('status').notNull().default('pending'),
-  r2Key:           text('r2_key'),
-  period:          varchar('period', { length: 20 }),
-  topic:           smallint('topic'),
-  examYear:        smallint('exam_year'),
-  examMonth:       smallint('exam_month'),
-  examDay:         smallint('exam_day'),
-  notes:           text('notes'),
-  rejectionReason: text('rejection_reason'),
-  downloadCount:   integer('download_count').notNull().default(0),
-  createdAt:       timestamp('created_at').notNull().defaultNow(),
-  updatedAt:       timestamp('updated_at').notNull().defaultNow(),
-  publishedAt:     timestamp('published_at'),
-}, (t) => ({
-  subjectIdx:    index('resources_subject_idx').on(t.subjectId),
-  statusIdx:     index('resources_status_idx').on(t.status),
-  typeIdx:       index('resources_type_idx').on(t.type),
-  uploadedByIdx: index('resources_uploaded_by_idx').on(t.uploadedBy),
-}));
+export const resources = pgTable(
+  'resources',
+  {
+    id: text('id').primaryKey(),
+    subjectId: text('subject_id')
+      .notNull()
+      .references(() => subjects.id),
+    uploadedBy: text('uploaded_by')
+      .notNull()
+      .references(() => users.id),
+    reviewedBy: text('reviewed_by').references(() => users.id),
+    title: varchar('title', { length: 255 }).notNull(),
+    type: resourceTypeEnum('type').notNull(),
+    subtype: resourceSubtypeEnum('subtype'),
+    status: resourceStatusEnum('status').notNull().default('pending'),
+    r2Key: text('r2_key'),
+    period: varchar('period', { length: 20 }),
+    topic: smallint('topic'),
+    examYear: smallint('exam_year'),
+    examMonth: smallint('exam_month'),
+    examDay: smallint('exam_day'),
+    notes: text('notes'),
+    rejectionReason: text('rejection_reason'),
+    downloadCount: integer('download_count').notNull().default(0),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+    publishedAt: timestamp('published_at'),
+  },
+  (t) => ({
+    subjectIdx: index('resources_subject_idx').on(t.subjectId),
+    statusIdx: index('resources_status_idx').on(t.status),
+    typeIdx: index('resources_type_idx').on(t.type),
+    uploadedByIdx: index('resources_uploaded_by_idx').on(t.uploadedBy),
+  }),
+);
 
 // ─── RELACIONES ───────────────────────────────────────────────────────────────
 
@@ -164,50 +219,69 @@ export const universitiesRelations = relations(universities, ({ many }) => ({
 }));
 
 export const facultiesRelations = relations(faculties, ({ one, many }) => ({
-  university: one(universities, { fields: [faculties.universityId], references: [universities.id] }),
-  careers:    many(careers),
-  subjects:   many(subjects),
+  university: one(universities, {
+    fields: [faculties.universityId],
+    references: [universities.id],
+  }),
+  careers: many(careers),
+  subjects: many(subjects),
   adminUsers: many(users),
 }));
 
 export const careersRelations = relations(careers, ({ one, many }) => ({
-  faculty:        one(faculties, { fields: [careers.facultyId], references: [faculties.id] }),
-  careerPlans:    many(careerPlans),
+  faculty: one(faculties, { fields: [careers.facultyId], references: [faculties.id] }),
+  careerPlans: many(careerPlans),
   careerSubjects: many(careerSubjects),
 }));
 
 export const careerPlansRelations = relations(careerPlans, ({ one, many }) => ({
-  career:         one(careers, { fields: [careerPlans.careerId], references: [careers.id] }),
+  career: one(careers, { fields: [careerPlans.careerId], references: [careers.id] }),
   careerSubjects: many(careerSubjects),
 }));
 
 export const subjectsRelations = relations(subjects, ({ one, many }) => ({
-  faculty:        one(faculties, { fields: [subjects.facultyId], references: [faculties.id] }),
+  faculty: one(faculties, { fields: [subjects.facultyId], references: [faculties.id] }),
   careerSubjects: many(careerSubjects),
-  prerequisites:  many(subjectPrerequisites, { relationName: 'subject' }),
-  dependents:     many(subjectPrerequisites, { relationName: 'required' }),
-  resources:      many(resources),
+  prerequisites: many(subjectPrerequisites, { relationName: 'subject' }),
+  dependents: many(subjectPrerequisites, { relationName: 'required' }),
+  resources: many(resources),
 }));
 
 export const careerSubjectsRelations = relations(careerSubjects, ({ one }) => ({
-  career:  one(careers,      { fields: [careerSubjects.careerId],  references: [careers.id] }),
-  plan:    one(careerPlans,  { fields: [careerSubjects.planId],    references: [careerPlans.id] }),
-  subject: one(subjects,     { fields: [careerSubjects.subjectId], references: [subjects.id] }),
+  career: one(careers, { fields: [careerSubjects.careerId], references: [careers.id] }),
+  plan: one(careerPlans, { fields: [careerSubjects.planId], references: [careerPlans.id] }),
+  subject: one(subjects, { fields: [careerSubjects.subjectId], references: [subjects.id] }),
 }));
 
 export const subjectPrerequisitesRelations = relations(subjectPrerequisites, ({ one }) => ({
-  subject:  one(subjects, { fields: [subjectPrerequisites.subjectId],  references: [subjects.id], relationName: 'subject' }),
-  required: one(subjects, { fields: [subjectPrerequisites.requiredId], references: [subjects.id], relationName: 'required' }),
+  subject: one(subjects, {
+    fields: [subjectPrerequisites.subjectId],
+    references: [subjects.id],
+    relationName: 'subject',
+  }),
+  required: one(subjects, {
+    fields: [subjectPrerequisites.requiredId],
+    references: [subjects.id],
+    relationName: 'required',
+  }),
 }));
 
 export const usersRelations = relations(users, ({ one, many }) => ({
-  adminFaculty:      one(faculties, { fields: [users.adminFacultyId], references: [faculties.id] }),
+  adminFaculty: one(faculties, { fields: [users.adminFacultyId], references: [faculties.id] }),
   uploadedResources: many(resources, { relationName: 'uploadedBy' }),
   reviewedResources: many(resources, { relationName: 'reviewedBy' }),
 }));
 
 export const resourcesRelations = relations(resources, ({ one }) => ({
-  subject:    one(subjects, { fields: [resources.subjectId],  references: [subjects.id] }),
-  uploadedBy: one(users,    { fields: [resources.uploadedBy], references: [users.id], relationName: 'uploadedBy' }),
-  reviewedBy: one(users,    { fields: [resources.reviewedBy], references: [users.id], relationName: 'reviewedBy' }),
+  subject: one(subjects, { fields: [resources.subjectId], references: [subjects.id] }),
+  uploadedBy: one(users, {
+    fields: [resources.uploadedBy],
+    references: [users.id],
+    relationName: 'uploadedBy',
+  }),
+  reviewedBy: one(users, {
+    fields: [resources.reviewedBy],
+    references: [users.id],
+    relationName: 'reviewedBy',
+  }),
 }));

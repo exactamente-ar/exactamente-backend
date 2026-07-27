@@ -1,9 +1,9 @@
 import { test, expect, describe } from 'bun:test';
 import adminUniversitiesApp from '@/routes/admin/universities';
-import adminFacultiesApp    from '@/routes/admin/faculties';
-import adminCareersApp      from '@/routes/admin/careers';
-import adminCareerPlansApp  from '@/routes/admin/career-plans';
-import adminSubjectsApp     from '@/routes/admin/subjects';
+import adminFacultiesApp from '@/routes/admin/faculties';
+import adminCareersApp from '@/routes/admin/careers';
+import adminCareerPlansApp from '@/routes/admin/career-plans';
+import adminSubjectsApp from '@/routes/admin/subjects';
 import { signToken } from '@/services/auth.service';
 
 async function token(role: 'user' | 'admin') {
@@ -42,14 +42,18 @@ describe('admin/universities', () => {
 
   test('POST / returns 400 when name is missing', async () => {
     const res = await req(adminUniversitiesApp, '/', {
-      method: 'POST', authRole: 'admin', body: {},
+      method: 'POST',
+      authRole: 'admin',
+      body: {},
     });
     expect(res.status).toBe(400);
   });
 
   test('PATCH /:id returns 400 when name is missing', async () => {
     const res = await req(adminUniversitiesApp, '/some-id', {
-      method: 'PATCH', authRole: 'admin', body: {},
+      method: 'PATCH',
+      authRole: 'admin',
+      body: {},
     });
     expect(res.status).toBe(400);
   });
@@ -70,7 +74,9 @@ describe('admin/faculties', () => {
 
   test('POST / returns 400 when universityId is missing', async () => {
     const res = await req(adminFacultiesApp, '/', {
-      method: 'POST', authRole: 'admin', body: { name: 'FACET' },
+      method: 'POST',
+      authRole: 'admin',
+      body: { name: 'FACET' },
     });
     expect(res.status).toBe(400);
   });
@@ -86,7 +92,9 @@ describe('admin/careers', () => {
 
   test('POST / returns 400 when facultyId is missing', async () => {
     const res = await req(adminCareersApp, '/', {
-      method: 'POST', authRole: 'admin', body: { name: 'Sistemas' },
+      method: 'POST',
+      authRole: 'admin',
+      body: { name: 'Sistemas' },
     });
     expect(res.status).toBe(400);
   });
@@ -102,14 +110,18 @@ describe('admin/career-plans', () => {
 
   test('POST / returns 400 when year is missing', async () => {
     const res = await req(adminCareerPlansApp, '/', {
-      method: 'POST', authRole: 'admin', body: { careerId: 'c1', name: 'Plan 2019' },
+      method: 'POST',
+      authRole: 'admin',
+      body: { careerId: 'c1', name: 'Plan 2019' },
     });
     expect(res.status).toBe(400);
   });
 
   test('PATCH /:id returns 400 when body is empty', async () => {
     const res = await req(adminCareerPlansApp, '/some-id', {
-      method: 'PATCH', authRole: 'admin', body: {},
+      method: 'PATCH',
+      authRole: 'admin',
+      body: {},
     });
     expect(res.status).toBe(400);
   });
@@ -125,9 +137,10 @@ describe('admin/subjects', () => {
 
   test('POST / returns 400 when required fields are missing', async () => {
     const res = await req(adminSubjectsApp, '/', {
-      method: 'POST', authRole: 'admin', body: { title: 'Análisis' },
+      method: 'POST',
+      authRole: 'admin',
+      body: { title: 'Análisis' },
     });
     expect(res.status).toBe(400);
   });
 });
-

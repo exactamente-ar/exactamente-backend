@@ -1,20 +1,20 @@
 import { Hono } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { cors } from 'hono/cors';
-import authRoutes         from '@/routes/auth';
+import authRoutes from '@/routes/auth';
 import universitiesRoutes from '@/routes/universities';
-import facultiesRoutes    from '@/routes/faculties';
-import careersRoutes      from '@/routes/careers';
-import careerPlansRoutes  from '@/routes/career-plans';
-import subjectsRoutes     from '@/routes/subjects';
-import resourcesRoutes    from '@/routes/resources';
-import adminResourcesRoutes  from '@/routes/admin/resources';
+import facultiesRoutes from '@/routes/faculties';
+import careersRoutes from '@/routes/careers';
+import careerPlansRoutes from '@/routes/career-plans';
+import subjectsRoutes from '@/routes/subjects';
+import resourcesRoutes from '@/routes/resources';
+import adminResourcesRoutes from '@/routes/admin/resources';
 import adminUniversitiesRoutes from '@/routes/admin/universities';
-import adminFacultiesRoutes  from '@/routes/admin/faculties';
-import adminCareersRoutes    from '@/routes/admin/careers';
+import adminFacultiesRoutes from '@/routes/admin/faculties';
+import adminCareersRoutes from '@/routes/admin/careers';
 import adminCareerPlansRoutes from '@/routes/admin/career-plans';
-import adminSubjectsRoutes   from '@/routes/admin/subjects';
-import adminStatsRoutes      from '@/routes/admin/stats';
+import adminSubjectsRoutes from '@/routes/admin/subjects';
+import adminStatsRoutes from '@/routes/admin/stats';
 import { env } from '@/env';
 import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
@@ -39,30 +39,33 @@ app.onError((err, c) => {
 app.use('*', requestId);
 app.use('*', httpLogger);
 app.use('*', securityHeaders);
-app.use('*', cors({
-  origin: [...env.CORS_ORIGIN.split(','), env.ADMIN_ORIGIN],
-  allowHeaders: ['Content-Type', 'Authorization'],
-  allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-}));
+app.use(
+  '*',
+  cors({
+    origin: [...env.CORS_ORIGIN.split(','), env.ADMIN_ORIGIN],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  }),
+);
 
 app.get('/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 app.notFound((c) => c.json({ error: 'Ruta no encontrada' }, 404));
 
 const api = app.basePath('/api/v1');
-api.route('/auth',         authRoutes);
+api.route('/auth', authRoutes);
 api.route('/universities', universitiesRoutes);
-api.route('/faculties',    facultiesRoutes);
-api.route('/careers',       careersRoutes);
+api.route('/faculties', facultiesRoutes);
+api.route('/careers', careersRoutes);
 api.route('/career-plans', careerPlansRoutes);
-api.route('/subjects',     subjectsRoutes);
-api.route('/resources',    resourcesRoutes);
-api.route('/admin/resources',    adminResourcesRoutes);
-api.route('/admin/universities',  adminUniversitiesRoutes);
-api.route('/admin/faculties',     adminFacultiesRoutes);
-api.route('/admin/careers',       adminCareersRoutes);
-api.route('/admin/career-plans',  adminCareerPlansRoutes);
-api.route('/admin/subjects',      adminSubjectsRoutes);
-api.route('/admin/stats',         adminStatsRoutes);
+api.route('/subjects', subjectsRoutes);
+api.route('/resources', resourcesRoutes);
+api.route('/admin/resources', adminResourcesRoutes);
+api.route('/admin/universities', adminUniversitiesRoutes);
+api.route('/admin/faculties', adminFacultiesRoutes);
+api.route('/admin/careers', adminCareersRoutes);
+api.route('/admin/career-plans', adminCareerPlansRoutes);
+api.route('/admin/subjects', adminSubjectsRoutes);
+api.route('/admin/stats', adminStatsRoutes);
 
 export default app;

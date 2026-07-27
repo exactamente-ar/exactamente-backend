@@ -6,31 +6,31 @@
 
 ### ✅ Ya existía
 
-| Componente | Detalle |
-|-----------|---------|
-| JWT con `role` | El payload incluye `sub`, `role` (`user/admin/superadmin`), `facultyId`, `iat`, `exp` |
-| `verifyToken` | Middleware que verifica el Bearer token y popula `c.get('user')` |
-| `requireRole(minRole)` | Middleware con jerarquía `user < admin < superadmin` |
-| Rate limiting en login | 10 requests / 15 min |
-| Admin recursos | `GET/POST /admin/resources`, `POST /admin/resources/:id/publish|reject` |
-| `StorageProvider` interface | Con implementaciones local (funcional) y drive (stub) |
-| Schema completo | Tablas: `universities`, `faculties`, `careers`, `careerPlans`, `subjects`, `resources`, `users` |
-| Rutas públicas | Lectura de universities, faculties, careers, subjects, resources |
+| Componente                  | Detalle                                                                                         |
+| --------------------------- | ----------------------------------------------------------------------------------------------- |
+| JWT con `role`              | El payload incluye `sub`, `role` (`user/admin/superadmin`), `facultyId`, `iat`, `exp`           |
+| `verifyToken`               | Middleware que verifica el Bearer token y popula `c.get('user')`                                |
+| `requireRole(minRole)`      | Middleware con jerarquía `user < admin < superadmin`                                            |
+| Rate limiting en login      | 10 requests / 15 min                                                                            |
+| Admin recursos              | `GET/POST /admin/resources`, `POST /admin/resources/:id/publish                                 | reject` |
+| `StorageProvider` interface | Con implementaciones local (funcional) y drive (stub)                                           |
+| Schema completo             | Tablas: `universities`, `faculties`, `careers`, `careerPlans`, `subjects`, `resources`, `users` |
+| Rutas públicas              | Lectura de universities, faculties, careers, subjects, resources                                |
 
 ### ❌ Faltaba implementar
 
-| Componente | Estado después |
-|-----------|---------------|
-| Admin CRUD de universidades | ✅ Implementado |
-| Admin CRUD de facultades | ✅ Implementado |
-| Admin CRUD de carreras | ✅ Implementado |
-| Admin CRUD de planes de carrera | ✅ Implementado |
-| Admin CRUD de materias | ✅ Implementado |
-| Rutas de gestión de carpetas Drive | ✅ Implementado |
-| Integración real con Google Drive API | ✅ Implementado (requiere credenciales) |
-| `STORAGE_PROVIDER` env var | ✅ Implementado |
-| CORS para admin frontend (`ADMIN_ORIGIN`) | ✅ Implementado |
-| `DriveService` separado de `StorageProvider` | ✅ Implementado |
+| Componente                                   | Estado después                          |
+| -------------------------------------------- | --------------------------------------- |
+| Admin CRUD de universidades                  | ✅ Implementado                         |
+| Admin CRUD de facultades                     | ✅ Implementado                         |
+| Admin CRUD de carreras                       | ✅ Implementado                         |
+| Admin CRUD de planes de carrera              | ✅ Implementado                         |
+| Admin CRUD de materias                       | ✅ Implementado                         |
+| Rutas de gestión de carpetas Drive           | ✅ Implementado                         |
+| Integración real con Google Drive API        | ✅ Implementado (requiere credenciales) |
+| `STORAGE_PROVIDER` env var                   | ✅ Implementado                         |
+| CORS para admin frontend (`ADMIN_ORIGIN`)    | ✅ Implementado                         |
+| `DriveService` separado de `StorageProvider` | ✅ Implementado                         |
 
 ## Respuestas a las preguntas del análisis
 

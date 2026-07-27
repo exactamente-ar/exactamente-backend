@@ -33,11 +33,11 @@ Authorization: Bearer <token>
 
 ### Roles
 
-| Role | Level |
-|------|-------|
-| `user` | 1 — default |
-| `admin` | 2 — scoped to a faculty |
-| `superadmin` | 3 — full access |
+| Role         | Level                   |
+| ------------ | ----------------------- |
+| `user`       | 1 — default             |
+| `admin`      | 2 — scoped to a faculty |
+| `superadmin` | 3 — full access         |
 
 ---
 
@@ -150,9 +150,9 @@ Requires `Authorization: Bearer <token>`.
 
 **Query params:**
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| `universityId` | string | No | Filter by university |
+| Param          | Type   | Required | Description          |
+| -------------- | ------ | -------- | -------------------- |
+| `universityId` | string | No       | Filter by university |
 
 **Response `200`:**
 
@@ -178,9 +178,9 @@ Requires `Authorization: Bearer <token>`.
 
 **Query params:**
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| `facultyId` | string | No | Filter by faculty |
+| Param       | Type   | Required | Description       |
+| ----------- | ------ | -------- | ----------------- |
+| `facultyId` | string | No       | Filter by faculty |
 
 **Response `200`:**
 
@@ -206,15 +206,15 @@ Requires `Authorization: Bearer <token>`.
 
 **Query params:**
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| `careerId` | string | No | Filter by career |
-| `facultyId` | string | No | Filter by faculty |
-| `year` | number (1–5) | No | Academic year |
-| `quadmester` | number (1–2) | No | Semester |
-| `search` | string | No | Search by title |
-| `page` | number | No | Default `1` |
-| `limit` | number | No | Default `20`, max `100` |
+| Param        | Type         | Required | Description             |
+| ------------ | ------------ | -------- | ----------------------- |
+| `careerId`   | string       | No       | Filter by career        |
+| `facultyId`  | string       | No       | Filter by faculty       |
+| `year`       | number (1–5) | No       | Academic year           |
+| `quadmester` | number (1–2) | No       | Semester                |
+| `search`     | string       | No       | Search by title         |
+| `page`       | number       | No       | Default `1`             |
+| `limit`      | number       | No       | Default `20`, max `100` |
 
 **Response `200`:**
 
@@ -233,9 +233,7 @@ Requires `Authorization: Bearer <token>`.
       "quadmester": 1,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "updatedAt": "2025-01-01T00:00:00.000Z",
-      "careers": [
-        { "careerId": "uuid", "year": 2, "quadmester": 1 }
-      ],
+      "careers": [{ "careerId": "uuid", "year": 2, "quadmester": 1 }],
       "prerequisites": ["uuid"],
       "correlatives": ["uuid"]
     }
@@ -294,12 +292,12 @@ Same as item above, plus expanded relations:
 
 **Query params:**
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| `subjectId` | string | No | Filter by subject |
-| `type` | `resumen` \| `parcial` \| `final` | No | Filter by type |
-| `page` | number | No | Default `1` |
-| `limit` | number | No | Default `20`, max `100` |
+| Param       | Type                              | Required | Description             |
+| ----------- | --------------------------------- | -------- | ----------------------- |
+| `subjectId` | string                            | No       | Filter by subject       |
+| `type`      | `resumen` \| `parcial` \| `final` | No       | Filter by type          |
+| `page`      | number                            | No       | Default `1`             |
+| `limit`     | number                            | No       | Default `20`, max `100` |
 
 **Response `200`:**
 
@@ -333,13 +331,13 @@ Only resources with `status: "published"` are returned.
 
 ## Error Responses
 
-| Status | When | Body |
-|--------|------|------|
-| `400` | Validation error | `{ "error": "..." }` or Zod error detail |
-| `401` | Missing/invalid/expired token | `{ "error": "Token inválido o expirado" }` |
-| `403` | Insufficient role | `{ "error": "No tenés permisos para realizar esta acción" }` |
-| `404` | Resource not found | `{ "error": "..." }` |
-| `500` | Unexpected server error | `{ "error": "Error interno del servidor" }` |
+| Status | When                          | Body                                                         |
+| ------ | ----------------------------- | ------------------------------------------------------------ |
+| `400`  | Validation error              | `{ "error": "..." }` or Zod error detail                     |
+| `401`  | Missing/invalid/expired token | `{ "error": "Token inválido o expirado" }`                   |
+| `403`  | Insufficient role             | `{ "error": "No tenés permisos para realizar esta acción" }` |
+| `404`  | Resource not found            | `{ "error": "..." }`                                         |
+| `500`  | Unexpected server error       | `{ "error": "Error interno del servidor" }`                  |
 
 ---
 
@@ -354,9 +352,9 @@ Allowed methods: `GET`, `POST`, `PATCH`, `DELETE`, `OPTIONS`
 
 ## Environment Variables (backend)
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `JWT_SECRET` | Yes | Secret for signing JWTs |
-| `CORS_ORIGIN` | No | Allowed origin (default `*`) |
-| `PORT` | No | Server port (default `3000`) |
+| Variable       | Required | Description                  |
+| -------------- | -------- | ---------------------------- |
+| `DATABASE_URL` | Yes      | PostgreSQL connection string |
+| `JWT_SECRET`   | Yes      | Secret for signing JWTs      |
+| `CORS_ORIGIN`  | No       | Allowed origin (default `*`) |
+| `PORT`         | No       | Server port (default `3000`) |

@@ -9,35 +9,43 @@ mock.module('@/db', () => ({
     },
     insert: mock(() => ({
       values: mock(() => ({
-        returning: mock(() => Promise.resolve([{
-          id:             'user-google-1',
-          email:          'juan@gmail.com',
-          displayName:    'Juan Google',
-          googleId:       'google-sub-123',
-          role:           'user',
-          emailVerified:  true,
-          adminFacultyId: null,
-          passwordHash:   null,
-          createdAt:      new Date(),
-          updatedAt:      new Date(),
-        }])),
+        returning: mock(() =>
+          Promise.resolve([
+            {
+              id: 'user-google-1',
+              email: 'juan@gmail.com',
+              displayName: 'Juan Google',
+              googleId: 'google-sub-123',
+              role: 'user',
+              emailVerified: true,
+              adminFacultyId: null,
+              passwordHash: null,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
+          ]),
+        ),
       })),
     })),
     update: mock(() => ({
       set: mock(() => ({
         where: mock(() => ({
-          returning: mock(() => Promise.resolve([{
-            id:             'user-existing-1',
-            email:          'existing@gmail.com',
-            displayName:    'Existing User',
-            googleId:       'google-sub-456',
-            role:           'user',
-            emailVerified:  true,
-            adminFacultyId: null,
-            passwordHash:   'hash',
-            createdAt:      new Date(),
-            updatedAt:      new Date(),
-          }])),
+          returning: mock(() =>
+            Promise.resolve([
+              {
+                id: 'user-existing-1',
+                email: 'existing@gmail.com',
+                displayName: 'Existing User',
+                googleId: 'google-sub-456',
+                role: 'user',
+                emailVerified: true,
+                adminFacultyId: null,
+                passwordHash: 'hash',
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              },
+            ]),
+          ),
         })),
       })),
     })),
@@ -56,22 +64,26 @@ afterEach(() => {
   global.fetch = originalFetch;
 });
 
-function mockFetchGoogleSuccess(googleId = 'google-sub-123', email = 'juan@gmail.com', name = 'Juan Google') {
+function mockFetchGoogleSuccess(
+  googleId = 'google-sub-123',
+  email = 'juan@gmail.com',
+  name = 'Juan Google',
+) {
   global.fetch = mock((url: string) => {
     if (url === 'https://oauth2.googleapis.com/token') {
       return Promise.resolve({
-        ok:   true,
+        ok: true,
         json: () => Promise.resolve({ access_token: 'fake-access-token' }),
       } as Response);
     }
     if (url === 'https://www.googleapis.com/oauth2/v2/userinfo') {
       return Promise.resolve({
-        ok:   true,
+        ok: true,
         json: () => Promise.resolve({ id: googleId, email, name }),
       } as Response);
     }
     return originalFetch(url);
-  }) as typeof fetch;
+  }) as unknown as typeof fetch;
 }
 
 describe('GET /api/v1/auth/google', () => {
@@ -104,7 +116,9 @@ describe('GET /api/v1/auth/google/callback', () => {
     const location = initRes.headers.get('Location') ?? '';
     const state = new URL(location).searchParams.get('state') ?? '';
 
-    const res = await app.request(`/api/v1/auth/google/callback?code=valid-code-123&state=${state}`);
+    const res = await app.request(
+      `/api/v1/auth/google/callback?code=valid-code-123&state=${state}`,
+    );
     expect(res.status).toBe(302);
     const callbackLocation = res.headers.get('Location') ?? '';
     expect(callbackLocation).toContain('/auth/callback?code=');
@@ -124,10 +138,12 @@ describe('GET /api/v1/auth/google/callback', () => {
   });
 
   it('redirige a /upload?error=oauth_failed si Google rechaza el code', async () => {
-    global.fetch = mock(() => Promise.resolve({
-      ok:   false,
-      json: () => Promise.resolve({ error: 'invalid_grant' }),
-    } as Response)) as typeof fetch;
+    global.fetch = mock(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve({ error: 'invalid_grant' }),
+      } as Response),
+    ) as unknown as typeof fetch;
 
     // Get valid state
     const initRes = await app.request('/api/v1/auth/google');
@@ -147,7 +163,9 @@ describe('POST /api/v1/auth/exchange', () => {
     const initLocation = initRes.headers.get('Location') ?? '';
     const state = new URL(initLocation).searchParams.get('state') ?? '';
 
-    const callbackRes = await app.request(`/api/v1/auth/google/callback?code=valid-code-123&state=${state}`);
+    const callbackRes = await app.request(
+      `/api/v1/auth/google/callback?code=valid-code-123&state=${state}`,
+    );
     const callbackLocation = callbackRes.headers.get('Location') ?? '';
     const oauthCode = new URL(callbackLocation).searchParams.get('code') ?? '';
 
@@ -157,7 +175,7 @@ describe('POST /api/v1/auth/exchange', () => {
       body: JSON.stringify({ code: oauthCode }),
     });
     expect(exchangeRes.status).toBe(200);
-    const body = await exchangeRes.json() as { token: string };
+    const body = (await exchangeRes.json()) as { token: string };
     expect(typeof body.token).toBe('string');
   });
 

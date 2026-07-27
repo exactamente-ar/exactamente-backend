@@ -22,14 +22,17 @@ app.get('/', ...adminGuard, async (c) => {
     [universityCount],
     [userCount],
   ] = await Promise.all([
-    db.select({ status: resources.status, count: sql<number>`count(*)::int` })
+    db
+      .select({ status: resources.status, count: sql<number>`count(*)::int` })
       .from(resources)
       .groupBy(resources.status),
-    db.select({ type: resources.type, count: sql<number>`count(*)::int` })
+    db
+      .select({ type: resources.type, count: sql<number>`count(*)::int` })
       .from(resources)
       .groupBy(resources.type),
     db.select({ count: sql<number>`count(*)::int` }).from(subjects),
-    db.select({ count: sql<number>`count(distinct ${resources.subjectId})::int` })
+    db
+      .select({ count: sql<number>`count(distinct ${resources.subjectId})::int` })
       .from(resources)
       .where(eq(resources.status, 'published')),
     db.select({ count: sql<number>`count(*)::int` }).from(careers),
@@ -49,20 +52,20 @@ app.get('/', ...adminGuard, async (c) => {
 
   return c.json({
     resources: {
-      total:    Object.values(byStatus).reduce((a, b) => a + b, 0),
+      total: Object.values(byStatus).reduce((a, b) => a + b, 0),
       byStatus: byStatus as { pending: number; published: number; rejected: number },
-      byType:   byType   as { resumen: number; parcial: number; final: number },
+      byType: byType as { resumen: number; parcial: number; final: number },
     },
     coverage: {
-      subjectsWithResources:    withResources,
+      subjectsWithResources: withResources,
       subjectsWithoutResources: totalSubjects - withResources,
     },
     counts: {
-      users:        userCount?.count        ?? 0,
-      subjects:     totalSubjects,
-      careers:      careerCount?.count      ?? 0,
-      faculties:    facultyCount?.count     ?? 0,
-      universities: universityCount?.count  ?? 0,
+      users: userCount?.count ?? 0,
+      subjects: totalSubjects,
+      careers: careerCount?.count ?? 0,
+      faculties: facultyCount?.count ?? 0,
+      universities: universityCount?.count ?? 0,
     },
   });
 });

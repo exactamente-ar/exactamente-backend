@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Un push nuevo al mismo PR cancela la corrida anterior.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun run typecheck
+
+      - run: bun run lint
+
+      - run: bun run format:check
+
+      # La suite actual no consulta la base: drizzle conecta lazy y estos
+      # tests solo ejercitan guards de auth, middleware y utils. El día que
+      # un test haga una query hay que agregar acá un service container de
+      # postgres:16-alpine y apuntarle DATABASE_URL.
+      - run: bun test
+
+  # main despliega a producción vía Dokploy, que buildea con este Dockerfile.
+  # Si la imagen no compila, el deploy falla en el servidor. Mejor enterarse
+  # acá, en el PR.
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

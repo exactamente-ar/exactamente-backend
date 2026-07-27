@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { eq, and, inArray, sql, ilike } from 'drizzle-orm';
+import { eq, and, inArray, sql } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { db } from '@/db';
 import { subjects, careerSubjects, resources } from '@/db/schema';
@@ -39,7 +39,7 @@ app.get('/', publicReadLimit, zValidator('query', subjectFiltersSchema), async (
       .select({ subjectId: careerSubjects.subjectId })
       .from(careerSubjects)
       .where(eq(careerSubjects.careerId, careerId));
-    careerSubjectIds = rows.map(r => r.subjectId);
+    careerSubjectIds = rows.map((r) => r.subjectId);
     if (careerSubjectIds.length === 0) {
       return c.json(buildPaginatedResponse([], 0, safePage, safeLimit));
     }
@@ -50,9 +50,12 @@ app.get('/', publicReadLimit, zValidator('query', subjectFiltersSchema), async (
   if (year) conditions.push(eq(subjects.year, year));
   if (quadmester) conditions.push(eq(subjects.quadmester, quadmester));
   if (search) {
-    const normalized = search.normalize('NFD').replace(/\p{Mn}/gu, '').toLowerCase();
+    const normalized = search
+      .normalize('NFD')
+      .replace(/\p{Mn}/gu, '')
+      .toLowerCase();
     conditions.push(
-      sql`translate(lower(${subjects.title}), 'áéíóúüñ', 'aeiouun') ILIKE ${`%${normalized}%`}`
+      sql`translate(lower(${subjects.title}), 'áéíóúüñ', 'aeiouun') ILIKE ${`%${normalized}%`}`,
     );
   }
   if (careerSubjectIds) conditions.push(inArray(subjects.id, careerSubjectIds));
@@ -79,25 +82,27 @@ app.get('/', publicReadLimit, zValidator('query', subjectFiltersSchema), async (
       },
       orderBy: (s, { asc }) => [asc(s.year), asc(s.quadmester), asc(s.title)],
     }),
-    db.select({ count: sql<number>`count(*)::int` })
+    db
+      .select({ count: sql<number>`count(*)::int` })
       .from(subjects)
       .where(whereClause),
   ]);
 
   const total = countResult[0]?.count ?? 0;
 
-  const subjectIds = rows.map(r => r.id);
-  const resourceCountsRows = subjectIds.length > 0
-    ? await db
-        .select({
-          subjectId: resources.subjectId,
-          type: resources.type,
-          count: sql<number>`count(*)::int`,
-        })
-        .from(resources)
-        .where(and(inArray(resources.subjectId, subjectIds), eq(resources.status, 'published')))
-        .groupBy(resources.subjectId, resources.type)
-    : [];
+  const subjectIds = rows.map((r) => r.id);
+  const resourceCountsRows =
+    subjectIds.length > 0
+      ? await db
+          .select({
+            subjectId: resources.subjectId,
+            type: resources.type,
+            count: sql<number>`count(*)::int`,
+          })
+          .from(resources)
+          .where(and(inArray(resources.subjectId, subjectIds), eq(resources.status, 'published')))
+          .groupBy(resources.subjectId, resources.type)
+      : [];
 
   const countsMap = new Map<string, { resumen: number; parcial: number; final: number }>();
   for (const row of resourceCountsRows) {
@@ -107,9 +112,9 @@ app.get('/', publicReadLimit, zValidator('query', subjectFiltersSchema), async (
     countsMap.get(row.subjectId)![row.type] = row.count;
   }
 
-  const data = rows.map(s => ({
+  const data = rows.map((s) => ({
     ...rowToSubject(s),
-    careers: s.careerSubjects.map(cs => ({
+    careers: s.careerSubjects.map((cs) => ({
       careerId: cs.careerId,
       careerName: cs.career.shortName ?? cs.career.name,
       facultyId: cs.career.facultyId,
@@ -151,7 +156,7 @@ app.get('/:id', publicReadLimit, async (c) => {
   return c.json({
     subject: {
       ...rowToSubject(subject),
-      careers: subject.careerSubjects.map(cs => ({
+      careers: subject.careerSubjects.map((cs) => ({
         careerId: cs.careerId,
         careerName: cs.career.shortName ?? cs.career.name,
         facultyId: cs.career.facultyId,
