@@ -1,76 +1,43 @@
 # Subjects
 
-## Endpoints
+**Endpoints, request/response y códigos de error:** `/docs` (o `openapi.json`).
 
-### Público
+## ⚠️ El listado y el detalle devuelven formas distintas
 
-- `GET /api/v1/subjects` — listar materias con sus carreras
-  - Query: `{ careerId?, facultyId?, year?, quadmester?, search?, page?, limit? }`
-  - Response: `PaginatedResponse<SubjectWithCareers>`
-  - `search` busca por título (case-insensitive)
-  - Ordenado: year asc, quadmester asc, title asc
+|                     | `careers[]` | `resourceCounts` |
+| ------------------- | ----------- | ---------------- |
+| `GET /subjects`     | ✅          | ✅               |
+| `GET /subjects/:id` | ✅          | ❌               |
 
-- `GET /api/v1/subjects/:id` — detalle de una materia
-  - Response: `{ subject: SubjectWithCareers }`
-  - Errores: `404`
+No es un descuido del tipado: son dos schemas distintos (`SubjectWithCareers` y
+`SubjectDetail`). Ya causó un bug en el servidor MCP, que leía `resourceCounts`
+del detalle y siempre obtenía `undefined`.
 
-### Admin (requieren `Authorization: Bearer <admin_token>`)
+Si necesitás los conteos, usá el listado filtrado o contá con `GET /resources`.
 
-- `GET /api/v1/admin/subjects` — lista con contador de recursos publicados
-  - Query: `{ facultyId?, page?, limit? }`
-  - Response: `PaginatedResponse<Subject & { resourceCount: number }>`
+## Una materia pertenece a varias carreras
 
-- `POST /api/v1/admin/subjects` — crear materia
-  - Request: `{ facultyId, title, description?, urlMoodle?, urlPrograma?, year, quadmester }`
-  - Response 201: `Subject`
+Relación N:M vía `career_subjects`. Consecuencia importante:
 
-- `GET /api/v1/admin/subjects/:id` → `Subject`
-  - Errores: `404`
+- `year` y `quadmester` de la **materia** son sus valores originales.
+- `year` y `quadmester` dentro de `careers[]` son los de **ese plan concreto**, y
+  pueden diferir.
 
-- `PATCH /api/v1/admin/subjects/:id` — actualización parcial
-  - Request (todos opcionales): `{ title?, description?, urlMoodle?, urlPrograma?, year?, quadmester? }`
-  - Response: `Subject` actualizada
-  - Errores: `404`
+Para "en qué año se cursa esto", el valor correcto es el del plan, no el de la
+materia.
 
-- `DELETE /api/v1/admin/subjects/:id`
-  - Errores: `404` · `409` si tiene recursos publicados (no se puede borrar)
+## Rangos
 
-## Schemas / Tipos principales
+`year` va de 1 a 5 y `quadmester` es 1 o 2 — lo impone el validator de entrada.
+Ojo: las columnas son `smallint` **sin CHECK constraint**, así que un seed o un
+script podrían meter otro valor. Por eso el contrato declara un rango y no una
+unión literal.
 
-```ts
-Subject {
-  id: string
-  facultyId: string
-  title: string
-  slug: string             // auto-generado desde title
-  description: string
-  urlMoodle: string        // puede ser vacío ""
-  urlPrograma: string      // puede ser vacío ""
-  year: number             // 1–5 (año de cursada en el plan)
-  quadmester: 1 | 2
-  createdAt: string
-  updatedAt: string
-}
+## Otros
 
-SubjectWithCareers extends Subject {
-  careers: Array<{
-    careerId: string
-    careerName: string
-    facultyId: string
-    facultyName: string
-    universityId: string
-    universityName: string
-    planId: string
-    year: number      // año en ese plan específico
-    quadmester: number
-  }>
-}
-```
-
-## Reglas de negocio relevantes
-
-- Una materia puede pertenecer a múltiples carreras (relación N:M vía `career_subjects`).
-- `year` y `quadmester` en `Subject` son los valores originales de la materia; los de `careers[]` son los valores en ese plan específico (pueden diferir).
-- El `slug` se regenera automáticamente si se cambia el `title` vía PATCH.
-- `urlMoodle` y `urlPrograma` pueden ser cadena vacía `""` (no null).
-- No se puede eliminar una materia con recursos en estado `published` — hay que rechazarlos/eliminarlos primero.
+- El `slug` se regenera solo si cambia el `title` vía PATCH.
+- `urlMoodle` y `urlPrograma` pueden ser cadena vacía `""`, nunca `null`.
+- No se puede eliminar una materia con recursos `published` → `409`. Hay que
+  rechazarlos o borrarlos primero.
+- La búsqueda por `search` es case-insensitive y sin acentos: necesita la
+  extensión `unaccent` habilitada en la base (ver el README).

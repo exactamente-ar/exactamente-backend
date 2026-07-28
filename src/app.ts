@@ -20,6 +20,9 @@ import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
 import { securityHeaders } from '@/middleware/securityHeaders';
 import type { AppContext } from '@/types';
+import { openAPIRouteHandler } from 'hono-openapi';
+import { Scalar } from '@scalar/hono-api-reference';
+import { openApiDocumentation } from '@/openapi/document';
 
 const app = new Hono<AppContext>();
 
@@ -67,5 +70,19 @@ api.route('/admin/careers', adminCareersRoutes);
 api.route('/admin/career-plans', adminCareerPlansRoutes);
 api.route('/admin/subjects', adminSubjectsRoutes);
 api.route('/admin/stats', adminStatsRoutes);
+
+// ─── OpenAPI ──────────────────────────────────────────────────────────────────
+// Se monta DESPUÉS de las rutas: openAPIRouteHandler recorre el router de `app`
+// y solo ve lo que ya está registrado.
+//
+// Público a propósito: este repo es público, así que los endpoints admin ya se
+// leen en GitHub. Están protegidos por JWT + requireRole, no por ser
+// desconocidos. Ver src/openapi/document.ts.
+app.get(
+  '/openapi.json',
+  openAPIRouteHandler(app, { documentation: openApiDocumentation as never }),
+);
+
+app.get('/docs', Scalar({ url: '/openapi.json', pageTitle: 'Exactamente API', theme: 'purple' }));
 
 export default app;

@@ -1,83 +1,43 @@
 # Auth
 
-## Endpoints
+**Endpoints, request/response y códigos de error:** `/docs` (o `openapi.json`).
 
-- `POST /api/v1/auth/register` — registrar usuario nuevo
-  - Request: `{ email, password (min 8 chars), displayName (2-100 chars) }`
-  - Response 201: `{ user: PublicUser, token: string }`
-  - Errores: `409` email ya registrado · `400` validación
-  - Rate limit: 5 req/hora por IP
+## Dos formas de cuenta, un solo usuario
 
-- `POST /api/v1/auth/login` — iniciar sesión
-  - Request: `{ email, password }`
-  - Response 200: `{ user: PublicUser, token: string }`
-  - Errores: `401` credenciales inválidas
-  - Rate limit: 10 req/15 min por IP
+Un usuario puede tener contraseña, Google, o ambos:
 
-- `GET /api/v1/auth/me` — usuario autenticado actual
-  - Auth: requerida
-  - Response: `{ user: PublicUser }`
-  - Errores: `401` · `404`
+- Registro normal → tiene `passwordHash`.
+- Registro por Google → `passwordHash: null` y `emailVerified: true`.
+- Si alguien se registró con email y después entra con Google usando **el mismo
+  email**, las cuentas se vinculan: se le agrega el `googleId` a la existente. No
+  se crea una segunda.
 
-## Google OAuth
+**Por eso `POST /auth/login` responde `401` a los usuarios de Google**: no tienen
+contraseña contra la cual comparar. No es un bug ni credenciales mal escritas.
 
-### GET /api/v1/auth/google
+## El flujo OAuth no expone el JWT en la URL
 
-Redirige al consent screen de Google (302).
+1. `GET /auth/google` → redirige al consent de Google.
+2. `GET /auth/google/callback` → intercambia el `code`, y redirige al frontend con
+   un **código de un solo uso**, no con el token.
+3. `POST /auth/exchange` → canjea ese código por el JWT.
 
-No requiere body ni auth.
+El paso 3 existe para que el JWT no quede en el historial del navegador, en los
+logs del servidor ni en el header `Referer`.
 
-Rate limit: 20 req / 15 min por IP.
+Ante cualquier error el callback redirige a `CORS_ORIGIN/upload?error=...`. Es
+`/upload` y **no `/login`**, que no existe en el frontend público.
 
----
+## Roles
 
-### GET /api/v1/auth/google/callback
+`user` < `admin` < `superadmin`. Las rutas `/admin/*` piden al menos `admin`.
 
-Recibe el callback de Google después del consent. Intercambia el `code` por un JWT propio y redirige al frontend.
+Los registros nuevos son **siempre** `user`. Promover a admin es manual, en la
+base.
 
-**Query params:**
+## Tokens
 
-- `code` — authorization code de Google (presente si el usuario aceptó)
-- `error` — presente si el usuario rechazó o hubo error en Google
-
-**Flujo:**
-
-1. Si hay `error` o falta `code` → redirect a `CORS_ORIGIN/login?error=oauth_denied`
-2. Intercambia `code` por access_token en Google
-3. Obtiene perfil del usuario desde Google (`id`, `email`, `name`)
-4. Busca usuario por `googleId` o `email`:
-   - No existe → crea usuario con `emailVerified: true`, `passwordHash: null`
-   - Existe sin `googleId` → vincula la cuenta (email/password) con Google
-   - Existe con `googleId` → login normal
-5. Firma JWT y redirige a `CORS_ORIGIN/auth/callback?token=<jwt>`
-6. Si falla el intercambio con Google → redirect a `CORS_ORIGIN/login?error=oauth_failed`
-
-Rate limit: 20 req / 15 min por IP.
-
----
-
-**Nota:** Los usuarios creados vía Google tienen `passwordHash = null`.
-El endpoint `POST /auth/login` rechaza con 401 si el usuario no tiene `passwordHash`.
-
-## Schemas / Tipos principales
-
-```ts
-PublicUser {
-  id: string          // UUID
-  email: string
-  displayName: string
-  role: 'user' | 'admin' | 'superadmin'
-}
-```
-
-El token es un JWT — incluir en todas las rutas protegidas:
-
-```
-Authorization: Bearer <token>
-```
-
-## Reglas de negocio relevantes
-
-- Registros nuevos siempre tienen `role: 'user'`.
-- No hay endpoint de refresh token — el token expira y el usuario debe loguearse de nuevo.
-- `emailVerified` existe en DB pero no se usa en ningún flujo de producto actualmente.
+- Duran 24 horas.
+- **No hay refresh token.** Cuando expira, hay que loguearse de nuevo.
+- `emailVerified` existe en la base pero hoy ningún flujo de producto lo usa: no
+  bloquea nada.
