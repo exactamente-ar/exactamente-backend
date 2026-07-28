@@ -10,6 +10,7 @@
 import { writeFileSync, readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 import { applyPlaceholderEnv } from './lib/placeholder-env';
+import { sanitizeOpenApiPaths } from '../src/openapi/sanitize';
 
 // ANTES de importar la app: `src/env.ts` valida al importarse y corta el
 // proceso si falta algo. El spec se deriva de los schemas y las rutas, no de
@@ -22,30 +23,6 @@ const { default: app } = await import('@/app');
 
 const OUT = resolve(import.meta.dirname, '../openapi.json');
 
-/**
- * hono-openapi deja una copia de cada schema referenciado en un `$defs` inline
- * dentro de la respuesta, además de en `components.schemas`. El `$ref` apunta a
- * components, así que el `$defs` es redundante — pero openapi-typescript lo lee
- * como una PROPIEDAD REQUERIDA más del body, y genera tipos que ningún
- * response real satisface. Hay que sacarlo.
- *
- * `id` viene de `.meta({ id })` de Zod; sirve para nombrar el schema pero no es
- * válido dentro de un Schema Object de OpenAPI.
- */
-function stripJsonSchemaArtifacts(node: unknown): void {
-  if (Array.isArray(node)) {
-    node.forEach(stripJsonSchemaArtifacts);
-    return;
-  }
-  if (node && typeof node === 'object') {
-    const obj = node as Record<string, unknown>;
-    delete obj.$defs;
-    delete obj.id;
-    delete obj.$schema;
-    Object.values(obj).forEach(stripJsonSchemaArtifacts);
-  }
-}
-
 const res = await app.request('/openapi.json');
 if (!res.ok) {
   console.error(`✗ El backend devolvió ${res.status} en /openapi.json`);
@@ -56,7 +33,9 @@ const spec = (await res.json()) as Record<string, unknown>;
 
 // Solo se limpia dentro de paths: components.schemas es justamente donde las
 // definiciones tienen que quedar.
-stripJsonSchemaArtifacts(spec.paths);
+// La ruta /openapi.json ya lo aplica; esto es idempotente y actúa de red por
+// si algún día el spec se obtiene por otra vía.
+sanitizeOpenApiPaths(spec.paths);
 
 /**
  * Todo `$ref` tiene que resolver. Es fácil equivocarse: alcanza con usar un

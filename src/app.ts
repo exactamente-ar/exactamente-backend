@@ -20,9 +20,10 @@ import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
 import { securityHeaders } from '@/middleware/securityHeaders';
 import type { AppContext } from '@/types';
-import { openAPIRouteHandler } from 'hono-openapi';
+import { generateSpecs } from 'hono-openapi';
 import { Scalar } from '@scalar/hono-api-reference';
 import { openApiDocumentation } from '@/openapi/document';
+import { sanitizeOpenApiPaths } from '@/openapi/sanitize';
 
 const app = new Hono<AppContext>();
 
@@ -72,16 +73,28 @@ api.route('/admin/subjects', adminSubjectsRoutes);
 api.route('/admin/stats', adminStatsRoutes);
 
 // ─── OpenAPI ──────────────────────────────────────────────────────────────────
-// Se monta DESPUÉS de las rutas: openAPIRouteHandler recorre el router de `app`
-// y solo ve lo que ya está registrado.
+// Se monta DESPUÉS de las rutas: generateSpecs recorre el router de `app` y
+// solo ve lo que ya está registrado.
 //
 // Público a propósito: este repo es público, así que los endpoints admin ya se
 // leen en GitHub. Están protegidos por JWT + requireRole, no por ser
 // desconocidos. Ver src/openapi/document.ts.
-app.get(
-  '/openapi.json',
-  openAPIRouteHandler(app, { documentation: openApiDocumentation as never }),
-);
+// El spec se calcula una sola vez: no depende de la request y armarlo en cada
+// llamada sería trabajo repetido en cada visita a /docs.
+let cachedSpec: unknown;
+
+app.get('/openapi.json', async (c) => {
+  if (!cachedSpec) {
+    const spec = (await generateSpecs(app, {
+      documentation: openApiDocumentation as never,
+    })) as Record<string, unknown>;
+    // Mismo saneado que aplica scripts/gen-openapi.ts, para que lo que sirve
+    // producción sea byte a byte lo que está versionado en openapi.json.
+    sanitizeOpenApiPaths(spec.paths);
+    cachedSpec = spec;
+  }
+  return c.json(cachedSpec);
+});
 
 app.get('/docs', Scalar({ url: '/openapi.json', pageTitle: 'Exactamente API', theme: 'purple' }));
 
