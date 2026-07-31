@@ -31,7 +31,12 @@ describe('hashPassword / verifyPassword', () => {
 
 describe('signToken / verifyTokenPayload', () => {
   it('firma y verifica un token correctamente', async () => {
-    const token = await signToken({ sub: 'user-abc', role: 'user', facultyId: null });
+    const token = await signToken({
+      sub: 'user-abc',
+      role: 'user',
+      facultyId: null,
+      tokenVersion: 0,
+    });
     expect(typeof token).toBe('string');
     expect(token.split('.').length).toBe(3);
 
@@ -42,7 +47,12 @@ describe('signToken / verifyTokenPayload', () => {
   });
 
   it('firma token de admin con facultyId', async () => {
-    const token = await signToken({ sub: 'admin-1', role: 'admin', facultyId: 'FACET' });
+    const token = await signToken({
+      sub: 'admin-1',
+      role: 'admin',
+      facultyId: 'FACET',
+      tokenVersion: 0,
+    });
     const payload = await verifyTokenPayload(token);
     expect(payload.role).toBe('admin');
     expect(payload.facultyId).toBe('FACET');

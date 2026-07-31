@@ -1,4 +1,18 @@
-import { test, expect, describe } from 'bun:test';
+import { test, expect, describe, mock } from 'bun:test';
+
+// `requireRole` valida el token contra la base (ver middleware/requireRole.ts).
+// Acá solo se ejercitan auth y validación de entrada, así que alcanza con que
+// el usuario del token exista y su tokenVersion coincida.
+mock.module('@/db', () => ({
+  db: {
+    query: {
+      users: {
+        findFirst: mock(() => Promise.resolve({ role: 'admin', tokenVersion: 0 })),
+      },
+    },
+  },
+}));
+
 import adminUniversitiesApp from '@/routes/admin/universities';
 import adminFacultiesApp from '@/routes/admin/faculties';
 import adminCareersApp from '@/routes/admin/careers';
@@ -7,7 +21,7 @@ import adminSubjectsApp from '@/routes/admin/subjects';
 import { signToken } from '@/services/auth.service';
 
 async function token(role: 'user' | 'admin') {
-  return signToken({ sub: 'u1', role, facultyId: null });
+  return signToken({ sub: 'u1', role, facultyId: null, tokenVersion: 0 });
 }
 
 // ─── Helper: make a request to a Hono app ─────────────────────────────────────
