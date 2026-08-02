@@ -9,6 +9,7 @@ import { storage } from '@/services/storage';
 import { verifyToken } from '@/middleware/auth';
 import { rateLimit } from '@/middleware/rateLimit';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
+import { safeDownloadFilename } from '@/utils/contentDisposition';
 import { uploadResourceSchema } from '@/validators/resource.validators';
 import type { AppContext } from '@/types';
 import { PaginatedResourceSchema, CheckDuplicateResponseSchema, ResourceSchema } from '@/schemas';
@@ -16,6 +17,17 @@ import { json, errors, bearerAuth } from '@/openapi/helpers';
 
 const uploadRateLimit = rateLimit({ limit: 10, windowMs: 60 * 60 * 1000 }); // 10 uploads/hora por IP
 const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 }); // 100 req/min
+/**
+ * Instancia propia y no `publicReadLimit`: compartirla haría que bajarse una
+ * tanda de parciales se coma el presupuesto del listado y deje la búsqueda
+ * inutilizable.
+ *
+ * El límite es holgado a propósito. `rateLimit` agrupa por
+ * `x-real-ip ?? cf-connecting-ip ?? 'unknown'` (src/middleware/rateLimit.ts):
+ * detrás de Cloudflare está bien, pero si alguien le pega directo al origen sin
+ * esos headers, TODOS caen en el mismo bucket `'unknown'`.
+ */
+const downloadRateLimit = rateLimit({ limit: 120, windowMs: 60 * 1000 });
 
 const MONTHS_ES = [
   'Ene',
@@ -121,6 +133,74 @@ app.get(
     }));
 
     return c.json(buildPaginatedResponse(data, total, safePage, safeLimit));
+  },
+);
+
+// ─── GET /:id/download — bajar el archivo, contando la descarga ──────────────
+
+app.get(
+  '/:id/download',
+  describeRoute({
+    tags: ['Recursos'],
+    summary: 'Descargar un recurso',
+    description:
+      'Incrementa `downloadCount` y redirige (302) al archivo. **Es la única vía que cuenta ' +
+      'descargas**: linkear directo a `fileUrl` no cuenta nada. `fileUrl` es para *ver* el PDF ' +
+      '(preview, iframe); esta ruta es para *bajarlo*.',
+    responses: {
+      302: { description: 'Redirección temporal al archivo' },
+      ...errors(404, 429),
+    },
+  }),
+  downloadRateLimit,
+  async (c) => {
+    const id = c.req.param('id');
+    const resource = await db.query.resources.findFirst({
+      where: eq(resources.id, id),
+      columns: { id: true, title: true, status: true, r2Key: true },
+    });
+
+    // 404 y no 403 para los que no están publicados: el estado de moderación de
+    // un recurso no es información pública, y un 403 confirmaría que existe.
+    if (!resource || resource.status !== 'published' || !resource.r2Key) {
+      return c.json({ error: 'Recurso no encontrado' }, 404);
+    }
+
+    try {
+      // Incremento en SQL y no read-modify-write en JS: dos descargas
+      // simultáneas que leen el mismo valor pierden una.
+      await db
+        .update(resources)
+        .set({ downloadCount: sql`${resources.downloadCount} + 1` })
+        .where(eq(resources.id, id));
+    } catch (err) {
+      // Una métrica rota no puede impedirle a nadie bajar su parcial.
+      console.error(`[download] no se pudo contar la descarga de ${id}`, err);
+    }
+
+    /**
+     * URL firmada en vez de la pública, para poder mandar
+     * `Content-Disposition: attachment; filename="<título>.pdf"`. Sin eso el
+     * archivo se guarda como `<uuid>.pdf`: las keys son
+     * `public/<código>/<uuid>.pdf` y el atributo `download` del `<a>` se ignora
+     * cross-origin.
+     *
+     * Contra: la URL firmada apunta al endpoint S3 de R2 y no al dominio
+     * público, así que la descarga no pasa por el CDN. Es aceptable — el
+     * volumen es bajo y el nombre del archivo le importa a quien se baja diez
+     * parciales de una materia.
+     */
+    const url = await storage.getSignedUrl(
+      resource.r2Key,
+      300,
+      safeDownloadFilename(resource.title, resource.r2Key),
+    );
+
+    // `no-store` es obligatorio, igual que el 302 en lugar de un 301: cualquier
+    // respuesta cacheada saltea el contador y la métrica se congela sin que
+    // nadie se entere.
+    c.header('Cache-Control', 'no-store');
+    return c.redirect(url, 302);
   },
 );
 

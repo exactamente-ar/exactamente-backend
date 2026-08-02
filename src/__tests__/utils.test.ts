@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'bun:test';
 import { slugify } from '@/utils/slugify';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
+import { safeDownloadFilename, contentDisposition } from '@/utils/contentDisposition';
 import { resolveRange, truncateToBucket } from '@/utils/timeseries';
 
 describe('slugify', () => {
@@ -47,6 +48,62 @@ describe('buildPaginatedResponse', () => {
   it('calcula totalPages correctamente', () => {
     const result = buildPaginatedResponse(['a', 'b'], 25, 2, 10);
     expect(result).toEqual({ data: ['a', 'b'], total: 25, page: 2, totalPages: 3 });
+  });
+});
+
+/**
+ * El título de un recurso es texto libre en español y termina dentro de un
+ * header HTTP. Acá se testea el escapado, que es lo que evita que unas comillas
+ * en el título rompan el `Content-Disposition`.
+ */
+describe('safeDownloadFilename', () => {
+  const PDF = 'public/A1C1M1/uuid.pdf';
+
+  it('deja pasar un título normal y le pone la extensión', () => {
+    expect(safeDownloadFilename('Parcial 2 - Álgebra', PDF)).toBe('Parcial 2 - Álgebra.pdf');
+  });
+
+  it('reemplaza los caracteres que romperían el header o el filesystem', () => {
+    expect(safeDownloadFilename('Final: "Tema 1/2" <2024>', PDF)).toBe('Final Tema 1 2 2024.pdf');
+  });
+
+  it('elimina saltos de línea, que permitirían inyectar otro header', () => {
+    expect(safeDownloadFilename('Parcial\r\nX-Evil: 1', PDF)).toBe('Parcial X-Evil 1.pdf');
+  });
+
+  it('no deja el nombre vacío cuando el título era todo basura', () => {
+    expect(safeDownloadFilename('///', PDF)).toBe('recurso.pdf');
+  });
+
+  it('corta los títulos larguísimos', () => {
+    expect(safeDownloadFilename('a'.repeat(300), PDF).length).toBeLessThanOrEqual(104);
+  });
+
+  it('no deja un punto antes de la extensión: Windows rechaza esos nombres', () => {
+    expect(safeDownloadFilename('Resumen final...', PDF)).toBe('Resumen final.pdf');
+  });
+
+  // La migración de Drive dejó imágenes en la base. Bajar un JPG llamado .pdf
+  // da un archivo que no abre.
+  it('respeta la extensión real y no asume PDF', () => {
+    expect(safeDownloadFilename('Parcial 1', 'public/A1C1M1/uuid.jpg')).toBe('Parcial 1.jpg');
+    expect(safeDownloadFilename('Parcial 1', 'public/A1C1M1/uuid.PNG')).toBe('Parcial 1.png');
+  });
+
+  it('cae a .pdf si la key no tiene extensión reconocible', () => {
+    expect(safeDownloadFilename('Parcial 1', 'public/A1C1M1/uuid')).toBe('Parcial 1.pdf');
+  });
+});
+
+describe('contentDisposition', () => {
+  it('manda el nombre en ASCII y en UTF-8, para que los acentos sobrevivan', () => {
+    expect(contentDisposition('Álgebra.pdf')).toBe(
+      'attachment; filename="_lgebra.pdf"; filename*=UTF-8\'\'%C3%81lgebra.pdf',
+    );
+  });
+
+  it('siempre es attachment, nunca inline', () => {
+    expect(contentDisposition('x.pdf')).toStartWith('attachment;');
   });
 });
 
