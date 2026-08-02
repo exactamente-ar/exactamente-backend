@@ -2240,6 +2240,69 @@
         }
       }
     },
+    "/api/v1/resources/{id}/download": {
+      "get": {
+        "operationId": "getApiV1ResourcesByIdDownload",
+        "tags": [
+          "Recursos"
+        ],
+        "summary": "Descargar un recurso",
+        "description": "Incrementa `downloadCount` y redirige (302) al archivo. **Es la única vía que cuenta descargas**: linkear directo a `fileUrl` no cuenta nada. `fileUrl` es para *ver* el PDF (preview, iframe); esta ruta es para *bajarlo*.",
+        "responses": {
+          "302": {
+            "description": "Redirección temporal al archivo"
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit excedido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ]
+      }
+    },
     "/api/v1/resources/check-duplicate": {
       "post": {
         "operationId": "postApiV1ResourcesCheckDuplicate",

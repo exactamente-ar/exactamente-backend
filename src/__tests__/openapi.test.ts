@@ -47,6 +47,20 @@ describe('GET /openapi.json', () => {
   });
 
   /**
+   * La descarga contada es la única ruta que devuelve un redirect en vez de
+   * JSON. Si el 302 desaparece del contrato — o peor, si alguien lo cambia por
+   * un 301 — los clientes no se enteran, pero el contador se congela.
+   */
+  it('la descarga declara un 302, no un 200 ni un 301', () => {
+    const download = spec.paths['/api/v1/resources/{id}/download'] as {
+      get: { responses: Record<string, unknown> };
+    };
+    expect(download, 'falta /resources/{id}/download').toBeDefined();
+    expect(Object.keys(download.get.responses)).toContain('302');
+    expect(Object.keys(download.get.responses)).not.toContain('301');
+  });
+
+  /**
    * El contrato que consumen frontend, admin y mcp sale del archivo versionado.
    * Si lo que sirve la app difiere, un cliente que genere desde la URL en vivo
    * obtiene tipos distintos a los del repo. Ya pasó una vez.

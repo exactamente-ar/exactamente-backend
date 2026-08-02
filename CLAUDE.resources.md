@@ -19,6 +19,38 @@ Aprobar y rechazar solo funcionan sobre `pending`. Sobre cualquier otro estado �
 - `fileUrl` ya viene resuelta en la respuesta. **No construir URLs a mano** — el
   bucket y el prefijo son detalle interno.
 
+### Ver ≠ bajar
+
+Son dos caminos distintos y confundirlos rompe la métrica:
+
+| Para                                 | Usar                          | Cuenta descarga |
+| ------------------------------------ | ----------------------------- | --------------- |
+| **Ver** el PDF (preview, `<iframe>`) | `fileUrl` de la respuesta     | no              |
+| **Bajar** el archivo                 | `GET /resources/:id/download` | **sí**          |
+
+`GET /resources/:id/download` es la **única** vía que incrementa
+`downloadCount`: linkear directo a `fileUrl` no cuenta nada, porque ese archivo
+se sirve desde R2 sin pasar por la API. Es la excepción a "no construir URLs a
+mano": esta ruta es parte del contrato público y se arma con el `id`.
+
+Devuelve **302** (nunca 301) y `Cache-Control: no-store`. Un 301 lo cachea el
+navegador para siempre y a partir de ahí el contador no se mueve más, en
+silencio.
+
+Redirige a una URL **firmada** y no a la pública, para poder mandar
+`Content-Disposition: attachment; filename="<título>.<ext>"`. Sin eso el archivo
+se guarda con el nombre de la key, que es un uuid — el atributo `download` de un
+`<a>` se ignora cuando el archivo está en otro origen. El costo asumido es que
+la descarga no pasa por el CDN.
+
+⚠️ La extensión sale de la **key**, no se asume `.pdf`. Hoy la validación de
+subida solo acepta PDF, pero la migración de Drive dejó imágenes: hay `.jpg` en
+la base. Un JPG bajado con nombre `.pdf` no abre.
+
+⚠️ **`downloadCount` arranca de cero en agosto de 2026.** La columna existía
+desde antes pero ningún handler la escribía nunca. Lo que haya en las filas
+viejas viene de la migración de Drive, no de descargas medidas.
+
 ## Campos por tipo de recurso
 
 | Campo                   | `resumen`  | `parcial`     | `final`       |
