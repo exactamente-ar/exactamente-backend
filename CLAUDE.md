@@ -113,6 +113,22 @@ Requerida para la búsqueda de materias sin acentos.
 
 - Nada de push directo a `main`. Todo por PR con CI en verde.
 - El `Dockerfile` corre `bun run db:migrate` al arrancar: **toda migración que
-  llegue a `main` se auto-aplica en producción**.
+  llegue a `main` se auto-aplica en producción**, en el camino crítico del
+  arranque. El server no escucha hasta que termina.
 - Un script `prepare` que falle rompe el build entero. Por eso está como
   `lefthook install || true`.
+
+### `CREATE INDEX CONCURRENTLY` no se puede por esta vía
+
+Drizzle-kit envuelve cada migración en una transacción, y `CONCURRENTLY` no corre
+dentro de un bloque transaccional. O sea que un índice agregado por migración
+toma un lock `SHARE` que **bloquea escrituras** mientras se construye, en el
+arranque del contenedor y sin ensayo previo.
+
+Con las tablas del tamaño actual son milisegundos. Si alguna vez no lo son, la
+salida es aplicar el índice **a mano por `psql`** fuera del runner y después
+registrar la fila correspondiente en `drizzle.__drizzle_migrations` para que el
+runner no lo intente de nuevo.
+
+Regla asociada: una migración va **sola en su PR**, nunca mezclada con una
+feature. Un PR con las dos cosas no se puede revertir a mitad.

@@ -61,6 +61,27 @@ describe('GET /openapi.json', () => {
   });
 
   /**
+   * Registrar un schema en `namedSchemas` (src/openapi/document.ts) es un paso
+   * manual y aparte de escribirlo. Olvidarlo deja el spec con un `$ref` colgado
+   * — que el test de arriba caza — pero olvidar la RUTA no lo caza nada: el
+   * endpoint anda y simplemente no existe para ningún cliente generado.
+   */
+  it('las vistas de analítica del dashboard están en el contrato', () => {
+    for (const path of [
+      '/api/v1/admin/stats',
+      '/api/v1/admin/stats/activity',
+      '/api/v1/admin/stats/rankings',
+      '/api/v1/admin/stats/moderation',
+    ]) {
+      expect(Object.keys(spec.paths), `falta ${path}`).toContain(path);
+    }
+
+    for (const schema of ['AdminStats', 'AdminActivity', 'AdminRankings', 'AdminModeration']) {
+      expect(Object.keys(spec.components.schemas), `falta ${schema}`).toContain(schema);
+    }
+  });
+
+  /**
    * El contrato que consumen frontend, admin y mcp sale del archivo versionado.
    * Si lo que sirve la app difiere, un cliente que genere desde la URL en vivo
    * obtiene tipos distintos a los del repo. Ya pasó una vez.

@@ -1245,6 +1245,301 @@
         ],
         "additionalProperties": false
       },
+      "StatsGranularity": {
+        "id": "StatsGranularity",
+        "type": "string",
+        "enum": [
+          "day",
+          "week"
+        ]
+      },
+      "ActivityPoint": {
+        "id": "ActivityPoint",
+        "type": "object",
+        "properties": {
+          "date": {
+            "description": "Inicio del bucket, YYYY-MM-DD, en America/Argentina/Buenos_Aires",
+            "type": "string"
+          },
+          "uploads": {
+            "description": "Recursos creados en el bucket (created_at)",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "publications": {
+            "description": "Recursos publicados en el bucket (published_at)",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "date",
+          "uploads",
+          "publications"
+        ],
+        "additionalProperties": false
+      },
+      "AdminActivity": {
+        "id": "AdminActivity",
+        "type": "object",
+        "properties": {
+          "granularity": {
+            "$ref": "#/components/schemas/StatsGranularity"
+          },
+          "from": {
+            "description": "Primer bucket, YYYY-MM-DD",
+            "type": "string"
+          },
+          "to": {
+            "description": "Último bucket, YYYY-MM-DD",
+            "type": "string"
+          },
+          "points": {
+            "description": "Serie sin huecos: los buckets sin actividad vienen en 0, no ausentes",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActivityPoint"
+            }
+          }
+        },
+        "required": [
+          "granularity",
+          "from",
+          "to",
+          "points"
+        ],
+        "additionalProperties": false
+      },
+      "TopUploader": {
+        "id": "TopUploader",
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "total": {
+            "description": "Recursos subidos en la ventana, en cualquier estado",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "published": {
+            "description": "De esos, cuántos terminaron publicados",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "userId",
+          "displayName",
+          "total",
+          "published"
+        ],
+        "additionalProperties": false
+      },
+      "TopResource": {
+        "id": "TopResource",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "subjectTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "type": {
+            "$ref": "#/components/schemas/ResourceType"
+          },
+          "downloadCount": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "subjectTitle",
+          "type",
+          "downloadCount"
+        ],
+        "additionalProperties": false
+      },
+      "AdminRankings": {
+        "id": "AdminRankings",
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "topUploaders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopUploader"
+            }
+          },
+          "topResources": {
+            "description": "Histórico completo. `download_count` es un escalar sin fecha, así que `days` NO aplica acá",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopResource"
+            }
+          }
+        },
+        "required": [
+          "days",
+          "topUploaders",
+          "topResources"
+        ],
+        "additionalProperties": false
+      },
+      "ModerationLeadTime": {
+        "description": "Horas entre que un recurso se sube y se publica. Con `sample: 0` los tres percentiles son null y no 0: \"no hubo datos\" y \"tardó cero\" no son lo mismo",
+        "id": "ModerationLeadTime",
+        "type": "object",
+        "properties": {
+          "sample": {
+            "description": "Recursos publicados en la ventana",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "avgHours": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "p50Hours": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "p90Hours": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "sample",
+          "avgHours",
+          "p50Hours",
+          "p90Hours"
+        ],
+        "additionalProperties": false
+      },
+      "PendingQueueAge": {
+        "description": "Antigüedad de la cola de moderación. No depende de `days`: es el estado actual",
+        "id": "PendingQueueAge",
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "under24h": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "d1to3": {
+            "description": "Entre 1 y 3 días",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "d3to7": {
+            "description": "Entre 3 y 7 días",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "over7d": {
+            "description": "Más de 7 días",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "oldestCreatedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "total",
+          "under24h",
+          "d1to3",
+          "d3to7",
+          "over7d",
+          "oldestCreatedAt"
+        ],
+        "additionalProperties": false
+      },
+      "AdminModeration": {
+        "id": "AdminModeration",
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "leadTime": {
+            "$ref": "#/components/schemas/ModerationLeadTime"
+          },
+          "queue": {
+            "$ref": "#/components/schemas/PendingQueueAge"
+          }
+        },
+        "required": [
+          "days",
+          "leadTime",
+          "queue"
+        ],
+        "additionalProperties": false
+      },
       "ErrorResponse": {
         "id": "ErrorResponse",
         "type": "object",
@@ -7649,6 +7944,327 @@
                     "resources",
                     "coverage",
                     "counts"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/stats/activity": {
+      "get": {
+        "operationId": "getApiV1AdminStatsActivity",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Actividad en el tiempo",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Recursos creados y publicados por bucket. La serie no tiene huecos: los buckets sin actividad vienen en 0. Los buckets se agrupan en hora argentina.",
+        "responses": {
+          "200": {
+            "description": "Serie temporal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "granularity": {
+                      "$ref": "#/components/schemas/StatsGranularity"
+                    },
+                    "from": {
+                      "description": "Primer bucket, YYYY-MM-DD",
+                      "type": "string"
+                    },
+                    "to": {
+                      "description": "Último bucket, YYYY-MM-DD",
+                      "type": "string"
+                    },
+                    "points": {
+                      "description": "Serie sin huecos: los buckets sin actividad vienen en 0, no ausentes",
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ActivityPoint"
+                      }
+                    }
+                  },
+                  "required": [
+                    "granularity",
+                    "from",
+                    "to",
+                    "points"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/stats/rankings": {
+      "get": {
+        "operationId": "getApiV1AdminStatsRankings",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Rankings de colaboradores y recursos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "`topUploaders` respeta la ventana `days`. `topResources` NO: `download_count` es un escalar sin fecha, así que el ranking de descargas es siempre histórico.",
+        "responses": {
+          "200": {
+            "description": "Rankings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "days": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "topUploaders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TopUploader"
+                      }
+                    },
+                    "topResources": {
+                      "description": "Histórico completo. `download_count` es un escalar sin fecha, así que `days` NO aplica acá",
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TopResource"
+                      }
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "topUploaders",
+                    "topResources"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/stats/moderation": {
+      "get": {
+        "operationId": "getApiV1AdminStatsModeration",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Salud de la cola de moderación",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Lead time (horas entre subida y publicación) sobre la ventana `days`, más la antigüedad de la cola actual de pendientes — que es estado presente y no depende de `days`.",
+        "responses": {
+          "200": {
+            "description": "Moderación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "days": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "leadTime": {
+                      "$ref": "#/components/schemas/ModerationLeadTime"
+                    },
+                    "queue": {
+                      "$ref": "#/components/schemas/PendingQueueAge"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "leadTime",
+                    "queue"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
                   ]
                 }
               }
