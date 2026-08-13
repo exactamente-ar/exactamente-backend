@@ -25,9 +25,6 @@ const envSchema = z
     R2_SECRET_ACCESS_KEY: z.string().optional(),
     R2_BUCKET_NAME: z.string().optional(),
     R2_PUBLIC_URL: z.string().optional(),
-    // Email
-    RESEND_API_KEY: z.string().min(1, 'RESEND_API_KEY es requerida'),
-    APP_URL: z.string().url('APP_URL debe ser una URL válida'),
     // Blogs
     BLOG_BLACKLIST: z.string().default(''),
   })

@@ -3437,7 +3437,7 @@
           "Blogs"
         ],
         "summary": "Comentar un post o responder a un comentario",
-        "description": "Requiere autenticación. Crea un comentario anidado (hasta 20 niveles). `parentId` opcional para responder a otro comentario. Notifica por email al autor del contenido respondido, sin bloquear la respuesta.",
+        "description": "Requiere autenticación. Crea un comentario anidado (hasta 20 niveles). `parentId` opcional para responder a otro comentario.",
         "security": [
           {
             "bearerAuth": []

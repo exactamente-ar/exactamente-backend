@@ -32,9 +32,6 @@ export const PLACEHOLDER_ENV: Record<string, string> = {
   R2_BUCKET_NAME: 'test-bucket',
   R2_PUBLIC_URL: 'https://r2.test.invalid',
 
-  RESEND_API_KEY: 'test-resend-api-key',
-  APP_URL: 'http://localhost:4321',
-
   BLOG_BLACKLIST: 'spam,palabraprohibida',
 };
 

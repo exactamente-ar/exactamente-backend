@@ -17,7 +17,6 @@ import { containsForbiddenWord } from '@/middleware/blacklist';
 import { createPostSchema, createCommentSchema, voteSchema } from '@/validators/blogs.validators';
 import { storage } from '@/services/storage';
 import { applyVote } from '@/services/votes';
-import { sendCommentReplyEmail } from '@/services/email';
 import {
   isAllowedImageMime,
   extensionForMime,
@@ -348,8 +347,7 @@ app.post(
     summary: 'Comentar un post o responder a un comentario',
     description:
       'Requiere autenticación. Crea un comentario anidado (hasta 20 niveles). ' +
-      '`parentId` opcional para responder a otro comentario. Notifica por email ' +
-      'al autor del contenido respondido, sin bloquear la respuesta.',
+      '`parentId` opcional para responder a otro comentario.',
     security: bearerAuth,
     responses: {
       201: json(BlogCommentSchema, 'Comentario creado'),
@@ -370,26 +368,20 @@ app.post(
 
     const post = await db.query.blogPosts.findFirst({
       where: eq(blogPosts.id, postId),
-      with: { author: true, subject: true },
     });
     if (!post) return c.json({ error: 'Post no encontrado' }, 404);
 
-    let parentAuthor: { id: string; email: string; displayName: string } | null;
     let depth = 1;
 
     if (parentId) {
       const parent = await db.query.blogComments.findFirst({
         where: and(eq(blogComments.id, parentId), eq(blogComments.postId, postId)),
-        with: { author: true },
       });
       if (!parent) return c.json({ error: 'Comentario no encontrado' }, 404);
       if (parent.depth >= 20) {
         return c.json({ error: 'Máximo 20 niveles de profundidad' }, 400);
       }
       depth = parent.depth + 1;
-      parentAuthor = parent.author ?? null;
-    } else {
-      parentAuthor = post.author ?? null;
     }
 
     const [comment] = await db
@@ -405,17 +397,6 @@ app.post(
         depth,
       })
       .returning();
-
-    // Notificación async (AD-4): no demora la respuesta HTTP.
-    if (parentAuthor && parentAuthor.id !== user.sub) {
-      c.executionCtx.waitUntil(
-        sendCommentReplyEmail(
-          parentAuthor.email,
-          parentAuthor.displayName,
-          post.subject?.title ?? post.subjectId,
-        ),
-      );
-    }
 
     const authorRecord = await db.query.users.findFirst({
       where: eq(users.id, user.sub),
