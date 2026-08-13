@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
-import { and, eq, gte, asc, desc, sql } from 'drizzle-orm';
+import { and, eq, gte, asc, desc, sql, inArray } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { db } from '@/db';
 import {
@@ -8,6 +8,7 @@ import {
   blogPosts,
   blogPostImages,
   blogComments,
+  blogVotes,
   subjects,
   users,
 } from '@/db/schema';
@@ -49,7 +50,12 @@ type CommentRow = typeof blogComments.$inferSelect;
 
 const DELETED_BODY = '[Eliminado]';
 
-function commentToResponse(comment: CommentRow, authorName: string | null, userId: string | null) {
+function commentToResponse(
+  comment: CommentRow,
+  authorName: string | null,
+  userId: string | null,
+  myVote = 0,
+) {
   const deleted = comment.status === 'deleted';
   return {
     id: comment.id,
@@ -68,6 +74,7 @@ function commentToResponse(comment: CommentRow, authorName: string | null, userI
           ? { name: authorName }
           : null,
     mine: userId !== null && userId === comment.authorId,
+    myVote,
   };
 }
 
@@ -75,8 +82,9 @@ function postToResponse(
   post: PostRow,
   authorName: string | null,
   images: PostImageRow[],
-  comments: { row: CommentRow; authorName: string | null }[],
+  comments: { row: CommentRow; authorName: string | null; myVote: number }[],
   userId: string | null,
+  myVote = 0,
 ) {
   const deleted = post.status === 'deleted';
   return {
@@ -93,8 +101,9 @@ function postToResponse(
     images: deleted
       ? []
       : images.map((img) => ({ id: img.id, url: storage.getPublicUrl(img.r2Key) })),
-    comments: comments.map((c) => commentToResponse(c.row, c.authorName, userId)),
+    comments: comments.map((c) => commentToResponse(c.row, c.authorName, userId, c.myVote)),
     mine: userId !== null && userId === post.authorId,
+    myVote,
   };
 }
 
@@ -148,6 +157,24 @@ app.get(
       },
     });
 
+    // Votos del token actual sobre los posts y comentarios del blog, para
+    // hidratar `myVote` en la respuesta (sin token, todo queda en 0).
+    const voteMap = new Map<string, number>();
+    if (userId) {
+      const targetIds = [
+        ...posts.map((p) => p.id),
+        ...posts.flatMap((p) => p.comments.map((c) => c.id)),
+      ];
+      if (targetIds.length > 0) {
+        const votes = await db.query.blogVotes.findMany({
+          where: and(eq(blogVotes.userId, userId), inArray(blogVotes.targetId, targetIds)),
+        });
+        for (const vote of votes) {
+          voteMap.set(`${vote.targetType}:${vote.targetId}`, vote.value);
+        }
+      }
+    }
+
     return c.json({
       subjectId,
       subtopics: subtopics.map((s) => ({
@@ -164,8 +191,10 @@ app.get(
           p.comments.map((cmt) => ({
             row: cmt as CommentRow,
             authorName: cmt.author?.displayName ?? null,
+            myVote: voteMap.get(`comment:${cmt.id}`) ?? 0,
           })),
           userId,
+          voteMap.get(`post:${p.id}`) ?? 0,
         ),
       ),
     });

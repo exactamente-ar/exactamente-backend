@@ -1133,6 +1133,12 @@
           "mine": {
             "description": "true si el token actual es el autor",
             "type": "boolean"
+          },
+          "myVote": {
+            "description": "voto del token actual: 1, -1 o 0",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
           }
         },
         "required": [
@@ -1146,7 +1152,8 @@
           "author",
           "images",
           "comments",
-          "mine"
+          "mine",
+          "myVote"
         ],
         "additionalProperties": false
       },
@@ -1293,6 +1300,12 @@
           "mine": {
             "description": "true si el token actual es el autor",
             "type": "boolean"
+          },
+          "myVote": {
+            "description": "voto del token actual: 1, -1 o 0",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
           }
         },
         "required": [
@@ -1306,7 +1319,8 @@
           "depth",
           "createdAt",
           "author",
-          "mine"
+          "mine",
+          "myVote"
         ],
         "additionalProperties": false
       },
@@ -3204,6 +3218,12 @@
                     "mine": {
                       "description": "true si el token actual es el autor",
                       "type": "boolean"
+                    },
+                    "myVote": {
+                      "description": "voto del token actual: 1, -1 o 0",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
                     }
                   },
                   "required": [
@@ -3217,7 +3237,8 @@
                     "author",
                     "images",
                     "comments",
-                    "mine"
+                    "mine",
+                    "myVote"
                   ]
                 }
               }
@@ -3509,6 +3530,12 @@
                     "mine": {
                       "description": "true si el token actual es el autor",
                       "type": "boolean"
+                    },
+                    "myVote": {
+                      "description": "voto del token actual: 1, -1 o 0",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
                     }
                   },
                   "required": [
@@ -3522,7 +3549,8 @@
                     "depth",
                     "createdAt",
                     "author",
-                    "mine"
+                    "mine",
+                    "myVote"
                   ]
                 }
               }

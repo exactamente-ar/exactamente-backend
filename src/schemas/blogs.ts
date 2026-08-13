@@ -46,6 +46,7 @@ export const BlogCommentSchema = z
     createdAt: IsoDateTime,
     author: BlogAuthorSchema.nullable(),
     mine: z.boolean().describe('true si el token actual es el autor'),
+    myVote: z.number().int().describe('voto del token actual: 1, -1 o 0'),
   })
   .meta({ id: 'BlogComment' });
 
@@ -67,6 +68,7 @@ export const BlogPostSchema = z
     images: z.array(BlogPostImageSchema),
     comments: z.array(BlogCommentSchema),
     mine: z.boolean().describe('true si el token actual es el autor'),
+    myVote: z.number().int().describe('voto del token actual: 1, -1 o 0'),
   })
   .meta({ id: 'BlogPost' });
 
