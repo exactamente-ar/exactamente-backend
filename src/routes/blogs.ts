@@ -348,6 +348,9 @@ app.post(
       where: eq(blogPosts.id, postId),
     });
     if (!post) return c.json({ error: 'Post no encontrado' }, 404);
+    if (post.status === 'deleted') {
+      return c.json({ error: 'No se puede votar una publicación eliminada' }, 400);
+    }
     if (post.authorId === user.sub) {
       return c.json({ error: 'No podés votar tu propio post' }, 403);
     }
@@ -461,6 +464,9 @@ app.post(
       where: eq(blogComments.id, commentId),
     });
     if (!comment) return c.json({ error: 'Comentario no encontrado' }, 404);
+    if (comment.status === 'deleted') {
+      return c.json({ error: 'No se puede votar un comentario eliminado' }, 400);
+    }
     if (comment.authorId === user.sub) {
       return c.json({ error: 'No podés votar tu propio comentario' }, 403);
     }
