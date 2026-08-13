@@ -287,6 +287,111 @@ async function run() {
     updatedAt: new Date(),
   });
 
+  // Post 5: Algo más complejo con varios comentarios
+  const post5Id = crypto.randomUUID();
+  await db.insert(blogPosts).values({
+    id: post5Id,
+    subjectId: SUBJECT_ID,
+    subtopicId: subDudas.id,
+    authorId: 'usr_seed_1',
+    body: 'Hola, tengo una duda sobre la recursividad. No termino de entender cuándo conviene usarla en vez de un bucle while normal. ¿Alguien me explica con un ejemplo simple?',
+    authority: 'visible',
+    status: 'published',
+    netScore: 12,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // hace 3 días
+    updatedAt: new Date(),
+  });
+
+  const c5_1Id = crypto.randomUUID();
+  await db.insert(blogComments).values({
+    id: c5_1Id,
+    postId: post5Id,
+    parentId: null,
+    authorId: 'usr_seed_3', // Prof
+    body: 'La recursividad es muy útil cuando el problema se puede dividir en subproblemas de la misma naturaleza, como recorrer un árbol o calcular un factorial. Un while a veces requiere estructuras adicionales (como pilas) que lo complican.',
+    authority: 'visible',
+    status: 'published',
+    netScore: 8,
+    depth: 1,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2.5),
+    updatedAt: new Date(),
+  });
+
+  const c5_2Id = crypto.randomUUID();
+  await db.insert(blogComments).values({
+    id: c5_2Id,
+    postId: post5Id,
+    parentId: c5_1Id,
+    authorId: 'usr_seed_1',
+    body: 'Ah perfecto. ¿O sea que siempre que haya un árbol, mejor recursividad?',
+    authority: 'visible',
+    status: 'published',
+    netScore: 2,
+    depth: 2,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2.4),
+    updatedAt: new Date(),
+  });
+
+  const c5_3Id = crypto.randomUUID();
+  await db.insert(blogComments).values({
+    id: c5_3Id,
+    postId: post5Id,
+    parentId: c5_2Id,
+    authorId: 'usr_seed_3',
+    body: 'Generalmente sí, hace el código mucho más limpio. ¡A menos que el árbol sea excesivamente profundo y te reviente la pila de llamadas (Stack Overflow)! Ahí capaz te conviene iterativo.',
+    authority: 'visible',
+    status: 'published',
+    netScore: 5,
+    depth: 3,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2.1),
+    updatedAt: new Date(),
+  });
+
+  const c5_4Id = crypto.randomUUID();
+  await db.insert(blogComments).values({
+    id: c5_4Id,
+    postId: post5Id,
+    parentId: c5_3Id,
+    authorId: 'usr_seed_4',
+    body: 'Jajaja justo me pasó eso en el TP2.',
+    authority: 'anonymous',
+    status: 'published',
+    netScore: 4,
+    depth: 4,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2.0),
+    updatedAt: new Date(),
+  });
+
+  // Post 6: Algo sobre un TP
+  const post6Id = crypto.randomUUID();
+  await db.insert(blogPosts).values({
+    id: post6Id,
+    subjectId: SUBJECT_ID,
+    subtopicId: generalSubtopic.id,
+    authorId: 'usr_seed_4',
+    body: '¿Ya subieron las notas del último Trabajo Práctico? En el campus no me aparece nada.',
+    authority: 'anonymous',
+    status: 'published',
+    netScore: 3,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2), // hace 2 horas
+    updatedAt: new Date(),
+  });
+
+  const c6_1Id = crypto.randomUUID();
+  await db.insert(blogComments).values({
+    id: c6_1Id,
+    postId: post6Id,
+    parentId: null,
+    authorId: 'usr_seed_2',
+    body: 'El profe dijo ayer por Slack que las iba a subir recién el fin de semana porque son muchos grupos para corregir.',
+    authority: 'visible',
+    status: 'published',
+    netScore: 6,
+    depth: 1,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 1.5),
+    updatedAt: new Date(),
+  });
+
   console.log('✅ Seed de blogs completado con éxito!');
   console.log(`Podes ver el resultado en http://localhost:4321/A1C1M1/blog`);
 
