@@ -38,6 +38,7 @@ const namedSchemas: Record<string, z.ZodType> = {
   BlogPost: S.BlogPostSchema,
   BlogAuthor: S.BlogAuthorSchema,
   BlogPostImage: S.BlogPostImageSchema,
+  BlogCommentImage: S.BlogCommentImageSchema,
   BlogResponse: S.BlogResponseSchema,
   BlogVoteResponse: S.BlogVoteResponseSchema,
   BlogComment: S.BlogCommentSchema,

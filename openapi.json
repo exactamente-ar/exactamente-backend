@@ -1187,6 +1187,23 @@
         ],
         "additionalProperties": false
       },
+      "BlogCommentImage": {
+        "id": "BlogCommentImage",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url"
+        ],
+        "additionalProperties": false
+      },
       "BlogResponse": {
         "id": "BlogResponse",
         "type": "object",
@@ -1297,6 +1314,12 @@
               }
             ]
           },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogCommentImage"
+            }
+          },
           "mine": {
             "description": "true si el token actual es el autor",
             "type": "boolean"
@@ -1319,6 +1342,7 @@
           "depth",
           "createdAt",
           "author",
+          "images",
           "mine",
           "myVote"
         ],
@@ -3527,6 +3551,12 @@
                         }
                       ]
                     },
+                    "images": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogCommentImage"
+                      }
+                    },
                     "mine": {
                       "description": "true si el token actual es el autor",
                       "type": "boolean"
@@ -3549,6 +3579,7 @@
                     "depth",
                     "createdAt",
                     "author",
+                    "images",
                     "mine",
                     "myVote"
                   ]

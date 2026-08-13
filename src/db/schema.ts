@@ -34,6 +34,7 @@ export const postAuthorityEnum = pgEnum('post_authority', ['visible', 'anonymous
 export const postStatusEnum = pgEnum('post_status', ['published', 'deleted']);
 
 export const voteTargetEnum = pgEnum('vote_target', ['post', 'comment']);
+export const imageTargetEnum = pgEnum('image_target', ['post', 'comment']);
 
 // ─── JERARQUÍA ────────────────────────────────────────────────────────────────
 
@@ -267,20 +268,19 @@ export const blogPosts = pgTable(
   }),
 );
 
-export const blogPostImages = pgTable(
-  'blog_post_images',
+export const blogImages = pgTable(
+  'blog_images',
   {
     id: text('id').primaryKey(),
-    postId: text('post_id')
-      .notNull()
-      .references(() => blogPosts.id, { onDelete: 'cascade' }),
+    targetType: imageTargetEnum('target_type').notNull(),
+    targetId: text('target_id').notNull(),
     r2Key: text('r2_key').notNull(),
     mimeType: varchar('mime_type', { length: 50 }).notNull(),
     position: smallint('position').notNull().default(0),
     createdAt: timestamp('created_at').notNull().defaultNow(),
   },
   (t) => ({
-    postIdx: index('blog_post_images_post_idx').on(t.postId),
+    targetIdx: index('blog_images_target_idx').on(t.targetType, t.targetId),
   }),
 );
 
@@ -416,12 +416,7 @@ export const blogPostsRelations = relations(blogPosts, ({ one, many }) => ({
     references: [blogSubtopics.id],
   }),
   author: one(users, { fields: [blogPosts.authorId], references: [users.id] }),
-  images: many(blogPostImages),
   comments: many(blogComments),
-}));
-
-export const blogPostImagesRelations = relations(blogPostImages, ({ one }) => ({
-  post: one(blogPosts, { fields: [blogPostImages.postId], references: [blogPosts.id] }),
 }));
 
 export const blogVotesRelations = relations(blogVotes, ({ one }) => ({

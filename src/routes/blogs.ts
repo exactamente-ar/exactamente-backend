@@ -6,7 +6,7 @@ import { db } from '@/db';
 import {
   blogSubtopics,
   blogPosts,
-  blogPostImages,
+  blogImages,
   blogComments,
   blogVotes,
   subjects,
@@ -45,7 +45,6 @@ const postWriteLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 }); // 30 req/
 const TOP_WINDOW_DAYS = 30;
 
 type PostRow = typeof blogPosts.$inferSelect;
-type PostImageRow = { id: string; r2Key: string };
 type CommentRow = typeof blogComments.$inferSelect;
 
 const DELETED_BODY = '[Eliminado]';
@@ -53,6 +52,7 @@ const DELETED_BODY = '[Eliminado]';
 function commentToResponse(
   comment: CommentRow,
   authorName: string | null,
+  images: BlogImageRow[],
   userId: string | null,
   myVote = 0,
 ) {
@@ -73,16 +73,26 @@ function commentToResponse(
         : authorName
           ? { name: authorName }
           : null,
+    images: deleted
+      ? []
+      : images.map((img) => ({ id: img.id, url: storage.getPublicUrl(img.r2Key) })),
     mine: userId !== null && userId === comment.authorId,
     myVote,
   };
 }
 
+type BlogImageRow = typeof blogImages.$inferSelect;
+
 function postToResponse(
   post: PostRow,
   authorName: string | null,
-  images: PostImageRow[],
-  comments: { row: CommentRow; authorName: string | null; myVote: number }[],
+  images: BlogImageRow[],
+  comments: {
+    row: CommentRow;
+    authorName: string | null;
+    images: BlogImageRow[];
+    myVote: number;
+  }[],
   userId: string | null,
   myVote = 0,
 ) {
@@ -101,7 +111,9 @@ function postToResponse(
     images: deleted
       ? []
       : images.map((img) => ({ id: img.id, url: storage.getPublicUrl(img.r2Key) })),
-    comments: comments.map((c) => commentToResponse(c.row, c.authorName, userId, c.myVote)),
+    comments: comments.map((c) =>
+      commentToResponse(c.row, c.authorName, c.images, userId, c.myVote),
+    ),
     mine: userId !== null && userId === post.authorId,
     myVote,
   };
@@ -149,7 +161,6 @@ app.get(
       orderBy: [desc(blogPosts.netScore), desc(blogPosts.createdAt), desc(blogPosts.id)],
       with: {
         author: true,
-        images: true,
         comments: {
           with: { author: true },
           orderBy: [desc(blogComments.netScore), desc(blogComments.createdAt)],
@@ -157,21 +168,34 @@ app.get(
       },
     });
 
+    const targetIds = [
+      ...posts.map((p) => p.id),
+      ...posts.flatMap((p) => p.comments.map((c) => c.id)),
+    ];
+
+    const images =
+      targetIds.length > 0
+        ? await db.query.blogImages.findMany({
+            where: inArray(blogImages.targetId, targetIds),
+          })
+        : [];
+
+    const imageMap = new Map<string, (typeof blogImages.$inferSelect)[]>();
+    for (const img of images) {
+      const key = `${img.targetType}:${img.targetId}`;
+      if (!imageMap.has(key)) imageMap.set(key, []);
+      imageMap.get(key)!.push(img);
+    }
+
     // Votos del token actual sobre los posts y comentarios del blog, para
     // hidratar `myVote` en la respuesta (sin token, todo queda en 0).
     const voteMap = new Map<string, number>();
-    if (userId) {
-      const targetIds = [
-        ...posts.map((p) => p.id),
-        ...posts.flatMap((p) => p.comments.map((c) => c.id)),
-      ];
-      if (targetIds.length > 0) {
-        const votes = await db.query.blogVotes.findMany({
-          where: and(eq(blogVotes.userId, userId), inArray(blogVotes.targetId, targetIds)),
-        });
-        for (const vote of votes) {
-          voteMap.set(`${vote.targetType}:${vote.targetId}`, vote.value);
-        }
+    if (userId && targetIds.length > 0) {
+      const votes = await db.query.blogVotes.findMany({
+        where: and(eq(blogVotes.userId, userId), inArray(blogVotes.targetId, targetIds)),
+      });
+      for (const vote of votes) {
+        voteMap.set(`${vote.targetType}:${vote.targetId}`, vote.value);
       }
     }
 
@@ -187,10 +211,11 @@ app.get(
         postToResponse(
           p,
           p.author?.displayName ?? null,
-          p.images as PostImageRow[],
+          imageMap.get(`post:${p.id}`) ?? [],
           p.comments.map((cmt) => ({
             row: cmt as CommentRow,
             authorName: cmt.author?.displayName ?? null,
+            images: imageMap.get(`comment:${cmt.id}`) ?? [],
             myVote: voteMap.get(`comment:${cmt.id}`) ?? 0,
           })),
           userId,
@@ -268,7 +293,15 @@ app.post(
     const user = c.get('user');
     const postId = crypto.randomUUID();
 
-    const imageRows: PostImageRow[] = [];
+    const imageRows: {
+      id: string;
+      targetType: 'post';
+      targetId: string;
+      r2Key: string;
+      mimeType: string;
+      position: number;
+      createdAt: Date;
+    }[] = [];
     for (let i = 0; i < imageFiles.length; i++) {
       const file = imageFiles[i];
       const original = Buffer.from(await file.arrayBuffer());
@@ -276,7 +309,15 @@ app.post(
       const imageId = crypto.randomUUID();
       const key = `blog-posts/${postId}/${imageId}.${extensionForMime(file.type)}`;
       await storage.uploadFile(key, stripped, file.type);
-      imageRows.push({ id: imageId, r2Key: key });
+      imageRows.push({
+        id: imageId,
+        targetType: 'post',
+        targetId: postId,
+        r2Key: key,
+        mimeType: file.type,
+        position: i,
+        createdAt: new Date(),
+      });
     }
 
     const [post] = await db.transaction(async (tx) => {
@@ -294,15 +335,7 @@ app.post(
         .returning();
 
       if (imageRows.length > 0) {
-        await tx.insert(blogPostImages).values(
-          imageRows.map((img, position) => ({
-            id: img.id,
-            postId,
-            r2Key: img.r2Key,
-            mimeType: imageFiles[position].type,
-            position,
-          })),
-        );
+        await tx.insert(blogImages).values(imageRows);
       }
 
       return [created];
@@ -388,15 +421,38 @@ app.post(
   }),
   postWriteLimit,
   verifyToken,
-  zValidator('json', createCommentSchema),
   async (c) => {
     const { postId } = c.req.param() as { postId: string };
-    const { parentId, body, authority } = c.req.valid('json');
-    const user = c.get('user');
+    const formData = await c.req.formData();
 
-    if (containsForbiddenWord(body)) {
+    const parentId = formData.get('parentId') as string | null;
+    const authority = formData.get('authority') as string | null;
+    const body = formData.get('body') as string | null;
+    const imageFiles = formData.getAll('images').filter((f): f is File => f instanceof File);
+
+    const parsed = createCommentSchema.safeParse({ parentId, body, authority });
+    if (!parsed.success) {
+      return c.json({ error: parsed.error.issues[0].message }, 400);
+    }
+
+    if (containsForbiddenWord(parsed.data.body)) {
       return c.json({ error: 'El contenido no cumple con las normas de la comunidad' }, 400);
     }
+
+    if (imageFiles.length > BLOG_IMAGE_MAX_COUNT) {
+      return c.json({ error: `Máximo ${BLOG_IMAGE_MAX_COUNT} imágenes por comentario` }, 400);
+    }
+
+    for (const file of imageFiles) {
+      if (!isAllowedImageMime(file.type)) {
+        return c.json({ error: 'Solo se aceptan imágenes JPEG, PNG o WebP' }, 400);
+      }
+      if (file.size > BLOG_IMAGE_MAX_BYTES) {
+        return c.json({ error: 'Cada imagen no puede superar los 5MB' }, 400);
+      }
+    }
+
+    const user = c.get('user');
 
     const post = await db.query.blogPosts.findFirst({
       where: eq(blogPosts.id, postId),
@@ -405,9 +461,9 @@ app.post(
 
     let depth = 1;
 
-    if (parentId) {
+    if (parsed.data.parentId) {
       const parent = await db.query.blogComments.findFirst({
-        where: and(eq(blogComments.id, parentId), eq(blogComments.postId, postId)),
+        where: and(eq(blogComments.id, parsed.data.parentId), eq(blogComments.postId, postId)),
       });
       if (!parent) return c.json({ error: 'Comentario no encontrado' }, 404);
       if (parent.depth >= 20) {
@@ -416,25 +472,64 @@ app.post(
       depth = parent.depth + 1;
     }
 
-    const [comment] = await db
-      .insert(blogComments)
-      .values({
-        id: crypto.randomUUID(),
-        postId,
-        parentId: parentId ?? null,
-        authorId: user.sub,
-        body,
-        authority,
-        netScore: 0,
-        depth,
-      })
-      .returning();
+    const commentId = crypto.randomUUID();
+
+    const imageRows: {
+      id: string;
+      targetType: 'comment';
+      targetId: string;
+      r2Key: string;
+      mimeType: string;
+      position: number;
+      createdAt: Date;
+    }[] = [];
+    for (let i = 0; i < imageFiles.length; i++) {
+      const file = imageFiles[i];
+      const original = Buffer.from(await file.arrayBuffer());
+      const stripped = await stripImageMetadata(original);
+      const imageId = crypto.randomUUID();
+      const key = `blog-comments/${commentId}/${imageId}.${extensionForMime(file.type)}`;
+      await storage.uploadFile(key, stripped, file.type);
+      imageRows.push({
+        id: imageId,
+        targetType: 'comment',
+        targetId: commentId,
+        r2Key: key,
+        mimeType: file.type,
+        position: i,
+        createdAt: new Date(),
+      });
+    }
+
+    const [comment] = await db.transaction(async (tx) => {
+      const [created] = await tx
+        .insert(blogComments)
+        .values({
+          id: commentId,
+          postId,
+          parentId: parsed.data.parentId ?? null,
+          authorId: user.sub,
+          body: parsed.data.body,
+          authority: parsed.data.authority,
+          netScore: 0,
+          depth,
+        })
+        .returning();
+
+      if (imageRows.length > 0) {
+        await tx.insert(blogImages).values(imageRows);
+      }
+      return [created];
+    });
 
     const authorRecord = await db.query.users.findFirst({
       where: eq(users.id, user.sub),
     });
 
-    return c.json(commentToResponse(comment, authorRecord?.displayName ?? null, user.sub), 201);
+    return c.json(
+      commentToResponse(comment, authorRecord?.displayName ?? null, imageRows, user.sub),
+      201,
+    );
   },
 );
 
@@ -510,7 +605,7 @@ app.delete(
 
     const post = await db.query.blogPosts.findFirst({
       where: eq(blogPosts.id, postId),
-      with: { images: true, comments: { columns: { id: true, status: true } } },
+      with: { comments: { columns: { id: true, status: true } } },
     });
     if (!post) return c.json({ error: 'Post no encontrado' }, 404);
 
@@ -519,31 +614,42 @@ app.delete(
       return c.json({ error: 'No podés borrar un post ajeno' }, 403);
     }
 
-    // AD-2: borrar objetos de R2 antes de commitear el delete.
-    for (const img of post.images) {
-      await storage.deleteFile(img.r2Key);
-    }
-
     const allCommentsDeleted = post.comments.every((c) => c.status === 'deleted');
+    const targetIds = [postId, ...post.comments.map((c) => c.id)];
+
+    const allImages =
+      targetIds.length > 0
+        ? await db.query.blogImages.findMany({
+            where: inArray(blogImages.targetId, targetIds),
+          })
+        : [];
+
+    const postImages = allImages.filter(
+      (img) => img.targetType === 'post' && img.targetId === postId,
+    );
 
     await db.transaction(async (tx) => {
       if (allCommentsDeleted) {
-        // Hard delete: si no hay comentarios o están todos eliminados,
-        // borramos el post definitivamente (y por cascade sus comentarios e imágenes).
-        // Solo necesitamos limpiar los votos manualmente al ser polimórficos.
-        const targetIds = [postId, ...post.comments.map((c) => c.id)];
+        for (const img of allImages) {
+          await storage.deleteFile(img.r2Key);
+        }
         if (targetIds.length > 0) {
           await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
+          await tx.delete(blogImages).where(inArray(blogImages.targetId, targetIds));
         }
         await tx.delete(blogPosts).where(eq(blogPosts.id, postId));
       } else {
-        // Soft delete: quedan comentarios activos, mantenemos el post como "deleted"
+        for (const img of postImages) {
+          await storage.deleteFile(img.r2Key);
+        }
         await tx
           .update(blogPosts)
           .set({ status: 'deleted', updatedAt: new Date() })
           .where(eq(blogPosts.id, postId));
-        if (post.images.length > 0) {
-          await tx.delete(blogPostImages).where(eq(blogPostImages.postId, postId));
+        if (postImages.length > 0) {
+          await tx
+            .delete(blogImages)
+            .where(and(eq(blogImages.targetType, 'post'), eq(blogImages.targetId, postId)));
         }
       }
     });
@@ -583,10 +689,26 @@ app.delete(
       return c.json({ error: 'No podés borrar un comentario ajeno' }, 403);
     }
 
-    await db
-      .update(blogComments)
-      .set({ status: 'deleted', updatedAt: new Date() })
-      .where(eq(blogComments.id, commentId));
+    const commentImages = await db.query.blogImages.findMany({
+      where: and(eq(blogImages.targetType, 'comment'), eq(blogImages.targetId, commentId)),
+    });
+
+    await db.transaction(async (tx) => {
+      for (const img of commentImages) {
+        await storage.deleteFile(img.r2Key);
+      }
+
+      await tx
+        .update(blogComments)
+        .set({ status: 'deleted', updatedAt: new Date() })
+        .where(eq(blogComments.id, commentId));
+
+      if (commentImages.length > 0) {
+        await tx
+          .delete(blogImages)
+          .where(and(eq(blogImages.targetType, 'comment'), eq(blogImages.targetId, commentId)));
+      }
+    });
 
     return c.body(null, 204);
   },

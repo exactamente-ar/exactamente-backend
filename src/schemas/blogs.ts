@@ -32,6 +32,13 @@ export const BlogPostImageSchema = z
   })
   .meta({ id: 'BlogPostImage' });
 
+export const BlogCommentImageSchema = z
+  .object({
+    id: z.string(),
+    url: z.string(),
+  })
+  .meta({ id: 'BlogCommentImage' });
+
 /** Comentario anidado de un post. `parentId` null = comentario raíz. */
 export const BlogCommentSchema = z
   .object({
@@ -45,6 +52,7 @@ export const BlogCommentSchema = z
     depth: z.number().int(),
     createdAt: IsoDateTime,
     author: BlogAuthorSchema.nullable(),
+    images: z.array(BlogCommentImageSchema),
     mine: z.boolean().describe('true si el token actual es el autor'),
     myVote: z.number().int().describe('voto del token actual: 1, -1 o 0'),
   })
