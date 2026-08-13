@@ -33,6 +33,17 @@ const namedSchemas: Record<string, z.ZodType> = {
   Resource: S.ResourceSchema,
   AdminResource: S.AdminResourceSchema,
   DuplicateSimilar: S.DuplicateSimilarSchema,
+  // Blogs
+  BlogSubtopic: S.BlogSubtopicSchema,
+  BlogPost: S.BlogPostSchema,
+  BlogAuthor: S.BlogAuthorSchema,
+  BlogPostImage: S.BlogPostImageSchema,
+  BlogResponse: S.BlogResponseSchema,
+  BlogVoteResponse: S.BlogVoteResponseSchema,
+  BlogComment: S.BlogCommentSchema,
+  BlogActivityItem: S.BlogActivityItemSchema,
+  BlogActivityResponse: S.BlogActivityResponseSchema,
+  BlogSubtopicList: S.BlogSubtopicListSchema,
   // Auth
   UserRole: S.UserRoleSchema,
   PublicUser: S.PublicUserSchema,
@@ -117,6 +128,7 @@ export const openApiDocumentation = {
     { name: 'Catálogo', description: 'Universidades, facultades, carreras y planes' },
     { name: 'Materias', description: 'Materias y su relación con las carreras' },
     { name: 'Recursos', description: 'Búsqueda y subida de material de estudio' },
+    { name: 'Blogs', description: 'Foro de discusión por materia' },
     { name: 'Admin', description: 'Moderación y ABM. Requieren rol admin' },
   ],
 };

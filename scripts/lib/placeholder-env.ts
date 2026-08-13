@@ -34,6 +34,8 @@ export const PLACEHOLDER_ENV: Record<string, string> = {
 
   RESEND_API_KEY: 'test-resend-api-key',
   APP_URL: 'http://localhost:4321',
+
+  BLOG_BLACKLIST: 'spam,palabraprohibida',
 };
 
 /**

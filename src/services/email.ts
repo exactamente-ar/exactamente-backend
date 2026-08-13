@@ -46,3 +46,29 @@ export function sendBulkApprovalEmail(to: string, displayName: string, titles: s
       console.error('[email] Error al enviar email de aprobación masiva:', err);
     });
 }
+
+/**
+ * Notificación de respuesta en el blog (AD-4). Resuelve la promesa y captura el
+ * error acá para que el handler pueda pasarla a `executionCtx.waitUntil()` sin
+ * bloquear la respuesta HTTP.
+ */
+export async function sendCommentReplyEmail(
+  to: string,
+  displayName: string,
+  subjectTitle: string,
+): Promise<void> {
+  try {
+    await resend.emails.send({
+      from: FROM,
+      to,
+      subject: 'Alguien respondió en el blog',
+      html: `
+      <p>Hola ${displayName},</p>
+      <p>Alguien respondió a tu publicación en el blog de <strong>${subjectTitle}</strong>.</p>
+      <p>Entrá a <a href="${env.APP_URL}">Exactamente</a> para seguir la conversación.</p>
+    `,
+    });
+  } catch (err) {
+    console.error('[email] Error al enviar email de respuesta del blog:', err);
+  }
+}

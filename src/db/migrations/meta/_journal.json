@@ -71,6 +71,41 @@
       "when": 1748736000000,
       "tag": "0009_add_exam_day",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1754409600000,
+      "tag": "0010_add_blog_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1754496000000,
+      "tag": "0011_add_net_score_to_blog_posts",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1754582400000,
+      "tag": "0012_add_blog_post_images",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1754668800000,
+      "tag": "0013_add_blog_votes",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1754755200000,
+      "tag": "0014_add_blog_comments",
+      "breakpoints": true
     }
   ]
 }
