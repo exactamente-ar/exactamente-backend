@@ -510,7 +510,7 @@ app.delete(
 
     const post = await db.query.blogPosts.findFirst({
       where: eq(blogPosts.id, postId),
-      with: { images: true },
+      with: { images: true, comments: { columns: { id: true, status: true } } },
     });
     if (!post) return c.json({ error: 'Post no encontrado' }, 404);
 
@@ -519,18 +519,32 @@ app.delete(
       return c.json({ error: 'No podés borrar un post ajeno' }, 403);
     }
 
-    // AD-2: borrar objetos de R2 antes de commitear el soft delete.
+    // AD-2: borrar objetos de R2 antes de commitear el delete.
     for (const img of post.images) {
       await storage.deleteFile(img.r2Key);
     }
 
+    const allCommentsDeleted = post.comments.every((c) => c.status === 'deleted');
+
     await db.transaction(async (tx) => {
-      await tx
-        .update(blogPosts)
-        .set({ status: 'deleted', updatedAt: new Date() })
-        .where(eq(blogPosts.id, postId));
-      if (post.images.length > 0) {
-        await tx.delete(blogPostImages).where(eq(blogPostImages.postId, postId));
+      if (allCommentsDeleted) {
+        // Hard delete: si no hay comentarios o están todos eliminados,
+        // borramos el post definitivamente (y por cascade sus comentarios e imágenes).
+        // Solo necesitamos limpiar los votos manualmente al ser polimórficos.
+        const targetIds = [postId, ...post.comments.map((c) => c.id)];
+        if (targetIds.length > 0) {
+          await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
+        }
+        await tx.delete(blogPosts).where(eq(blogPosts.id, postId));
+      } else {
+        // Soft delete: quedan comentarios activos, mantenemos el post como "deleted"
+        await tx
+          .update(blogPosts)
+          .set({ status: 'deleted', updatedAt: new Date() })
+          .where(eq(blogPosts.id, postId));
+        if (post.images.length > 0) {
+          await tx.delete(blogPostImages).where(eq(blogPostImages.postId, postId));
+        }
       }
     });
 
