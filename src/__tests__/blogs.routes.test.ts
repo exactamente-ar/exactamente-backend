@@ -63,36 +63,39 @@ describe('blogs — votar post', () => {
 
 describe('blogs — comentar', () => {
   it('rechaza sin token (401)', async () => {
+    const formData = new FormData();
+    formData.append('body', 'hola');
+    formData.append('authority', 'visible');
     const res = await blogsApp.request('/s1/posts/p1/comments', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ body: 'hola', authority: 'visible' }),
+      body: formData,
     });
     expect(res.status).toBe(401);
   });
 
   it('rechaza body inválido (400)', async () => {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${await token()}`,
     };
     const res = await blogsApp.request('/s1/posts/p1/comments', {
       method: 'POST',
       headers,
-      body: JSON.stringify({}),
+      body: new FormData(),
     });
     expect(res.status).toBe(400);
   });
 
   it('rechaza contenido con palabra prohibida (400)', async () => {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${await token()}`,
     };
+    const formData = new FormData();
+    formData.append('body', 'esto es spam');
+    formData.append('authority', 'visible');
     const res = await blogsApp.request('/s1/posts/p1/comments', {
       method: 'POST',
       headers,
-      body: JSON.stringify({ body: 'esto es spam', authority: 'visible' }),
+      body: formData,
     });
     expect(res.status).toBe(400);
     const body = (await res.json()) as { error: string };

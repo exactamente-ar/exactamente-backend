@@ -24,6 +24,7 @@ const commentRow = {
   netScore: 2,
   depth: 1,
   createdAt: new Date(),
+  images: [],
 };
 
 // Votos del usuario u1: +1 en el post p1 y -1 en el comentario c1.
@@ -55,6 +56,9 @@ mock.module('@/db', () => ({
       },
       blogVotes: {
         findMany: mock(() => Promise.resolve(votes)),
+      },
+      blogImages: {
+        findMany: mock(() => Promise.resolve([])),
       },
     },
   },

@@ -19,6 +19,9 @@ mock.module('@/db', () => ({
       blogPosts: {
         findFirst: mock(() => Promise.resolve(findFirstReturn)),
       },
+      blogImages: {
+        findMany: mock(() => Promise.resolve([])),
+      },
     },
     transaction: mock(async (cb: (tx: unknown) => Promise<void>) => {
       const tx = {
