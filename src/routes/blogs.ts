@@ -676,12 +676,14 @@ app.delete(
   }),
   verifyToken,
   async (c) => {
-    const { commentId } = c.req.param() as { commentId: string };
+    const { postId, commentId } = c.req.param() as { postId: string; commentId: string };
     const user = c.get('user');
 
-    const comment = await db.query.blogComments.findFirst({
-      where: eq(blogComments.id, commentId),
+    const postComments = await db.query.blogComments.findMany({
+      where: eq(blogComments.postId, postId),
     });
+
+    const comment = postComments.find((c) => c.id === commentId);
     if (!comment) return c.json({ error: 'Comentario no encontrado' }, 404);
 
     const isAdmin = user.role === 'admin' || user.role === 'superadmin';
@@ -689,24 +691,47 @@ app.delete(
       return c.json({ error: 'No podés borrar un comentario ajeno' }, 403);
     }
 
+    function getDescendants(parentId: string): typeof postComments {
+      const children = postComments.filter((c) => c.parentId === parentId);
+      return children.flatMap((c) => [c, ...getDescendants(c.id)]);
+    }
+
+    const descendants = getDescendants(commentId);
+    const allDescendantsDeleted = descendants.every((c) => c.status === 'deleted');
+    const targetIds = [commentId, ...descendants.map((c) => c.id)];
+
     const commentImages = await db.query.blogImages.findMany({
-      where: and(eq(blogImages.targetType, 'comment'), eq(blogImages.targetId, commentId)),
+      where: and(eq(blogImages.targetType, 'comment'), inArray(blogImages.targetId, targetIds)),
     });
 
     await db.transaction(async (tx) => {
-      for (const img of commentImages) {
-        await storage.deleteFile(img.r2Key);
-      }
-
-      await tx
-        .update(blogComments)
-        .set({ status: 'deleted', updatedAt: new Date() })
-        .where(eq(blogComments.id, commentId));
-
-      if (commentImages.length > 0) {
+      if (allDescendantsDeleted) {
+        for (const img of commentImages) {
+          await storage.deleteFile(img.r2Key);
+        }
+        if (targetIds.length > 0) {
+          await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
+          await tx
+            .delete(blogImages)
+            .where(
+              and(eq(blogImages.targetType, 'comment'), inArray(blogImages.targetId, targetIds)),
+            );
+          await tx.delete(blogComments).where(inArray(blogComments.id, targetIds));
+        }
+      } else {
+        const rootImages = commentImages.filter((img) => img.targetId === commentId);
+        for (const img of rootImages) {
+          await storage.deleteFile(img.r2Key);
+        }
         await tx
-          .delete(blogImages)
-          .where(and(eq(blogImages.targetType, 'comment'), eq(blogImages.targetId, commentId)));
+          .update(blogComments)
+          .set({ status: 'deleted', updatedAt: new Date() })
+          .where(eq(blogComments.id, commentId));
+        if (rootImages.length > 0) {
+          await tx
+            .delete(blogImages)
+            .where(and(eq(blogImages.targetType, 'comment'), eq(blogImages.targetId, commentId)));
+        }
       }
     });
 
