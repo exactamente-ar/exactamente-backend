@@ -34,14 +34,9 @@ import {
 import { json, errors, bearerAuth } from '@/openapi/helpers';
 import type { AppContext, JwtPayload } from '@/types';
 
-// Mismo presupuesto que el listado de materias: lectura pública del blog.
-const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 }); // 100 req/min
-// Crear posts es una escritura: cuota propia y más estricta.
-const postWriteLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 }); // 30 req/min
+const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 });
+const postWriteLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 });
 
-// Ventana de tiempo para el orden "top" (AD-5). Decisión de producto (OQ-2):
-// 30 días. Mantiene la paginación estable y evita que posts viejos congelen el
-// feed. Es una constante, se cambia en un renglón si el equipo decide otro rango.
 const TOP_WINDOW_DAYS = 30;
 
 type PostRow = typeof blogPosts.$inferSelect;
@@ -105,7 +100,6 @@ function postToResponse(
     status: post.status,
     netScore: post.netScore,
     createdAt: post.createdAt.toISOString(),
-    // El autor real no se expone en contenido anónimo o eliminado (FR-10 / AD-2).
     author:
       deleted || post.authority === 'anonymous' ? null : authorName ? { name: authorName } : null,
     images: deleted
@@ -120,8 +114,6 @@ function postToResponse(
 }
 
 const app = new Hono<AppContext>();
-
-// ─── GET /:subjectId — blog de una materia ────────────────────────────────────
 
 app.get(
   '/:subjectId',
@@ -187,8 +179,6 @@ app.get(
       imageMap.get(key)!.push(img);
     }
 
-    // Votos del token actual sobre los posts y comentarios del blog, para
-    // hidratar `myVote` en la respuesta (sin token, todo queda en 0).
     const voteMap = new Map<string, number>();
     if (userId && targetIds.length > 0) {
       const votes = await db.query.blogVotes.findMany({
@@ -225,8 +215,6 @@ app.get(
     });
   },
 );
-
-// ─── POST /:subjectId/posts — crear un post ───────────────────────────────────
 
 app.post(
   '/:subjectId/posts',
@@ -352,8 +340,6 @@ app.post(
   },
 );
 
-// ─── POST /:subjectId/posts/:postId/vote — votar un post ──────────────────────
-
 app.post(
   '/:subjectId/posts/:postId/vote',
   describeRoute({
@@ -402,8 +388,6 @@ app.post(
     return c.json(result);
   },
 );
-
-// ─── POST /:subjectId/posts/:postId/comments — comentar ───────────────────────
 
 app.post(
   '/:subjectId/posts/:postId/comments',
@@ -533,8 +517,6 @@ app.post(
   },
 );
 
-// ─── POST /:subjectId/posts/:postId/comments/:commentId/vote — votar comentario
-
 app.post(
   '/:subjectId/posts/:postId/comments/:commentId/vote',
   describeRoute({
@@ -580,8 +562,6 @@ app.post(
     return c.json(result);
   },
 );
-
-// ─── DELETE /:subjectId/posts/:postId — borrar un post (soft delete) ──────────
 
 app.delete(
   '/:subjectId/posts/:postId',
@@ -657,8 +637,6 @@ app.delete(
     return c.body(null, 204);
   },
 );
-
-// ─── DELETE /:subjectId/posts/:postId/comments/:commentId — borrar comentario ──
 
 app.delete(
   '/:subjectId/posts/:postId/comments/:commentId',
