@@ -4,7 +4,7 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { and, asc, eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
-import { subjects, resources } from '@/db/schema';
+import { subjects, resources, blogSubtopics } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
@@ -97,22 +97,39 @@ app.post(
     const id = crypto.randomUUID();
     const slug = slugify(data.title);
     const now = new Date();
-    const [subject] = await db
-      .insert(subjects)
-      .values({
-        id,
-        facultyId: data.facultyId,
-        title: data.title,
-        slug,
-        description: data.description,
-        urlMoodle: data.urlMoodle ?? '',
-        urlPrograma: data.urlPrograma ?? '',
-        year: data.year,
-        quadmester: data.quadmester,
+    const subject = await db.transaction(async (tx) => {
+      const [created] = await tx
+        .insert(subjects)
+        .values({
+          id,
+          facultyId: data.facultyId,
+          title: data.title,
+          slug,
+          description: data.description,
+          urlMoodle: data.urlMoodle ?? '',
+          urlPrograma: data.urlPrograma ?? '',
+          year: data.year,
+          quadmester: data.quadmester,
+          createdAt: now,
+          updatedAt: now,
+        })
+        .returning();
+
+      // FR-2: todo blog nace con su "Subtema general" (mismo nombre/slug que el
+      // backfill de la migración 0010). Sin esto el blog queda sin subtemas y no
+      // se puede postear.
+      await tx.insert(blogSubtopics).values({
+        id: crypto.randomUUID(),
+        subjectId: id,
+        name: 'General',
+        slug: 'general',
+        isDefault: true,
         createdAt: now,
         updatedAt: now,
-      })
-      .returning();
+      });
+
+      return created;
+    });
     return c.json(subject, 201);
   },
 );
