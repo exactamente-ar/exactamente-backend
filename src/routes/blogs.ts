@@ -18,13 +18,7 @@ import { containsForbiddenWord } from '@/middleware/blacklist';
 import { createPostSchema, createCommentSchema, voteSchema } from '@/validators/blogs.validators';
 import { storage } from '@/services/storage';
 import { applyVote } from '@/services/votes';
-import {
-  isAllowedImageMime,
-  extensionForMime,
-  stripImageMetadata,
-  BLOG_IMAGE_MAX_BYTES,
-  BLOG_IMAGE_MAX_COUNT,
-} from '@/services/images';
+import { validateBlogImages, uploadBlogImages, BLOG_IMAGE_MAX_COUNT } from '@/services/images';
 import {
   BlogPostSchema,
   BlogResponseSchema,
@@ -252,18 +246,8 @@ app.post(
       return c.json({ error: 'El contenido no cumple con las normas de la comunidad' }, 400);
     }
 
-    if (imageFiles.length > BLOG_IMAGE_MAX_COUNT) {
-      return c.json({ error: `Máximo ${BLOG_IMAGE_MAX_COUNT} imágenes por post` }, 400);
-    }
-
-    for (const file of imageFiles) {
-      if (!isAllowedImageMime(file.type)) {
-        return c.json({ error: 'Solo se aceptan imágenes JPEG, PNG o WebP' }, 400);
-      }
-      if (file.size > BLOG_IMAGE_MAX_BYTES) {
-        return c.json({ error: 'Cada imagen no puede superar los 5MB' }, 400);
-      }
-    }
+    const imageError = validateBlogImages(imageFiles, 'post');
+    if (imageError) return c.json({ error: imageError }, 400);
 
     const subject = await db.query.subjects.findFirst({
       where: eq(subjects.id, subjectId),
@@ -281,32 +265,7 @@ app.post(
     const user = c.get('user');
     const postId = crypto.randomUUID();
 
-    const imageRows: {
-      id: string;
-      targetType: 'post';
-      targetId: string;
-      r2Key: string;
-      mimeType: string;
-      position: number;
-      createdAt: Date;
-    }[] = [];
-    for (let i = 0; i < imageFiles.length; i++) {
-      const file = imageFiles[i];
-      const original = Buffer.from(await file.arrayBuffer());
-      const stripped = await stripImageMetadata(original);
-      const imageId = crypto.randomUUID();
-      const key = `blog-posts/${postId}/${imageId}.${extensionForMime(file.type)}`;
-      await storage.uploadFile(key, stripped, file.type);
-      imageRows.push({
-        id: imageId,
-        targetType: 'post',
-        targetId: postId,
-        r2Key: key,
-        mimeType: file.type,
-        position: i,
-        createdAt: new Date(),
-      });
-    }
+    const imageRows = await uploadBlogImages('post', postId, imageFiles);
 
     const [post] = await db.transaction(async (tx) => {
       const [created] = await tx
@@ -423,18 +382,8 @@ app.post(
       return c.json({ error: 'El contenido no cumple con las normas de la comunidad' }, 400);
     }
 
-    if (imageFiles.length > BLOG_IMAGE_MAX_COUNT) {
-      return c.json({ error: `Máximo ${BLOG_IMAGE_MAX_COUNT} imágenes por comentario` }, 400);
-    }
-
-    for (const file of imageFiles) {
-      if (!isAllowedImageMime(file.type)) {
-        return c.json({ error: 'Solo se aceptan imágenes JPEG, PNG o WebP' }, 400);
-      }
-      if (file.size > BLOG_IMAGE_MAX_BYTES) {
-        return c.json({ error: 'Cada imagen no puede superar los 5MB' }, 400);
-      }
-    }
+    const imageError = validateBlogImages(imageFiles, 'comentario');
+    if (imageError) return c.json({ error: imageError }, 400);
 
     const user = c.get('user');
 
@@ -458,32 +407,7 @@ app.post(
 
     const commentId = crypto.randomUUID();
 
-    const imageRows: {
-      id: string;
-      targetType: 'comment';
-      targetId: string;
-      r2Key: string;
-      mimeType: string;
-      position: number;
-      createdAt: Date;
-    }[] = [];
-    for (let i = 0; i < imageFiles.length; i++) {
-      const file = imageFiles[i];
-      const original = Buffer.from(await file.arrayBuffer());
-      const stripped = await stripImageMetadata(original);
-      const imageId = crypto.randomUUID();
-      const key = `blog-comments/${commentId}/${imageId}.${extensionForMime(file.type)}`;
-      await storage.uploadFile(key, stripped, file.type);
-      imageRows.push({
-        id: imageId,
-        targetType: 'comment',
-        targetId: commentId,
-        r2Key: key,
-        mimeType: file.type,
-        position: i,
-        createdAt: new Date(),
-      });
-    }
+    const imageRows = await uploadBlogImages('comment', commentId, imageFiles);
 
     const [comment] = await db.transaction(async (tx) => {
       const [created] = await tx
