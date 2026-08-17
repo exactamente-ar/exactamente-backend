@@ -8,7 +8,8 @@ import { storage } from '@/services/storage';
  *
  * Garantías acá:
  * - Whitelist de MIME (jpeg/png/webp) + PDF.
- * - Tope de peso y de cantidad por post/comentario.
+ * - Tope de peso (por archivo y total), de cantidad y de píxeles por
+ *   post/comentario.
  * - Stripeo de metadata: una foto de celular anónima trae GPS, timestamp y
  *   device en el EXIF — de-anonimiza al autor.
  * - Normalización de formato: toda imagen sale en WebP redimensionado a un tope
@@ -26,11 +27,19 @@ export const BLOG_IMAGE_MAX_BYTES = 5 * 1024 * 1024; // 5 MB por imagen
 export const PDF_MIME = 'application/pdf';
 export const BLOG_PDF_MAX_BYTES = 20 * 1024 * 1024; // 20 MB por PDF
 export const BLOG_ATTACHMENT_MAX_COUNT = 6;
+/** Tope de peso sumando todos los adjuntos de un post/comentario. */
+export const BLOG_ATTACHMENT_MAX_TOTAL_BYTES = 30 * 1024 * 1024; // 30 MB
 
 /** MIME de salida del pipeline: toda imagen se normaliza a WebP. */
 export const OPTIMIZED_IMAGE_MIME = 'image/webp';
 /** Tope del lado mayor en px; una imagen más grande se encoge, una más chica no se toca. */
 export const MAX_IMAGE_DIMENSION = 2048;
+/**
+ * Tope de píxeles (ancho × alto) del input. `sharp` descomprime el original a
+ * bitmap antes de redimensionar: 100 MP son ~300 MB de RAM en una máquina de
+ * 4 GB. Este tope corta la bomba de descompresión antes de llegar ahí.
+ */
+export const MAX_IMAGE_PIXELS = 50_000_000; // 50 megapíxeles
 const WEBP_QUALITY = 80;
 
 export type BlogImageRow = typeof blogImages.$inferSelect;
@@ -55,6 +64,19 @@ export function isNearLosslessCandidate(inputMime: string, hasAlpha: boolean): b
 }
 
 /**
+ * Verdadero si `width × height` supera el tope de píxeles del pipeline. Se
+ * extrae a función pura para poder testear el límite sin decodificar una
+ * imagen gigante en los tests.
+ */
+export function exceedsPixelLimit(
+  width: number,
+  height: number,
+  maxPixels = MAX_IMAGE_PIXELS,
+): boolean {
+  return width * height > maxPixels;
+}
+
+/**
  * Redimensiona, re-encodifica a WebP y descarta la metadata EXIF de una imagen.
  *
  * `.rotate()` aplica la orientación del EXIF antes de encoger, y como `sharp`
@@ -64,9 +86,12 @@ export function isNearLosslessCandidate(inputMime: string, hasAlpha: boolean): b
  * de `isNearLosslessCandidate`: nearLossless para texto, lossy para fotos.
  */
 export async function optimizeImage(buffer: Buffer, inputMime: string): Promise<Buffer> {
-  const { hasAlpha = false } = await sharp(buffer).metadata();
+  const { hasAlpha = false, width = 0, height = 0 } = await sharp(buffer).metadata();
+  if (exceedsPixelLimit(width, height)) {
+    throw new Error('La imagen supera el máximo de 50 megapíxeles');
+  }
   const nearLossless = isNearLosslessCandidate(inputMime, hasAlpha);
-  return sharp(buffer)
+  return sharp(buffer, { limitInputPixels: MAX_IMAGE_PIXELS })
     .rotate()
     .resize({
       width: MAX_IMAGE_DIMENSION,
@@ -86,6 +111,10 @@ export async function optimizeImage(buffer: Buffer, inputMime: string): Promise<
 export function validateBlogImages(files: File[], noun: 'post' | 'comentario'): string | null {
   if (files.length > BLOG_ATTACHMENT_MAX_COUNT) {
     return `Máximo ${BLOG_ATTACHMENT_MAX_COUNT} archivos por ${noun}`;
+  }
+  const totalBytes = files.reduce((sum, file) => sum + file.size, 0);
+  if (totalBytes > BLOG_ATTACHMENT_MAX_TOTAL_BYTES) {
+    return 'El peso total de los adjuntos no puede superar los 30MB';
   }
   for (const file of files) {
     if (isPdfMime(file.type)) {

@@ -15,6 +15,7 @@ import {
   uploadBlogImages,
   validateBlogImages,
   isPdfMime,
+  exceedsPixelLimit,
   MAX_IMAGE_DIMENSION,
   BLOG_PDF_MAX_BYTES,
   BLOG_IMAGE_MAX_BYTES,
@@ -82,6 +83,25 @@ describe('validateBlogImages', () => {
     );
     expect(validateBlogImages(files, 'post')).toBe('Máximo 6 archivos por post');
   });
+
+  it('rechaza adjuntos cuyo peso total supera los 30MB', () => {
+    const pdf1 = new File([new Uint8Array(BLOG_PDF_MAX_BYTES)], 'a.pdf', {
+      type: 'application/pdf',
+    });
+    const pdf2 = new File([new Uint8Array(BLOG_PDF_MAX_BYTES)], 'b.pdf', {
+      type: 'application/pdf',
+    });
+    expect(validateBlogImages([pdf1, pdf2], 'post')).toBe(
+      'El peso total de los adjuntos no puede superar los 30MB',
+    );
+  });
+
+  it('acepta adjuntos cuyo peso total no supera los 30MB', () => {
+    const pdf = new File([new Uint8Array(BLOG_PDF_MAX_BYTES)], 'a.pdf', {
+      type: 'application/pdf',
+    });
+    expect(validateBlogImages([pdf], 'post')).toBeNull();
+  });
 });
 
 describe('isNearLosslessCandidate', () => {
@@ -97,6 +117,22 @@ describe('isNearLosslessCandidate', () => {
   it('decide webp por su canal alpha', () => {
     expect(isNearLosslessCandidate('image/webp', true)).toBe(true);
     expect(isNearLosslessCandidate('image/webp', false)).toBe(false);
+  });
+});
+
+describe('exceedsPixelLimit', () => {
+  it('rechaza una imagen por encima de los 50 megapíxeles', () => {
+    expect(exceedsPixelLimit(8000, 7000)).toBe(true);
+  });
+
+  it('acepta imágenes dentro del tope', () => {
+    expect(exceedsPixelLimit(2048, 2048)).toBe(false);
+    expect(exceedsPixelLimit(4000, 3000)).toBe(false);
+  });
+
+  it('respeta un tope custom', () => {
+    expect(exceedsPixelLimit(100, 100, 1000)).toBe(true);
+    expect(exceedsPixelLimit(10, 10, 1000)).toBe(false);
   });
 });
 
