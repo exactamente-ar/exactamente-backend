@@ -3817,7 +3817,7 @@
           "Blogs"
         ],
         "summary": "Borrar un post",
-        "description": "Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete: borra físicamente las imágenes de R2, marca `status: deleted` y conserva el árbol de comentarios.",
+        "description": "Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete (marca `status: deleted`) si todavía hay comentarios activos; borra el árbol completo (posts, comentarios, votos e imágenes) si todos los comentarios ya están eliminados.",
         "security": [
           {
             "bearerAuth": []
@@ -3912,7 +3912,7 @@
           "Blogs"
         ],
         "summary": "Borrar un comentario",
-        "description": "Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete: marca `status: deleted` y conserva las respuestas (hijos) en el árbol.",
+        "description": "Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete (marca `status: deleted`) si todavía hay respuestas activas en el árbol; borra el subárbol completo (comentario, descendientes, votos e imágenes) si todos sus descendientes ya están eliminados.",
         "security": [
           {
             "bearerAuth": []

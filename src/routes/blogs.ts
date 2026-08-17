@@ -16,9 +16,11 @@ import { rateLimit } from '@/middleware/rateLimit';
 import { verifyToken, optionalAuth } from '@/middleware/auth';
 import { containsForbiddenWord } from '@/middleware/blacklist';
 import { createPostSchema, createCommentSchema, voteSchema } from '@/validators/blogs.validators';
-import { storage } from '@/services/storage';
 import { applyVote } from '@/services/votes';
 import { validateBlogImages, uploadBlogImages, BLOG_IMAGE_MAX_COUNT } from '@/services/images';
+import { commentToResponse, postToResponse } from '@/services/blogs';
+import type { CommentRow } from '@/services/blogs';
+import { deleteBlogPost, deleteBlogComment } from '@/services/blog-deletion';
 import {
   BlogPostSchema,
   BlogResponseSchema,
@@ -32,80 +34,6 @@ const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 });
 const postWriteLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 });
 
 const TOP_WINDOW_DAYS = 30;
-
-type PostRow = typeof blogPosts.$inferSelect;
-type CommentRow = typeof blogComments.$inferSelect;
-
-const DELETED_BODY = '[Eliminado]';
-
-function commentToResponse(
-  comment: CommentRow,
-  authorName: string | null,
-  images: BlogImageRow[],
-  userId: string | null,
-  myVote = 0,
-) {
-  const deleted = comment.status === 'deleted';
-  return {
-    id: comment.id,
-    postId: comment.postId,
-    parentId: comment.parentId,
-    body: deleted ? DELETED_BODY : comment.body,
-    authority: comment.authority,
-    status: comment.status,
-    netScore: comment.netScore,
-    depth: comment.depth,
-    createdAt: comment.createdAt.toISOString(),
-    author:
-      deleted || comment.authority === 'anonymous'
-        ? null
-        : authorName
-          ? { name: authorName }
-          : null,
-    images: deleted
-      ? []
-      : images.map((img) => ({ id: img.id, url: storage.getPublicUrl(img.r2Key) })),
-    mine: userId !== null && userId === comment.authorId,
-    myVote,
-  };
-}
-
-type BlogImageRow = typeof blogImages.$inferSelect;
-
-function postToResponse(
-  post: PostRow,
-  authorName: string | null,
-  images: BlogImageRow[],
-  comments: {
-    row: CommentRow;
-    authorName: string | null;
-    images: BlogImageRow[];
-    myVote: number;
-  }[],
-  userId: string | null,
-  myVote = 0,
-) {
-  const deleted = post.status === 'deleted';
-  return {
-    id: post.id,
-    subtopicId: post.subtopicId,
-    body: deleted ? DELETED_BODY : post.body,
-    authority: post.authority,
-    status: post.status,
-    netScore: post.netScore,
-    createdAt: post.createdAt.toISOString(),
-    author:
-      deleted || post.authority === 'anonymous' ? null : authorName ? { name: authorName } : null,
-    images: deleted
-      ? []
-      : images.map((img) => ({ id: img.id, url: storage.getPublicUrl(img.r2Key) })),
-    comments: comments.map((c) =>
-      commentToResponse(c.row, c.authorName, c.images, userId, c.myVote),
-    ),
-    mine: userId !== null && userId === post.authorId,
-    myVote,
-  };
-}
 
 const app = new Hono<AppContext>();
 
@@ -493,9 +421,10 @@ app.delete(
     tags: ['Blogs'],
     summary: 'Borrar un post',
     description:
-      'Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete: ' +
-      'borra físicamente las imágenes de R2, marca `status: deleted` y conserva el ' +
-      'árbol de comentarios.',
+      'Requiere autenticación. El autor o un admin pueden borrarlo. ' +
+      'Soft delete (marca `status: deleted`) si todavía hay comentarios activos; ' +
+      'borra el árbol completo (posts, comentarios, votos e imágenes) si todos ' +
+      'los comentarios ya están eliminados.',
     security: bearerAuth,
     responses: {
       204: { description: 'Post eliminado' },
@@ -518,45 +447,7 @@ app.delete(
       return c.json({ error: 'No podés borrar un post ajeno' }, 403);
     }
 
-    const allCommentsDeleted = post.comments.every((c) => c.status === 'deleted');
-    const targetIds = [postId, ...post.comments.map((c) => c.id)];
-
-    const allImages =
-      targetIds.length > 0
-        ? await db.query.blogImages.findMany({
-            where: inArray(blogImages.targetId, targetIds),
-          })
-        : [];
-
-    const postImages = allImages.filter(
-      (img) => img.targetType === 'post' && img.targetId === postId,
-    );
-
-    await db.transaction(async (tx) => {
-      if (allCommentsDeleted) {
-        for (const img of allImages) {
-          await storage.deleteFile(img.r2Key);
-        }
-        if (targetIds.length > 0) {
-          await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
-          await tx.delete(blogImages).where(inArray(blogImages.targetId, targetIds));
-        }
-        await tx.delete(blogPosts).where(eq(blogPosts.id, postId));
-      } else {
-        for (const img of postImages) {
-          await storage.deleteFile(img.r2Key);
-        }
-        await tx
-          .update(blogPosts)
-          .set({ status: 'deleted', updatedAt: new Date() })
-          .where(eq(blogPosts.id, postId));
-        if (postImages.length > 0) {
-          await tx
-            .delete(blogImages)
-            .where(and(eq(blogImages.targetType, 'post'), eq(blogImages.targetId, postId)));
-        }
-      }
-    });
+    await deleteBlogPost(post);
 
     return c.body(null, 204);
   },
@@ -568,8 +459,10 @@ app.delete(
     tags: ['Blogs'],
     summary: 'Borrar un comentario',
     description:
-      'Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete: ' +
-      'marca `status: deleted` y conserva las respuestas (hijos) en el árbol.',
+      'Requiere autenticación. El autor o un admin pueden borrarlo. ' +
+      'Soft delete (marca `status: deleted`) si todavía hay respuestas activas ' +
+      'en el árbol; borra el subárbol completo (comentario, descendientes, ' +
+      'votos e imágenes) si todos sus descendientes ya están eliminados.',
     security: bearerAuth,
     responses: {
       204: { description: 'Comentario eliminado' },
@@ -593,49 +486,7 @@ app.delete(
       return c.json({ error: 'No podés borrar un comentario ajeno' }, 403);
     }
 
-    function getDescendants(parentId: string): typeof postComments {
-      const children = postComments.filter((c) => c.parentId === parentId);
-      return children.flatMap((c) => [c, ...getDescendants(c.id)]);
-    }
-
-    const descendants = getDescendants(commentId);
-    const allDescendantsDeleted = descendants.every((c) => c.status === 'deleted');
-    const targetIds = [commentId, ...descendants.map((c) => c.id)];
-
-    const commentImages = await db.query.blogImages.findMany({
-      where: and(eq(blogImages.targetType, 'comment'), inArray(blogImages.targetId, targetIds)),
-    });
-
-    await db.transaction(async (tx) => {
-      if (allDescendantsDeleted) {
-        for (const img of commentImages) {
-          await storage.deleteFile(img.r2Key);
-        }
-        if (targetIds.length > 0) {
-          await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
-          await tx
-            .delete(blogImages)
-            .where(
-              and(eq(blogImages.targetType, 'comment'), inArray(blogImages.targetId, targetIds)),
-            );
-          await tx.delete(blogComments).where(inArray(blogComments.id, targetIds));
-        }
-      } else {
-        const rootImages = commentImages.filter((img) => img.targetId === commentId);
-        for (const img of rootImages) {
-          await storage.deleteFile(img.r2Key);
-        }
-        await tx
-          .update(blogComments)
-          .set({ status: 'deleted', updatedAt: new Date() })
-          .where(eq(blogComments.id, commentId));
-        if (rootImages.length > 0) {
-          await tx
-            .delete(blogImages)
-            .where(and(eq(blogImages.targetType, 'comment'), eq(blogImages.targetId, commentId)));
-        }
-      }
-    });
+    await deleteBlogComment(comment, postComments);
 
     return c.body(null, 204);
   },
