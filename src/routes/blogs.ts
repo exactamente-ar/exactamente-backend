@@ -31,7 +31,10 @@ import { json, errors, bearerAuth } from '@/openapi/helpers';
 import type { AppContext, JwtPayload } from '@/types';
 
 const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 });
-const postWriteLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 });
+const postWriteIpLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 });
+// Las escrituras se limitan también por usuario: una IP rotativa no tendría
+// techo si solo contara la IP. Corre después de verifyToken para tener el sub.
+const postWriteUserLimit = rateLimit({ limit: 30, windowMs: 60 * 1000, keyByUser: true });
 
 const TOP_WINDOW_DAYS = 30;
 
@@ -155,8 +158,9 @@ app.post(
       ...errors(400, 401, 404),
     },
   }),
-  postWriteLimit,
+  postWriteIpLimit,
   verifyToken,
+  postWriteUserLimit,
   async (c) => {
     const subjectId = c.req.param('subjectId');
     const formData = await c.req.formData();
@@ -243,8 +247,9 @@ app.post(
       ...errors(400, 401, 403, 404),
     },
   }),
-  postWriteLimit,
+  postWriteIpLimit,
   verifyToken,
+  postWriteUserLimit,
   zValidator('json', voteSchema),
   async (c) => {
     const { postId } = c.req.param() as { postId: string };
@@ -291,8 +296,9 @@ app.post(
       ...errors(400, 401, 404),
     },
   }),
-  postWriteLimit,
+  postWriteIpLimit,
   verifyToken,
+  postWriteUserLimit,
   async (c) => {
     const { postId } = c.req.param() as { postId: string };
     const formData = await c.req.formData();
@@ -382,8 +388,9 @@ app.post(
       ...errors(400, 401, 403, 404),
     },
   }),
-  postWriteLimit,
+  postWriteIpLimit,
   verifyToken,
+  postWriteUserLimit,
   zValidator('json', voteSchema),
   async (c) => {
     const { commentId } = c.req.param() as { commentId: string };
