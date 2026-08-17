@@ -17,6 +17,7 @@
     "db:studio": "drizzle-kit studio",
     "seed": "bun scripts/seed.ts",
     "seed:blogs": "bun scripts/seed-blogs.ts",
+    "seed:subtemas": "bun scripts/seed-subtemas.ts",
     "xlsx-to-ts": "bun scripts/xlsx-to-ts.ts",
     "migrate-drive": "bun scripts/migrate-drive-to-r2.ts",
     "gen:openapi": "bun scripts/gen-openapi.ts",
