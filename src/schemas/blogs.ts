@@ -29,6 +29,7 @@ export const BlogPostImageSchema = z
   .object({
     id: z.string(),
     url: z.string(),
+    mimeType: z.string().describe('image/webp o application/pdf según el adjunto'),
   })
   .meta({ id: 'BlogPostImage' });
 
@@ -36,6 +37,7 @@ export const BlogCommentImageSchema = z
   .object({
     id: z.string(),
     url: z.string(),
+    mimeType: z.string().describe('image/webp o application/pdf según el adjunto'),
   })
   .meta({ id: 'BlogCommentImage' });
 

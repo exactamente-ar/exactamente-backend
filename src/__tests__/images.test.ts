@@ -13,7 +13,11 @@ import {
   isNearLosslessCandidate,
   optimizeImage,
   uploadBlogImages,
+  validateBlogImages,
+  isPdfMime,
   MAX_IMAGE_DIMENSION,
+  BLOG_PDF_MAX_BYTES,
+  BLOG_IMAGE_MAX_BYTES,
 } from '@/services/images';
 
 describe('isAllowedImageMime', () => {
@@ -27,6 +31,56 @@ describe('isAllowedImageMime', () => {
     expect(isAllowedImageMime('application/pdf')).toBe(false);
     expect(isAllowedImageMime('image/gif')).toBe(false);
     expect(isAllowedImageMime('')).toBe(false);
+  });
+});
+
+describe('isPdfMime', () => {
+  it('reconoce solo application/pdf', () => {
+    expect(isPdfMime('application/pdf')).toBe(true);
+    expect(isPdfMime('image/png')).toBe(false);
+    expect(isPdfMime('')).toBe(false);
+  });
+});
+
+describe('validateBlogImages', () => {
+  it('acepta un PDF dentro del tope de peso', () => {
+    const file = new File([new Uint8Array(1024)], 'apunte.pdf', { type: 'application/pdf' });
+    expect(validateBlogImages([file], 'post')).toBeNull();
+  });
+
+  it('acepta una mezcla de imágenes y PDFs', () => {
+    const pdf = new File([new Uint8Array(1024)], 'a.pdf', { type: 'application/pdf' });
+    const png = new File([new Uint8Array(1024)], 'a.png', { type: 'image/png' });
+    expect(validateBlogImages([pdf, png], 'post')).toBeNull();
+  });
+
+  it('rechaza un PDF que supera el tope de 20MB', () => {
+    const big = new File([new Uint8Array(BLOG_PDF_MAX_BYTES + 1)], 'a.pdf', {
+      type: 'application/pdf',
+    });
+    expect(validateBlogImages([big], 'post')).toBe('Cada PDF no puede superar los 20MB');
+  });
+
+  it('rechaza una imagen que supera el tope de 5MB', () => {
+    const big = new File([new Uint8Array(BLOG_IMAGE_MAX_BYTES + 1)], 'a.png', {
+      type: 'image/png',
+    });
+    expect(validateBlogImages([big], 'post')).toBe('Cada imagen no puede superar los 5MB');
+  });
+
+  it('rechaza tipos que no son imagen ni PDF', () => {
+    const gif = new File([new Uint8Array(1024)], 'a.gif', { type: 'image/gif' });
+    expect(validateBlogImages([gif], 'comentario')).toBe(
+      'Solo se aceptan imágenes JPEG, PNG o WebP, o PDFs',
+    );
+  });
+
+  it('rechaza más del máximo de adjuntos', () => {
+    const files = Array.from(
+      { length: 7 },
+      (_, i) => new File([new Uint8Array(1024)], `a${i}.png`, { type: 'image/png' }),
+    );
+    expect(validateBlogImages(files, 'post')).toBe('Máximo 6 archivos por post');
   });
 });
 
@@ -155,5 +209,26 @@ describe('uploadBlogImages', () => {
     const [key, , mimeType] = uploadFile.mock.calls[0] as [string, Buffer, string];
     expect(key).toMatch(/\.webp$/);
     expect(mimeType).toBe('image/webp');
+  });
+
+  it('sube un PDF tal cual: key .pdf, mimeType application/pdf y buffer sin tocar', async () => {
+    const uploadFile = storage.uploadFile as unknown as { mock: { calls: unknown[] } };
+    uploadFile.mock.calls.length = 0;
+
+    const pdf = new File([new Uint8Array([0x25, 0x50, 0x44, 0x46])], 'apunte.pdf', {
+      type: 'application/pdf',
+    });
+
+    const rows = await uploadBlogImages('post', 'p1', [pdf]);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].mimeType).toBe('application/pdf');
+    expect(rows[0].r2Key).toMatch(/^blog-posts\/p1\/.+\.pdf$/);
+    expect(rows[0].position).toBe(0);
+
+    const [key, buffer, mimeType] = uploadFile.mock.calls[0] as [string, Buffer, string];
+    expect(key).toMatch(/\.pdf$/);
+    expect(mimeType).toBe('application/pdf');
+    expect(Buffer.from(buffer)).toEqual(Buffer.from([0x25, 0x50, 0x44, 0x46]));
   });
 });

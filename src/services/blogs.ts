@@ -33,7 +33,11 @@ export function commentToResponse(
           : null,
     images: deleted
       ? []
-      : images.map((img) => ({ id: img.id, url: storage.getPublicUrl(img.r2Key) })),
+      : images.map((img) => ({
+          id: img.id,
+          url: storage.getPublicUrl(img.r2Key),
+          mimeType: img.mimeType,
+        })),
     mine: userId !== null && userId === comment.authorId,
     myVote,
   };
@@ -65,7 +69,11 @@ export function postToResponse(
       deleted || post.authority === 'anonymous' ? null : authorName ? { name: authorName } : null,
     images: deleted
       ? []
-      : images.map((img) => ({ id: img.id, url: storage.getPublicUrl(img.r2Key) })),
+      : images.map((img) => ({
+          id: img.id,
+          url: storage.getPublicUrl(img.r2Key),
+          mimeType: img.mimeType,
+        })),
     comments: comments.map((c) =>
       commentToResponse(c.row, c.authorName, c.images, userId, c.myVote),
     ),

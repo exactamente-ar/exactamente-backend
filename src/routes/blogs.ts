@@ -17,7 +17,7 @@ import { verifyToken, optionalAuth } from '@/middleware/auth';
 import { containsForbiddenWord } from '@/middleware/blacklist';
 import { createPostSchema, createCommentSchema, voteSchema } from '@/validators/blogs.validators';
 import { applyVote } from '@/services/votes';
-import { validateBlogImages, uploadBlogImages, BLOG_IMAGE_MAX_COUNT } from '@/services/images';
+import { validateBlogImages, uploadBlogImages, BLOG_ATTACHMENT_MAX_COUNT } from '@/services/images';
 import { commentToResponse, postToResponse } from '@/services/blogs';
 import type { CommentRow } from '@/services/blogs';
 import { deleteBlogPost, deleteBlogComment } from '@/services/blog-deletion';
@@ -146,8 +146,9 @@ app.post(
     description:
       'Requiere autenticación. Crea un post en el subtema elegido con autoría ' +
       'visible o anónima. Multipart: `subtopicId`, `authority`, `body` (texto) y ' +
-      `hasta ${BLOG_IMAGE_MAX_COUNT} imágenes (jpeg/png/webp). El texto pasa por ` +
-      'la blacklist y las imágenes se re-encodifican sin metadata EXIF.',
+      `hasta ${BLOG_ATTACHMENT_MAX_COUNT} adjuntos (imágenes jpeg/png/webp o PDFs). ` +
+      'El texto pasa por la blacklist; las imágenes se re-encodifican sin metadata ' +
+      'EXIF y los PDFs se suben tal cual.',
     security: bearerAuth,
     responses: {
       201: json(BlogPostSchema, 'Post creado'),
