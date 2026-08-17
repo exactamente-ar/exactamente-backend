@@ -2,6 +2,10 @@ CREATE TYPE "post_authority" AS ENUM ('visible', 'anonymous');
 
 CREATE TYPE "post_status" AS ENUM ('published', 'deleted');
 
+CREATE TYPE "vote_target" AS ENUM ('post', 'comment');
+
+CREATE TYPE "image_target" AS ENUM ('post', 'comment');
+
 CREATE TABLE "blog_subtopics" (
   "id" text PRIMARY KEY NOT NULL,
   "subject_id" text NOT NULL REFERENCES "subjects"("id"),
@@ -20,6 +24,7 @@ CREATE TABLE "blog_posts" (
   "body" text NOT NULL,
   "authority" "post_authority" NOT NULL,
   "status" "post_status" DEFAULT 'published' NOT NULL,
+  "net_score" integer DEFAULT 0 NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT now(),
   "updated_at" timestamp NOT NULL DEFAULT now()
 );
@@ -36,3 +41,46 @@ INSERT INTO "blog_subtopics" ("id", "subject_id", "name", "slug", "is_default")
 SELECT gen_random_uuid()::text, "id", 'General', 'general', true
 FROM "subjects"
 ON CONFLICT DO NOTHING;
+
+CREATE INDEX "blog_posts_subject_score_idx" ON "blog_posts" ("subject_id", "net_score" DESC);
+
+CREATE TABLE "blog_images" (
+  "id" text PRIMARY KEY NOT NULL,
+  "target_type" "image_target" NOT NULL,
+  "target_id" text NOT NULL,
+  "r2_key" text NOT NULL,
+  "mime_type" varchar(50) NOT NULL,
+  "position" smallint DEFAULT 0 NOT NULL,
+  "created_at" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE INDEX "blog_images_target_idx" ON "blog_images" ("target_type", "target_id");
+
+CREATE TABLE "blog_votes" (
+  "id" text PRIMARY KEY NOT NULL,
+  "user_id" text NOT NULL REFERENCES "users"("id"),
+  "target_type" "vote_target" NOT NULL,
+  "target_id" text NOT NULL,
+  "value" smallint NOT NULL,
+  "created_at" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE UNIQUE INDEX "blog_votes_user_target_unique" ON "blog_votes" ("user_id", "target_type", "target_id");
+CREATE INDEX "blog_votes_target_idx" ON "blog_votes" ("target_type", "target_id");
+
+CREATE TABLE "blog_comments" (
+  "id" text PRIMARY KEY NOT NULL,
+  "post_id" text NOT NULL REFERENCES "blog_posts"("id") ON DELETE CASCADE,
+  "parent_id" text REFERENCES "blog_comments"("id"),
+  "author_id" text NOT NULL REFERENCES "users"("id"),
+  "body" text NOT NULL,
+  "authority" "post_authority" NOT NULL,
+  "status" "post_status" DEFAULT 'published' NOT NULL,
+  "net_score" integer DEFAULT 0 NOT NULL,
+  "depth" smallint DEFAULT 1 NOT NULL,
+  "created_at" timestamp NOT NULL DEFAULT now(),
+  "updated_at" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE INDEX "blog_comments_post_idx" ON "blog_comments" ("post_id");
+CREATE INDEX "blog_comments_parent_idx" ON "blog_comments" ("parent_id");
