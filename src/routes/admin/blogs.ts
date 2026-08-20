@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { and, asc, desc, eq } from 'drizzle-orm';
+import { and, asc, desc, eq, ne } from 'drizzle-orm';
 import { db } from '@/db';
 import { blogSubtopics, blogPosts, blogComments, subjects } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
@@ -17,6 +17,15 @@ const app = new Hono<AppContext>();
 const adminGuard = [verifyToken, requireRole('admin')] as const;
 
 const DELETED_BODY = '[Eliminado]';
+
+/**
+ * Violación de unique en PostgreSQL (código 23505). Cubre la carrera entre el
+ * pre-check del slug y el insert/update: dos requests que llegan a la vez y
+ * generan el mismo slug.
+ */
+function isUniqueViolation(e: unknown): boolean {
+  return typeof e === 'object' && e !== null && (e as { code?: string }).code === '23505';
+}
 
 // ─── GET /activity — actividad reciente para moderar ─────────────────────────
 
@@ -132,7 +141,10 @@ app.post(
     tags: ['Admin'],
     summary: 'Crear un subtema',
     security: bearerAuth,
-    responses: { 201: json(BlogSubtopicSchema, 'Subtema creado'), ...errors(400, 401, 403, 404) },
+    responses: {
+      201: json(BlogSubtopicSchema, 'Subtema creado'),
+      ...errors(400, 401, 403, 404, 409),
+    },
   }),
   ...adminGuard,
   zValidator('json', createSubtopicSchema),
@@ -143,16 +155,32 @@ app.post(
     const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, subjectId) });
     if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
 
-    const [subtopic] = await db
-      .insert(blogSubtopics)
-      .values({
-        id: crypto.randomUUID(),
-        subjectId,
-        name,
-        slug: slugify(name),
-        isDefault: false,
-      })
-      .returning();
+    const slug = slugify(name);
+    const existing = await db.query.blogSubtopics.findFirst({
+      where: and(eq(blogSubtopics.subjectId, subjectId), eq(blogSubtopics.slug, slug)),
+    });
+    if (existing) {
+      return c.json({ error: 'Ya existe un subtema con ese nombre en esta materia' }, 409);
+    }
+
+    let subtopic;
+    try {
+      [subtopic] = await db
+        .insert(blogSubtopics)
+        .values({
+          id: crypto.randomUUID(),
+          subjectId,
+          name,
+          slug,
+          isDefault: false,
+        })
+        .returning();
+    } catch (e) {
+      if (isUniqueViolation(e)) {
+        return c.json({ error: 'Ya existe un subtema con ese nombre en esta materia' }, 409);
+      }
+      throw e;
+    }
 
     return c.json(
       { id: subtopic.id, name: subtopic.name, slug: subtopic.slug, isDefault: subtopic.isDefault },
@@ -171,7 +199,7 @@ app.patch(
     security: bearerAuth,
     responses: {
       200: json(BlogSubtopicSchema, 'Subtema actualizado'),
-      ...errors(400, 401, 403, 404),
+      ...errors(400, 401, 403, 404, 409),
     },
   }),
   ...adminGuard,
@@ -180,12 +208,36 @@ app.patch(
     const id = c.req.param('id');
     const { name } = c.req.valid('json');
 
-    const [subtopic] = await db
-      .update(blogSubtopics)
-      .set({ name, slug: slugify(name), updatedAt: new Date() })
-      .where(eq(blogSubtopics.id, id))
-      .returning();
-    if (!subtopic) return c.json({ error: 'Subtema no encontrado' }, 404);
+    const current = await db.query.blogSubtopics.findFirst({
+      where: eq(blogSubtopics.id, id),
+    });
+    if (!current) return c.json({ error: 'Subtema no encontrado' }, 404);
+
+    const slug = slugify(name);
+    const conflicting = await db.query.blogSubtopics.findFirst({
+      where: and(
+        eq(blogSubtopics.subjectId, current.subjectId),
+        eq(blogSubtopics.slug, slug),
+        ne(blogSubtopics.id, id),
+      ),
+    });
+    if (conflicting) {
+      return c.json({ error: 'Ya existe un subtema con ese nombre en esta materia' }, 409);
+    }
+
+    let subtopic;
+    try {
+      [subtopic] = await db
+        .update(blogSubtopics)
+        .set({ name, slug, updatedAt: new Date() })
+        .where(eq(blogSubtopics.id, id))
+        .returning();
+    } catch (e) {
+      if (isUniqueViolation(e)) {
+        return c.json({ error: 'Ya existe un subtema con ese nombre en esta materia' }, 409);
+      }
+      throw e;
+    }
 
     return c.json({
       id: subtopic.id,

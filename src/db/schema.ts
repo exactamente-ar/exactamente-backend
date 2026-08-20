@@ -228,7 +228,7 @@ export const blogSubtopics = pgTable(
     id: text('id').primaryKey(),
     subjectId: text('subject_id')
       .notNull()
-      .references(() => subjects.id),
+      .references(() => subjects.id, { onDelete: 'cascade' }),
     name: varchar('name', { length: 100 }).notNull(),
     slug: varchar('slug', { length: 100 }).notNull(),
     isDefault: boolean('is_default').notNull().default(false),
@@ -247,10 +247,10 @@ export const blogPosts = pgTable(
     id: text('id').primaryKey(),
     subjectId: text('subject_id')
       .notNull()
-      .references(() => subjects.id),
+      .references(() => subjects.id, { onDelete: 'cascade' }),
     subtopicId: text('subtopic_id')
       .notNull()
-      .references(() => blogSubtopics.id),
+      .references(() => blogSubtopics.id, { onDelete: 'cascade' }),
     authorId: text('author_id')
       .notNull()
       .references(() => users.id),

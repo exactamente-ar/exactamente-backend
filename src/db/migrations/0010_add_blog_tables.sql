@@ -8,7 +8,7 @@ CREATE TYPE "image_target" AS ENUM ('post', 'comment');
 
 CREATE TABLE "blog_subtopics" (
   "id" text PRIMARY KEY NOT NULL,
-  "subject_id" text NOT NULL REFERENCES "subjects"("id"),
+  "subject_id" text NOT NULL REFERENCES "subjects"("id") ON DELETE CASCADE,
   "name" varchar(100) NOT NULL,
   "slug" varchar(100) NOT NULL,
   "is_default" boolean DEFAULT false NOT NULL,
@@ -18,8 +18,8 @@ CREATE TABLE "blog_subtopics" (
 
 CREATE TABLE "blog_posts" (
   "id" text PRIMARY KEY NOT NULL,
-  "subject_id" text NOT NULL REFERENCES "subjects"("id"),
-  "subtopic_id" text NOT NULL REFERENCES "blog_subtopics"("id"),
+  "subject_id" text NOT NULL REFERENCES "subjects"("id") ON DELETE CASCADE,
+  "subtopic_id" text NOT NULL REFERENCES "blog_subtopics"("id") ON DELETE CASCADE,
   "author_id" text NOT NULL REFERENCES "users"("id"),
   "body" text NOT NULL,
   "authority" "post_authority" NOT NULL,

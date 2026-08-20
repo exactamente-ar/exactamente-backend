@@ -3110,7 +3110,7 @@
           "Blogs"
         ],
         "summary": "Blog de una materia",
-        "description": "Devuelve los subtemas (con el \"general\" por defecto) y los posts del blog. Lectura pública. Posts ordenados por votos (`net_score`), con una ventana 30 días para que la paginación sea estable. Los comentarios se ordenan por votos dentro de sus hermanos.",
+        "description": "Devuelve los subtemas (con el \"general\" por defecto) y los posts del blog. Lectura pública. Posts ordenados por votos (`net_score`), desempatando por fecha e id; los comentarios se ordenan por votos dentro de sus hermanos.",
         "responses": {
           "200": {
             "description": "Blog con sus subtemas y posts",
@@ -9944,6 +9944,25 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Conflicto de estado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -10057,6 +10076,25 @@
           },
           "404": {
             "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado",
             "content": {
               "application/json": {
                 "schema": {

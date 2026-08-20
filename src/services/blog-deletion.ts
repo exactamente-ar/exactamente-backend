@@ -2,12 +2,27 @@ import { and, eq, inArray } from 'drizzle-orm';
 import { db } from '@/db';
 import { blogComments, blogImages, blogPosts, blogVotes } from '@/db/schema';
 import { storage } from '@/services/storage';
-import type { CommentRow } from '@/services/blogs';
 
 type DeleteablePost = {
   id: string;
   comments: { id: string; status: string }[];
 };
+
+/** Subconjunto mínimo de un comentario para resolver el árbol y decidir el borrado. */
+type CommentNode = {
+  id: string;
+  parentId: string | null;
+  status: string;
+};
+
+/**
+ * Borra los objetos de storage de un set de keys. Best-effort: si alguno ya no
+ * existe no falla, y un error de storage no debe tirar abajo un borrado de DB ya
+ * commiteado.
+ */
+export async function deleteBlogStorageObjects(keys: string[]): Promise<void> {
+  await Promise.all(keys.map((key) => storage.deleteFile(key).catch(() => {})));
+}
 
 /**
  * Borra un post aplicando la política de árbol del blog.
@@ -17,6 +32,10 @@ type DeleteablePost = {
  *   images y el propio post.
  * - Si queda algún comentario activo, hace soft delete: borra las imágenes del
  *   post, marca `status: deleted` y conserva el árbol de comentarios.
+ *
+ * Los objetos de storage se borran **después** de un commit exitoso: si un
+ * statement posterior falla (o se corta la conexión), la DB hace rollback y las
+ * filas sobreviven; borrarlos dentro de la transacción dejaría URLs rotas.
  */
 export async function deleteBlogPost(post: DeleteablePost): Promise<void> {
   const allCommentsDeleted = post.comments.every((c) => c.status === 'deleted');
@@ -33,20 +52,16 @@ export async function deleteBlogPost(post: DeleteablePost): Promise<void> {
     (img) => img.targetType === 'post' && img.targetId === post.id,
   );
 
+  const keysToDelete = (allCommentsDeleted ? allImages : postImages).map((img) => img.r2Key);
+
   await db.transaction(async (tx) => {
     if (allCommentsDeleted) {
-      for (const img of allImages) {
-        await storage.deleteFile(img.r2Key);
-      }
       if (hasTargets) {
         await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
         await tx.delete(blogImages).where(inArray(blogImages.targetId, targetIds));
       }
       await tx.delete(blogPosts).where(eq(blogPosts.id, post.id));
     } else {
-      for (const img of postImages) {
-        await storage.deleteFile(img.r2Key);
-      }
       await tx
         .update(blogPosts)
         .set({ status: 'deleted', updatedAt: new Date() })
@@ -58,13 +73,15 @@ export async function deleteBlogPost(post: DeleteablePost): Promise<void> {
       }
     }
   });
+
+  await deleteBlogStorageObjects(keysToDelete);
 }
 
 /**
  * Descendientes de un comentario dentro de una lista que incluye todos los del
  * post. Orden postorder: los nietos antes de los padres, raíz excluida.
  */
-export function getCommentDescendants(comments: CommentRow[], parentId: string): CommentRow[] {
+export function getCommentDescendants(comments: CommentNode[], parentId: string): CommentNode[] {
   const children = comments.filter((c) => c.parentId === parentId);
   return children.flatMap((c) => [c, ...getCommentDescendants(comments, c.id)]);
 }
@@ -77,10 +94,12 @@ export function getCommentDescendants(comments: CommentRow[], parentId: string):
  *   elimina votes, images y los comentarios.
  * - Si queda algún descendiente activo, hace soft delete: borra las imágenes
  *   del comentario raíz, marca `status: deleted` y conserva las respuestas.
+ *
+ * Igual que `deleteBlogPost`, el borrado de storage va después del commit.
  */
 export async function deleteBlogComment(
-  comment: CommentRow,
-  postComments: CommentRow[],
+  comment: { id: string },
+  postComments: CommentNode[],
 ): Promise<void> {
   const descendants = getCommentDescendants(postComments, comment.id);
   const allDescendantsDeleted = descendants.every((c) => c.status === 'deleted');
@@ -93,11 +112,14 @@ export async function deleteBlogComment(
       })
     : [];
 
+  const keysToDelete = (
+    allDescendantsDeleted
+      ? commentImages
+      : commentImages.filter((img) => img.targetId === comment.id)
+  ).map((img) => img.r2Key);
+
   await db.transaction(async (tx) => {
     if (allDescendantsDeleted) {
-      for (const img of commentImages) {
-        await storage.deleteFile(img.r2Key);
-      }
       if (hasTargets) {
         await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
         await tx
@@ -108,19 +130,61 @@ export async function deleteBlogComment(
         await tx.delete(blogComments).where(inArray(blogComments.id, targetIds));
       }
     } else {
-      const rootImages = commentImages.filter((img) => img.targetId === comment.id);
-      for (const img of rootImages) {
-        await storage.deleteFile(img.r2Key);
-      }
       await tx
         .update(blogComments)
         .set({ status: 'deleted', updatedAt: new Date() })
         .where(eq(blogComments.id, comment.id));
-      if (rootImages.length > 0) {
+      if (commentImages.some((img) => img.targetId === comment.id)) {
         await tx
           .delete(blogImages)
           .where(and(eq(blogImages.targetType, 'comment'), eq(blogImages.targetId, comment.id)));
       }
     }
   });
+
+  await deleteBlogStorageObjects(keysToDelete);
+}
+
+/**
+ * Recopila los targets e imágenes del blog de una materia para preparar su borrado.
+ * `blog_images` y `blog_votes` referencian sus targets por texto plano (sin FK),
+ * así que no caen con el cascade de BD y hay que borrarlos explícitamente junto
+ * con sus objetos en R2.
+ */
+export async function prepareSubjectBlogDeletion(
+  subjectId: string,
+): Promise<{ targetIds: string[]; r2Keys: string[] }> {
+  const posts = await db.query.blogPosts.findMany({
+    where: eq(blogPosts.subjectId, subjectId),
+    columns: { id: true },
+  });
+  const postIds = posts.map((p) => p.id);
+  const comments = postIds.length
+    ? await db.query.blogComments.findMany({
+        where: inArray(blogComments.postId, postIds),
+        columns: { id: true },
+      })
+    : [];
+  const targetIds = [...postIds, ...comments.map((c) => c.id)];
+  const images = targetIds.length
+    ? await db.query.blogImages.findMany({
+        where: inArray(blogImages.targetId, targetIds),
+        columns: { r2Key: true },
+      })
+    : [];
+  const r2Keys = images.map((img) => img.r2Key);
+  return { targetIds, r2Keys };
+}
+
+/**
+ * Borra las filas polimórficas (votos e imágenes) dentro de una transacción.
+ */
+export async function deletePolymorphicBlogData(
+  tx: Parameters<Parameters<typeof db.transaction>[0]>[0],
+  targetIds: string[],
+): Promise<void> {
+  if (targetIds.length > 0) {
+    await tx.delete(blogVotes).where(inArray(blogVotes.targetId, targetIds));
+    await tx.delete(blogImages).where(inArray(blogImages.targetId, targetIds));
+  }
 }

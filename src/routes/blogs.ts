@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
-import { and, eq, gte, asc, desc, sql, inArray } from 'drizzle-orm';
+import { and, eq, asc, desc, sql, inArray } from 'drizzle-orm';
 import { zValidator } from '@hono/zod-validator';
 import { db } from '@/db';
 import {
@@ -17,7 +17,14 @@ import { verifyToken, optionalAuth } from '@/middleware/auth';
 import { containsForbiddenWord } from '@/middleware/blacklist';
 import { createPostSchema, createCommentSchema, voteSchema } from '@/validators/blogs.validators';
 import { applyVote } from '@/services/votes';
-import { validateBlogImages, uploadBlogImages, BLOG_ATTACHMENT_MAX_COUNT } from '@/services/images';
+import {
+  validateBlogImages,
+  uploadBlogImages,
+  deleteBlogImageObjects,
+  BlogImageError,
+  BLOG_ATTACHMENT_MAX_COUNT,
+  type BlogImageRow,
+} from '@/services/images';
 import { commentToResponse, postToResponse } from '@/services/blogs';
 import type { CommentRow } from '@/services/blogs';
 import { deleteBlogPost, deleteBlogComment } from '@/services/blog-deletion';
@@ -31,12 +38,16 @@ import { json, errors, bearerAuth } from '@/openapi/helpers';
 import type { AppContext, JwtPayload } from '@/types';
 
 const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 });
+// Presupuestos de escritura separados: posts+comentarios por un lado y votos por
+// el otro. Un voto es un request cada uno (y un toggle cuesta dos), así que si
+// compartieran el Map con las escrituras, upvotear un hilo te dejaría sin poder
+// escribir un post por el resto del minuto.
 const postWriteIpLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 });
 // Las escrituras se limitan también por usuario: una IP rotativa no tendría
 // techo si solo contara la IP. Corre después de verifyToken para tener el sub.
 const postWriteUserLimit = rateLimit({ limit: 30, windowMs: 60 * 1000, keyByUser: true });
-
-const TOP_WINDOW_DAYS = 30;
+const voteWriteIpLimit = rateLimit({ limit: 60, windowMs: 60 * 1000 });
+const voteWriteUserLimit = rateLimit({ limit: 60, windowMs: 60 * 1000, keyByUser: true });
 
 const app = new Hono<AppContext>();
 
@@ -47,9 +58,8 @@ app.get(
     summary: 'Blog de una materia',
     description:
       'Devuelve los subtemas (con el "general" por defecto) y los posts del blog. ' +
-      'Lectura pública. Posts ordenados por votos (`net_score`), con una ventana ' +
-      `${TOP_WINDOW_DAYS} días para que la paginación sea estable. Los comentarios ` +
-      'se ordenan por votos dentro de sus hermanos.',
+      'Lectura pública. Posts ordenados por votos (`net_score`), desempatando por ' +
+      'fecha e id; los comentarios se ordenan por votos dentro de sus hermanos.',
     responses: {
       200: json(BlogResponseSchema, 'Blog con sus subtemas y posts'),
       ...errors(404),
@@ -71,10 +81,8 @@ app.get(
       orderBy: [asc(blogSubtopics.name)],
     });
 
-    const windowStart = new Date(Date.now() - TOP_WINDOW_DAYS * 24 * 60 * 60 * 1000);
-
     const posts = await db.query.blogPosts.findMany({
-      where: and(eq(blogPosts.subjectId, subjectId), gte(blogPosts.createdAt, windowStart)),
+      where: eq(blogPosts.subjectId, subjectId),
       orderBy: [desc(blogPosts.netScore), desc(blogPosts.createdAt), desc(blogPosts.id)],
       with: {
         author: true,
@@ -198,28 +206,39 @@ app.post(
     const user = c.get('user');
     const postId = crypto.randomUUID();
 
-    const imageRows = await uploadBlogImages('post', postId, imageFiles);
+    let imageRows: BlogImageRow[] = [];
+    try {
+      imageRows = await uploadBlogImages('post', postId, imageFiles);
+    } catch (e) {
+      if (e instanceof BlogImageError) return c.json({ error: e.message }, 400);
+      throw e;
+    }
 
-    const [post] = await db.transaction(async (tx) => {
-      const [created] = await tx
-        .insert(blogPosts)
-        .values({
-          id: postId,
-          subjectId,
-          subtopicId: parsed.data.subtopicId,
-          authorId: user.sub,
-          body: parsed.data.body,
-          authority: parsed.data.authority,
-          netScore: 0,
-        })
-        .returning();
+    const [post] = await db
+      .transaction(async (tx) => {
+        const [created] = await tx
+          .insert(blogPosts)
+          .values({
+            id: postId,
+            subjectId,
+            subtopicId: parsed.data.subtopicId,
+            authorId: user.sub,
+            body: parsed.data.body,
+            authority: parsed.data.authority,
+            netScore: 0,
+          })
+          .returning();
 
-      if (imageRows.length > 0) {
-        await tx.insert(blogImages).values(imageRows);
-      }
+        if (imageRows.length > 0) {
+          await tx.insert(blogImages).values(imageRows);
+        }
 
-      return [created];
-    });
+        return [created];
+      })
+      .catch(async (e) => {
+        await deleteBlogImageObjects(imageRows);
+        throw e;
+      });
 
     const authorRecord = await db.query.users.findFirst({
       where: eq(users.id, user.sub),
@@ -247,9 +266,9 @@ app.post(
       ...errors(400, 401, 403, 404),
     },
   }),
-  postWriteIpLimit,
+  voteWriteIpLimit,
   verifyToken,
-  postWriteUserLimit,
+  voteWriteUserLimit,
   zValidator('json', voteSchema),
   async (c) => {
     const { postId } = c.req.param() as { postId: string };
@@ -326,6 +345,9 @@ app.post(
       where: eq(blogPosts.id, postId),
     });
     if (!post) return c.json({ error: 'Post no encontrado' }, 404);
+    if (post.status === 'deleted') {
+      return c.json({ error: 'No se puede comentar una publicación eliminada' }, 400);
+    }
 
     let depth = 1;
 
@@ -334,6 +356,9 @@ app.post(
         where: and(eq(blogComments.id, parsed.data.parentId), eq(blogComments.postId, postId)),
       });
       if (!parent) return c.json({ error: 'Comentario no encontrado' }, 404);
+      if (parent.status === 'deleted') {
+        return c.json({ error: 'No se puede responder a un comentario eliminado' }, 400);
+      }
       if (parent.depth >= 20) {
         return c.json({ error: 'Máximo 20 niveles de profundidad' }, 400);
       }
@@ -342,28 +367,39 @@ app.post(
 
     const commentId = crypto.randomUUID();
 
-    const imageRows = await uploadBlogImages('comment', commentId, imageFiles);
+    let imageRows: BlogImageRow[] = [];
+    try {
+      imageRows = await uploadBlogImages('comment', commentId, imageFiles);
+    } catch (e) {
+      if (e instanceof BlogImageError) return c.json({ error: e.message }, 400);
+      throw e;
+    }
 
-    const [comment] = await db.transaction(async (tx) => {
-      const [created] = await tx
-        .insert(blogComments)
-        .values({
-          id: commentId,
-          postId,
-          parentId: parsed.data.parentId ?? null,
-          authorId: user.sub,
-          body: parsed.data.body,
-          authority: parsed.data.authority,
-          netScore: 0,
-          depth,
-        })
-        .returning();
+    const [comment] = await db
+      .transaction(async (tx) => {
+        const [created] = await tx
+          .insert(blogComments)
+          .values({
+            id: commentId,
+            postId,
+            parentId: parsed.data.parentId ?? null,
+            authorId: user.sub,
+            body: parsed.data.body,
+            authority: parsed.data.authority,
+            netScore: 0,
+            depth,
+          })
+          .returning();
 
-      if (imageRows.length > 0) {
-        await tx.insert(blogImages).values(imageRows);
-      }
-      return [created];
-    });
+        if (imageRows.length > 0) {
+          await tx.insert(blogImages).values(imageRows);
+        }
+        return [created];
+      })
+      .catch(async (e) => {
+        await deleteBlogImageObjects(imageRows);
+        throw e;
+      });
 
     const authorRecord = await db.query.users.findFirst({
       where: eq(users.id, user.sub),
@@ -388,9 +424,9 @@ app.post(
       ...errors(400, 401, 403, 404),
     },
   }),
-  postWriteIpLimit,
+  voteWriteIpLimit,
   verifyToken,
-  postWriteUserLimit,
+  voteWriteUserLimit,
   zValidator('json', voteSchema),
   async (c) => {
     const { commentId } = c.req.param() as { commentId: string };
@@ -479,20 +515,35 @@ app.delete(
   }),
   verifyToken,
   async (c) => {
-    const { postId, commentId } = c.req.param() as { postId: string; commentId: string };
+    const { subjectId, postId, commentId } = c.req.param() as {
+      subjectId: string;
+      postId: string;
+      commentId: string;
+    };
     const user = c.get('user');
 
-    const postComments = await db.query.blogComments.findMany({
-      where: eq(blogComments.postId, postId),
+    const post = await db.query.blogPosts.findFirst({
+      where: and(eq(blogPosts.id, postId), eq(blogPosts.subjectId, subjectId)),
+      columns: { id: true },
     });
+    if (!post) return c.json({ error: 'Post no encontrado' }, 404);
 
-    const comment = postComments.find((c) => c.id === commentId);
+    const comment = await db.query.blogComments.findFirst({
+      where: and(eq(blogComments.id, commentId), eq(blogComments.postId, postId)),
+    });
     if (!comment) return c.json({ error: 'Comentario no encontrado' }, 404);
 
     const isAdmin = user.role === 'admin' || user.role === 'superadmin';
     if (comment.authorId !== user.sub && !isAdmin) {
       return c.json({ error: 'No podés borrar un comentario ajeno' }, 403);
     }
+
+    // Para decidir soft vs hard delete se necesita el subárbol del comentario,
+    // pero solo id, parentId y status — no los cuerpos.
+    const postComments = await db.query.blogComments.findMany({
+      where: eq(blogComments.postId, postId),
+      columns: { id: true, parentId: true, status: true },
+    });
 
     await deleteBlogComment(comment, postComments);
 

@@ -1,5 +1,6 @@
 import { describe, it, expect, mock, beforeEach } from 'bun:test';
 import { signToken } from '@/services/auth.service';
+import { prepareSubjectBlogDeletion, deletePolymorphicBlogData } from '@/services/blog-deletion';
 
 const deleteMock = mock(() => ({
   where: mock(() => Promise.resolve()),
@@ -11,26 +12,35 @@ const updateMock = mock(() => ({
   })),
 }));
 
-let findFirstReturn: unknown;
-let commentsReturn: unknown;
-let imagesReturn: unknown;
+let postFindFirstReturn: unknown;
+let postsFindManyReturn: unknown;
+let commentFindFirstReturn: unknown;
+let commentsFindManyReturn: unknown;
+let imagesFindManyReturn: unknown;
 
 beforeEach(() => {
   deleteMock.mockClear();
   updateMock.mockClear();
+  postFindFirstReturn = undefined;
+  postsFindManyReturn = [];
+  commentFindFirstReturn = undefined;
+  commentsFindManyReturn = undefined;
+  imagesFindManyReturn = [];
 });
 
 mock.module('@/db', () => ({
   db: {
     query: {
       blogPosts: {
-        findFirst: mock(() => Promise.resolve(findFirstReturn)),
+        findFirst: mock(() => Promise.resolve(postFindFirstReturn)),
+        findMany: mock(() => Promise.resolve(postsFindManyReturn)),
       },
       blogComments: {
-        findMany: mock(() => Promise.resolve(commentsReturn)),
+        findFirst: mock(() => Promise.resolve(commentFindFirstReturn)),
+        findMany: mock(() => Promise.resolve(commentsFindManyReturn)),
       },
       blogImages: {
-        findMany: mock(() => Promise.resolve(imagesReturn)),
+        findMany: mock(() => Promise.resolve(imagesFindManyReturn)),
       },
     },
     transaction: mock(async (cb: (tx: unknown) => Promise<void>) => {
@@ -51,7 +61,7 @@ async function token(role: 'user' | 'admin' | 'superadmin' = 'user') {
 
 describe('blogs — DELETE /:subjectId/posts/:postId', () => {
   it('hace soft delete si hay comentarios activos', async () => {
-    findFirstReturn = {
+    postFindFirstReturn = {
       id: 'p-soft',
       authorId: 'u1',
       subtitle: null,
@@ -61,7 +71,6 @@ describe('blogs — DELETE /:subjectId/posts/:postId', () => {
       netScore: 0,
       comments: [{ id: 'c1', status: 'published' }],
     };
-    imagesReturn = [];
 
     const res = await blogsApp.request('/s1/posts/p-soft', {
       method: 'DELETE',
@@ -74,7 +83,7 @@ describe('blogs — DELETE /:subjectId/posts/:postId', () => {
   });
 
   it('hace hard delete si todos los comentarios están eliminados (o no hay)', async () => {
-    findFirstReturn = {
+    postFindFirstReturn = {
       id: 'p-hard',
       authorId: 'u1',
       body: 'x',
@@ -83,7 +92,6 @@ describe('blogs — DELETE /:subjectId/posts/:postId', () => {
       netScore: 0,
       comments: [{ id: 'c1', status: 'deleted' }],
     };
-    imagesReturn = [];
 
     const res = await blogsApp.request('/s1/posts/p-hard', {
       method: 'DELETE',
@@ -96,7 +104,7 @@ describe('blogs — DELETE /:subjectId/posts/:postId', () => {
   });
 
   it('permite borrar a un admin aunque no sea el autor (403 solo para ajenos)', async () => {
-    findFirstReturn = {
+    postFindFirstReturn = {
       id: 'p-admin',
       authorId: 'u-other',
       body: 'x',
@@ -105,7 +113,6 @@ describe('blogs — DELETE /:subjectId/posts/:postId', () => {
       netScore: 0,
       comments: [{ id: 'c1', status: 'published' }],
     };
-    imagesReturn = [];
 
     const res = await blogsApp.request('/s1/posts/p-admin', {
       method: 'DELETE',
@@ -116,10 +123,21 @@ describe('blogs — DELETE /:subjectId/posts/:postId', () => {
 });
 
 describe('blogs — DELETE /:subjectId/posts/:postId/comments/:commentId', () => {
+  it('rechaza si el post no existe o no es de la materia (404)', async () => {
+    postFindFirstReturn = undefined;
+
+    const res = await blogsApp.request('/s1/posts/p1/comments/c1', {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${await token()}` },
+    });
+
+    expect(res.status).toBe(404);
+    expect(deleteMock).not.toHaveBeenCalled();
+  });
+
   it('rechaza un comentario que no es del post (404)', async () => {
-    commentsReturn = [
-      { id: 'c-other', postId: 'p-other', authorId: 'u-other', status: 'published' },
-    ];
+    postFindFirstReturn = { id: 'p1' };
+    commentFindFirstReturn = undefined;
 
     const res = await blogsApp.request('/s1/posts/p1/comments/c-not-there', {
       method: 'DELETE',
@@ -131,7 +149,8 @@ describe('blogs — DELETE /:subjectId/posts/:postId/comments/:commentId', () =>
   });
 
   it('rechaza borrar un comentario ajeno (403)', async () => {
-    commentsReturn = [{ id: 'c1', postId: 'p1', authorId: 'u-other', status: 'published' }];
+    postFindFirstReturn = { id: 'p1' };
+    commentFindFirstReturn = { id: 'c1', postId: 'p1', authorId: 'u-other', status: 'published' };
 
     const res = await blogsApp.request('/s1/posts/p1/comments/c1', {
       method: 'DELETE',
@@ -143,14 +162,12 @@ describe('blogs — DELETE /:subjectId/posts/:postId/comments/:commentId', () =>
   });
 
   it('hace soft delete si hay descendientes activos', async () => {
-    deleteMock.mockClear();
-    updateMock.mockClear();
-
-    commentsReturn = [
-      { id: 'c1', postId: 'p1', parentId: null, authorId: 'u1', status: 'published' },
-      { id: 'c2', postId: 'p1', parentId: 'c1', authorId: 'u-other', status: 'published' },
+    postFindFirstReturn = { id: 'p1' };
+    commentFindFirstReturn = { id: 'c1', postId: 'p1', authorId: 'u1', status: 'published' };
+    commentsFindManyReturn = [
+      { id: 'c1', parentId: null, status: 'published' },
+      { id: 'c2', parentId: 'c1', status: 'published' },
     ];
-    imagesReturn = [];
 
     const res = await blogsApp.request('/s1/posts/p1/comments/c1', {
       method: 'DELETE',
@@ -163,12 +180,13 @@ describe('blogs — DELETE /:subjectId/posts/:postId/comments/:commentId', () =>
   });
 
   it('hace hard delete de todo el subárbol cuando todos sus descendientes están eliminados', async () => {
-    commentsReturn = [
-      { id: 'c1', postId: 'p1', parentId: null, authorId: 'u1', status: 'published' },
-      { id: 'c2', postId: 'p1', parentId: 'c1', authorId: 'u-other', status: 'deleted' },
-      { id: 'c3', postId: 'p1', parentId: 'c2', authorId: 'u-other', status: 'deleted' },
+    postFindFirstReturn = { id: 'p1' };
+    commentFindFirstReturn = { id: 'c1', postId: 'p1', authorId: 'u1', status: 'published' };
+    commentsFindManyReturn = [
+      { id: 'c1', parentId: null, status: 'published' },
+      { id: 'c2', parentId: 'c1', status: 'deleted' },
+      { id: 'c3', parentId: 'c2', status: 'deleted' },
     ];
-    imagesReturn = [];
 
     const res = await blogsApp.request('/s1/posts/p1/comments/c1', {
       method: 'DELETE',
@@ -181,11 +199,12 @@ describe('blogs — DELETE /:subjectId/posts/:postId/comments/:commentId', () =>
   });
 
   it('hace hard delete de un comentario hoja sin descendientes', async () => {
-    commentsReturn = [
-      { id: 'c1', postId: 'p1', parentId: null, authorId: 'u-other', status: 'published' },
-      { id: 'c2', postId: 'p1', parentId: 'c1', authorId: 'u1', status: 'published' },
+    postFindFirstReturn = { id: 'p1' };
+    commentFindFirstReturn = { id: 'c2', postId: 'p1', authorId: 'u1', status: 'published' };
+    commentsFindManyReturn = [
+      { id: 'c1', parentId: null, status: 'published' },
+      { id: 'c2', parentId: 'c1', status: 'published' },
     ];
-    imagesReturn = [];
 
     const res = await blogsApp.request('/s1/posts/p1/comments/c2', {
       method: 'DELETE',
@@ -195,5 +214,40 @@ describe('blogs — DELETE /:subjectId/posts/:postId/comments/:commentId', () =>
     expect(res.status).toBe(204);
     expect(deleteMock).toHaveBeenCalled();
     expect(updateMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('prepareSubjectBlogDeletion & deletePolymorphicBlogData', () => {
+  it('recopila correctamente los targetIds y r2Keys de posts y comentarios de la materia', async () => {
+    postsFindManyReturn = [{ id: 'p1' }, { id: 'p2' }];
+    commentsFindManyReturn = [{ id: 'c1' }, { id: 'c2' }];
+    imagesFindManyReturn = [{ r2Key: 'key-1' }, { r2Key: 'key-2' }];
+
+    const { targetIds, r2Keys } = await prepareSubjectBlogDeletion('s1');
+
+    expect(targetIds).toEqual(['p1', 'p2', 'c1', 'c2']);
+    expect(r2Keys).toEqual(['key-1', 'key-2']);
+  });
+
+  it('no ejecuta deletes en BD si no hay targetIds', async () => {
+    const tx = {
+      delete: deleteMock,
+      update: updateMock,
+    } as unknown as Parameters<typeof deletePolymorphicBlogData>[0];
+
+    await deletePolymorphicBlogData(tx, []);
+
+    expect(deleteMock).not.toHaveBeenCalled();
+  });
+
+  it('ejecuta delete de votes e images en BD si hay targetIds', async () => {
+    const tx = {
+      delete: deleteMock,
+      update: updateMock,
+    } as unknown as Parameters<typeof deletePolymorphicBlogData>[0];
+
+    await deletePolymorphicBlogData(tx, ['p1', 'c1']);
+
+    expect(deleteMock).toHaveBeenCalledTimes(2);
   });
 });

@@ -5,6 +5,11 @@ import { z } from 'zod';
 import { and, asc, eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
 import { subjects, resources, blogSubtopics } from '@/db/schema';
+import {
+  prepareSubjectBlogDeletion,
+  deletePolymorphicBlogData,
+  deleteBlogStorageObjects,
+} from '@/services/blog-deletion';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
@@ -212,8 +217,20 @@ app.delete(
     if (count > 0) {
       return c.json({ error: 'No se puede eliminar una materia con recursos publicados' }, 409);
     }
-    const [subject] = await db.delete(subjects).where(eq(subjects.id, id)).returning();
+
+    const { targetIds, r2Keys } = await prepareSubjectBlogDeletion(id);
+
+    const [subject] = await db.transaction(async (tx) => {
+      await deletePolymorphicBlogData(tx, targetIds);
+      // blog_subtopics, blog_posts y blog_comments caen en cascada (0010).
+      return tx.delete(subjects).where(eq(subjects.id, id)).returning();
+    });
     if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
+
+    // Borrar los objetos de R2 después del commit: si la transacción falló, las
+    // filas sobreviven y borrar antes dejaría URLs rotas.
+    await deleteBlogStorageObjects(r2Keys);
+
     return new Response(null, { status: 204 });
   },
 );
