@@ -64,6 +64,23 @@ export function isPdfBuffer(buffer: Buffer): boolean {
   );
 }
 
+/**
+ * Detecta si los magic bytes de un buffer corresponden a un formato de imagen permitido (JPEG, PNG o WebP).
+ */
+export function isValidImageMagicBytes(buffer: Buffer): boolean {
+  if (buffer.length < 12) return false;
+  // JPEG: FF D8 FF
+  if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return true;
+  // PNG: 89 50 4E 47
+  if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47)
+    return true;
+  // WebP: RIFF....WEBP
+  if (buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP') {
+    return true;
+  }
+  return false;
+}
+
 export type BlogImageRow = typeof blogImages.$inferSelect;
 
 export function isAllowedImageMime(mime: string): boolean {
@@ -187,6 +204,9 @@ export async function uploadBlogImages(
         }
         output = original;
       } else {
+        if (!isValidImageMagicBytes(original)) {
+          throw new BlogImageError('El archivo no es una imagen válida');
+        }
         try {
           output = await optimizeImage(original, file.type);
         } catch (e) {

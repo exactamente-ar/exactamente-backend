@@ -17,6 +17,7 @@ import {
   validateBlogImages,
   isPdfMime,
   isPdfBuffer,
+  isValidImageMagicBytes,
   exceedsPixelLimit,
   BlogImageError,
   MAX_IMAGE_DIMENSION,
@@ -55,6 +56,29 @@ describe('isPdfBuffer', () => {
     expect(isPdfBuffer(Buffer.from('hola'))).toBe(false);
     expect(isPdfBuffer(Buffer.from('%PD'))).toBe(false);
     expect(isPdfBuffer(Buffer.alloc(0))).toBe(false);
+  });
+});
+
+describe('isValidImageMagicBytes', () => {
+  it('reconoce magic bytes de JPEG, PNG y WebP', () => {
+    const jpeg = Buffer.from([
+      0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0x00, 0x01,
+    ]);
+    expect(isValidImageMagicBytes(jpeg)).toBe(true);
+
+    const png = Buffer.from([
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,
+    ]);
+    expect(isValidImageMagicBytes(png)).toBe(true);
+
+    const webp = Buffer.from('RIFF\x00\x00\x00\x00WEBPVP8 ');
+    expect(isValidImageMagicBytes(webp)).toBe(true);
+  });
+
+  it('rechaza archivos que no son imágenes válidas', () => {
+    expect(isValidImageMagicBytes(Buffer.from('esto no es una imagen'))).toBe(false);
+    expect(isValidImageMagicBytes(Buffer.from('GIF89a'))).toBe(false);
+    expect(isValidImageMagicBytes(Buffer.alloc(4))).toBe(false);
   });
 });
 
