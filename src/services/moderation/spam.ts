@@ -4,6 +4,7 @@ const URL_REGEX = /(?:https?:\/\/|www\.)[^\s]+/gi;
 const MAX_ALLOWED_URLS = 3;
 const REPEATED_CHARS_REGEX = /(.)\1{9,}/u;
 const REPEATED_WORDS_REGEX = /\b([a-záéíóúñ0-9]+)(?:\s+\1){3,}\b/iu;
+const EXCESSIVE_BLANK_LINES_REGEX = /(?:\r?\n[ \t]*){4,}/;
 
 /**
  * Evalúa reglas determinísticas de detección de spam sobre el texto.
@@ -34,6 +35,15 @@ export function checkSpam(text: string): ModerationDecision {
       allowed: false,
       code: 'SPAM',
       message: 'El contenido contiene palabras repetidas consecutivas',
+    };
+  }
+
+  // 4. Líneas en blanco excesivas (más de 2 consecutivas)
+  if (EXCESSIVE_BLANK_LINES_REGEX.test(text)) {
+    return {
+      allowed: false,
+      code: 'SPAM',
+      message: 'No se permiten más de dos líneas en blanco consecutivas',
     };
   }
 

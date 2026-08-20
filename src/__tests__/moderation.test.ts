@@ -127,6 +127,31 @@ describe('evaluateContent - Detección de Spam y Enlaces', () => {
       expect(res.message).toContain('palabras repetidas');
     }
   });
+
+  it('permite hasta 2 líneas en blanco consecutivas', () => {
+    const text = 'Párrafo 1\n\n\nPárrafo 2';
+    expect(evaluateContent(text)).toEqual({ allowed: true });
+  });
+
+  it('bloquea más de 2 líneas en blanco consecutivas', () => {
+    const text = 'Párrafo 1\n\n\n\nPárrafo 2';
+    const res = evaluateContent(text);
+    expect(res.allowed).toBe(false);
+    if (!res.allowed) {
+      expect(res.code).toBe('SPAM');
+      expect(res.message).toContain('líneas en blanco');
+    }
+  });
+
+  it('bloquea líneas en blanco consecutivas con espacios intermedios', () => {
+    const text = 'Párrafo 1\n  \n  \n  \nPárrafo 2';
+    const res = evaluateContent(text);
+    expect(res.allowed).toBe(false);
+    if (!res.allowed) {
+      expect(res.code).toBe('SPAM');
+      expect(res.message).toContain('líneas en blanco');
+    }
+  });
 });
 
 describe('containsForbiddenWord - retrocompatibilidad', () => {
