@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "//prepare": "`|| true` es obligatorio: bun install lo ejecuta tambi\u00e9n dentro del Dockerfile, donde no hay .git y lefthook falla. Sin eso se cae el build de producci\u00f3n.",
+    "//prepare": "`|| true` es obligatorio: bun install lo ejecuta también dentro del Dockerfile, donde no hay .git y lefthook falla. Sin eso se cae el build de producción.",
     "prepare": "lefthook install || true",
     "dev": "bun --watch src/index.ts",
     "start": "bun src/index.ts",
@@ -16,6 +16,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "seed": "bun scripts/seed.ts",
+    "seed:blogs": "bun scripts/seed-blogs.ts",
+    "seed:subtemas": "bun scripts/seed-subtemas.ts",
     "xlsx-to-ts": "bun scripts/xlsx-to-ts.ts",
     "migrate-drive": "bun scripts/migrate-drive-to-r2.ts",
     "gen:openapi": "bun scripts/gen-openapi.ts",
@@ -31,8 +33,9 @@
     "googleapis": "^171.4.0",
     "hono": "^4.6.0",
     "hono-openapi": "^1.3.1",
-    "pg": "^8.13.0",
-    "resend": "^6.12.4",
+    "obscenity": "^0.4.6",
+    "pg": "^8.23.0",
+    "sharp": "^0.35.3",
     "zod": "^3.23.0"
   },
   "devDependencies": {
@@ -40,7 +43,7 @@
     "@commitlint/config-conventional": "^21.2.0",
     "@eslint/js": "^10.0.1",
     "@types/bun": "^1.3.14",
-    "@types/pg": "^8.11.0",
+    "@types/pg": "^8.21.0",
     "drizzle-kit": "^0.30.0",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",

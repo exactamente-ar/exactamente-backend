@@ -1046,6 +1046,427 @@
         ],
         "additionalProperties": false
       },
+      "BlogSubtopic": {
+        "id": "BlogSubtopic",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "isDefault"
+        ],
+        "additionalProperties": false
+      },
+      "BlogPost": {
+        "id": "BlogPost",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subtopicId": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "authority": {
+            "type": "string",
+            "enum": [
+              "visible",
+              "anonymous"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "published",
+              "deleted"
+            ]
+          },
+          "netScore": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "author": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BlogAuthor"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogPostImage"
+            }
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogComment"
+            }
+          },
+          "mine": {
+            "description": "true si el token actual es el autor",
+            "type": "boolean"
+          },
+          "myVote": {
+            "description": "voto del token actual: 1, -1 o 0",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "subtopicId",
+          "body",
+          "authority",
+          "status",
+          "netScore",
+          "createdAt",
+          "author",
+          "images",
+          "comments",
+          "mine",
+          "myVote"
+        ],
+        "additionalProperties": false
+      },
+      "BlogAuthor": {
+        "id": "BlogAuthor",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "BlogPostImage": {
+        "id": "BlogPostImage",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "mimeType": {
+            "description": "image/webp o application/pdf según el adjunto",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "mimeType"
+        ],
+        "additionalProperties": false
+      },
+      "BlogCommentImage": {
+        "id": "BlogCommentImage",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "mimeType": {
+            "description": "image/webp o application/pdf según el adjunto",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "mimeType"
+        ],
+        "additionalProperties": false
+      },
+      "BlogResponse": {
+        "id": "BlogResponse",
+        "type": "object",
+        "properties": {
+          "subjectId": {
+            "type": "string"
+          },
+          "subtopics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogSubtopic"
+            }
+          },
+          "posts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogPost"
+            }
+          }
+        },
+        "required": [
+          "subjectId",
+          "subtopics",
+          "posts"
+        ],
+        "additionalProperties": false
+      },
+      "BlogVoteResponse": {
+        "id": "BlogVoteResponse",
+        "type": "object",
+        "properties": {
+          "netScore": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "myVote": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "netScore",
+          "myVote"
+        ],
+        "additionalProperties": false
+      },
+      "BlogComment": {
+        "id": "BlogComment",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "postId": {
+            "type": "string"
+          },
+          "parentId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "body": {
+            "type": "string"
+          },
+          "authority": {
+            "type": "string",
+            "enum": [
+              "visible",
+              "anonymous"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "published",
+              "deleted"
+            ]
+          },
+          "netScore": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "depth": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "author": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BlogAuthor"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogCommentImage"
+            }
+          },
+          "mine": {
+            "description": "true si el token actual es el autor",
+            "type": "boolean"
+          },
+          "myVote": {
+            "description": "voto del token actual: 1, -1 o 0",
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "postId",
+          "parentId",
+          "body",
+          "authority",
+          "status",
+          "netScore",
+          "depth",
+          "createdAt",
+          "author",
+          "images",
+          "mine",
+          "myVote"
+        ],
+        "additionalProperties": false
+      },
+      "BlogActivityItem": {
+        "id": "BlogActivityItem",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "post",
+              "comment"
+            ]
+          },
+          "subjectId": {
+            "type": "string"
+          },
+          "subjectTitle": {
+            "type": "string"
+          },
+          "postId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "body": {
+            "type": "string"
+          },
+          "authority": {
+            "type": "string",
+            "enum": [
+              "visible",
+              "anonymous"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "published",
+              "deleted"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "author": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BlogAuthor"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "subjectId",
+          "subjectTitle",
+          "postId",
+          "body",
+          "authority",
+          "status",
+          "createdAt",
+          "author"
+        ],
+        "additionalProperties": false
+      },
+      "BlogActivityResponse": {
+        "id": "BlogActivityResponse",
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogActivityItem"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": false
+      },
+      "BlogSubtopicList": {
+        "id": "BlogSubtopicList",
+        "type": "object",
+        "properties": {
+          "subtopics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlogSubtopic"
+            }
+          }
+        },
+        "required": [
+          "subtopics"
+        ],
+        "additionalProperties": false
+      },
       "UserRole": {
         "id": "UserRole",
         "type": "string",
@@ -1574,6 +1995,10 @@
       "description": "Búsqueda y subida de material de estudio"
     },
     {
+      "name": "Blogs",
+      "description": "Foro de discusión por materia"
+    },
+    {
       "name": "Admin",
       "description": "Moderación y ABM. Requieren rol admin"
     }
@@ -1875,7 +2300,7 @@
           "Auth"
         ],
         "summary": "Callback de Google",
-        "description": "Canjea el code por un JWT propio y redirige al frontend con un código de un solo uso. Ante error redirige a `/upload?error=...`.",
+        "description": "Canjea el code por un JWT propio y redirige al frontend con un código de un solo uso. Ante error redirige al inicio con `?error=...`.",
         "responses": {
           "302": {
             "description": "Redirige al frontend"
@@ -2676,6 +3101,921 @@
             }
           }
         }
+      }
+    },
+    "/api/v1/blogs/{subjectId}": {
+      "get": {
+        "operationId": "getApiV1BlogsBySubjectId",
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "Blog de una materia",
+        "description": "Devuelve los subtemas (con el \"general\" por defecto) y los posts del blog. Lectura pública. Posts ordenados por votos (`net_score`), desempatando por fecha e id; los comentarios se ordenan por votos dentro de sus hermanos.",
+        "responses": {
+          "200": {
+            "description": "Blog con sus subtemas y posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subjectId": {
+                      "type": "string"
+                    },
+                    "subtopics": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogSubtopic"
+                      }
+                    },
+                    "posts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogPost"
+                      }
+                    }
+                  },
+                  "required": [
+                    "subjectId",
+                    "subtopics",
+                    "posts"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/v1/blogs/{subjectId}/posts": {
+      "post": {
+        "operationId": "postApiV1BlogsBySubjectIdPosts",
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "Crear un post en el blog",
+        "description": "Requiere autenticación. Crea un post en el subtema elegido con autoría visible o anónima. Multipart: `subtopicId`, `authority`, `body` (texto) y hasta 6 adjuntos (imágenes jpeg/png/webp o PDFs). El texto pasa por la blacklist; las imágenes se re-encodifican sin metadata EXIF y los PDFs se suben tal cual.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Post creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subtopicId": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    },
+                    "authority": {
+                      "type": "string",
+                      "enum": [
+                        "visible",
+                        "anonymous"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "published",
+                        "deleted"
+                      ]
+                    },
+                    "netScore": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                    },
+                    "author": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/BlogAuthor"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "images": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogPostImage"
+                      }
+                    },
+                    "comments": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogComment"
+                      }
+                    },
+                    "mine": {
+                      "description": "true si el token actual es el autor",
+                      "type": "boolean"
+                    },
+                    "myVote": {
+                      "description": "voto del token actual: 1, -1 o 0",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "subtopicId",
+                    "body",
+                    "authority",
+                    "status",
+                    "netScore",
+                    "createdAt",
+                    "author",
+                    "images",
+                    "comments",
+                    "mine",
+                    "myVote"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/v1/blogs/{subjectId}/posts/{postId}/vote": {
+      "post": {
+        "operationId": "postApiV1BlogsBySubjectIdPostsByPostIdVote",
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "Votar un post",
+        "description": "Requiere autenticación. Upvote (`value: 1`) o downvote (`value: -1`). Votar de nuevo con el mismo valor quita el voto; con el opuesto lo cambia. El autor no puede votar su propio post.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "netScore y voto resultante",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "netScore": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "myVote": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "netScore",
+                    "myVote"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "postId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/v1/blogs/{subjectId}/posts/{postId}/comments": {
+      "post": {
+        "operationId": "postApiV1BlogsBySubjectIdPostsByPostIdComments",
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "Comentar un post o responder a un comentario",
+        "description": "Requiere autenticación. Crea un comentario anidado (hasta 20 niveles). `parentId` opcional para responder a otro comentario.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Comentario creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "postId": {
+                      "type": "string"
+                    },
+                    "parentId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "body": {
+                      "type": "string"
+                    },
+                    "authority": {
+                      "type": "string",
+                      "enum": [
+                        "visible",
+                        "anonymous"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "published",
+                        "deleted"
+                      ]
+                    },
+                    "netScore": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "depth": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                    },
+                    "author": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/BlogAuthor"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "images": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogCommentImage"
+                      }
+                    },
+                    "mine": {
+                      "description": "true si el token actual es el autor",
+                      "type": "boolean"
+                    },
+                    "myVote": {
+                      "description": "voto del token actual: 1, -1 o 0",
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "postId",
+                    "parentId",
+                    "body",
+                    "authority",
+                    "status",
+                    "netScore",
+                    "depth",
+                    "createdAt",
+                    "author",
+                    "images",
+                    "mine",
+                    "myVote"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "postId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/v1/blogs/{subjectId}/posts/{postId}/comments/{commentId}/vote": {
+      "post": {
+        "operationId": "postApiV1BlogsBySubjectIdPostsByPostIdCommentsByCommentIdVote",
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "Votar un comentario",
+        "description": "Requiere autenticación. Misma semántica de toggle que votar un post.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "netScore y voto resultante",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "netScore": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "myVote": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": [
+                    "netScore",
+                    "myVote"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "postId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "commentId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/v1/blogs/{subjectId}/posts/{postId}": {
+      "delete": {
+        "operationId": "deleteApiV1BlogsBySubjectIdPostsByPostId",
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "Borrar un post",
+        "description": "Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete (marca `status: deleted`) si todavía hay comentarios activos; borra el árbol completo (posts, comentarios, votos e imágenes) si todos los comentarios ya están eliminados.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Post eliminado"
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "postId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/v1/blogs/{subjectId}/posts/{postId}/comments/{commentId}": {
+      "delete": {
+        "operationId": "deleteApiV1BlogsBySubjectIdPostsByPostIdCommentsByCommentId",
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "Borrar un comentario",
+        "description": "Requiere autenticación. El autor o un admin pueden borrarlo. Soft delete (marca `status: deleted`) si todavía hay respuestas activas en el árbol; borra el subárbol completo (comentario, descendientes, votos e imágenes) si todos sus descendientes ya están eliminados.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Comentario eliminado"
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "postId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "commentId",
+            "required": true
+          }
+        ]
       }
     },
     "/api/v1/admin/resources": {
@@ -8309,6 +9649,584 @@
             }
           }
         }
+      }
+    },
+    "/api/v1/admin/blogs/activity": {
+      "get": {
+        "operationId": "getApiV1AdminBlogsActivity",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Actividad reciente de blogs",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Posts y comentarios recientes de toda la plataforma, mezclados y ordenados por fecha. Es el barrido de moderación del MVP (sin búsqueda ni reportes).",
+        "responses": {
+          "200": {
+            "description": "Actividad",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogActivityItem"
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/blogs/{subjectId}/subtopics": {
+      "get": {
+        "operationId": "getApiV1AdminBlogsBySubjectIdSubtopics",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Listar subtemas de un blog",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subtemas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subtopics": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogSubtopic"
+                      }
+                    }
+                  },
+                  "required": [
+                    "subtopics"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "postApiV1AdminBlogsBySubjectIdSubtopics",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Crear un subtema",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Subtema creado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "isDefault": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "isDefault"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "subjectId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/blogs/subtopics/{id}": {
+      "patch": {
+        "operationId": "patchApiV1AdminBlogsSubtopicsById",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Renombrar un subtema",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subtema actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "isDefault": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "isDefault"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto de estado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteApiV1AdminBlogsSubtopicsById",
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Borrar un subtema",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": "Reasigna sus posts al \"Subtema general\". El subtema general no se puede borrar (400).",
+        "responses": {
+          "204": {
+            "description": "Subtema eliminado"
+          },
+          "400": {
+            "description": "Validación fallida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin token o token inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rol insuficiente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "description": "Mensaje descriptivo, apto para mostrar al usuario",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ]
       }
     }
   }

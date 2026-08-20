@@ -4,7 +4,12 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { and, asc, eq, sql } from 'drizzle-orm';
 import { db } from '@/db';
-import { subjects, resources } from '@/db/schema';
+import { subjects, resources, blogSubtopics } from '@/db/schema';
+import {
+  prepareSubjectBlogDeletion,
+  deletePolymorphicBlogData,
+  deleteBlogStorageObjects,
+} from '@/services/blog-deletion';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { getPaginationParams, buildPaginatedResponse } from '@/utils/paginate';
@@ -97,22 +102,39 @@ app.post(
     const id = crypto.randomUUID();
     const slug = slugify(data.title);
     const now = new Date();
-    const [subject] = await db
-      .insert(subjects)
-      .values({
-        id,
-        facultyId: data.facultyId,
-        title: data.title,
-        slug,
-        description: data.description,
-        urlMoodle: data.urlMoodle ?? '',
-        urlPrograma: data.urlPrograma ?? '',
-        year: data.year,
-        quadmester: data.quadmester,
+    const subject = await db.transaction(async (tx) => {
+      const [created] = await tx
+        .insert(subjects)
+        .values({
+          id,
+          facultyId: data.facultyId,
+          title: data.title,
+          slug,
+          description: data.description,
+          urlMoodle: data.urlMoodle ?? '',
+          urlPrograma: data.urlPrograma ?? '',
+          year: data.year,
+          quadmester: data.quadmester,
+          createdAt: now,
+          updatedAt: now,
+        })
+        .returning();
+
+      // FR-2: todo blog nace con su "Subtema general" (mismo nombre/slug que el
+      // backfill de la migración 0010). Sin esto el blog queda sin subtemas y no
+      // se puede postear.
+      await tx.insert(blogSubtopics).values({
+        id: crypto.randomUUID(),
+        subjectId: id,
+        name: 'General',
+        slug: 'general',
+        isDefault: true,
         createdAt: now,
         updatedAt: now,
-      })
-      .returning();
+      });
+
+      return created;
+    });
     return c.json(subject, 201);
   },
 );
@@ -195,8 +217,20 @@ app.delete(
     if (count > 0) {
       return c.json({ error: 'No se puede eliminar una materia con recursos publicados' }, 409);
     }
-    const [subject] = await db.delete(subjects).where(eq(subjects.id, id)).returning();
+
+    const { targetIds, r2Keys } = await prepareSubjectBlogDeletion(id);
+
+    const [subject] = await db.transaction(async (tx) => {
+      await deletePolymorphicBlogData(tx, targetIds);
+      // blog_subtopics, blog_posts y blog_comments caen en cascada (0010).
+      return tx.delete(subjects).where(eq(subjects.id, id)).returning();
+    });
     if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
+
+    // Borrar los objetos de R2 después del commit: si la transacción falló, las
+    // filas sobreviven y borrar antes dejaría URLs rotas.
+    await deleteBlogStorageObjects(r2Keys);
+
     return new Response(null, { status: 204 });
   },
 );

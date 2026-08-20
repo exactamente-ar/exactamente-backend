@@ -8,6 +8,7 @@ import careersRoutes from '@/routes/careers';
 import careerPlansRoutes from '@/routes/career-plans';
 import subjectsRoutes from '@/routes/subjects';
 import resourcesRoutes from '@/routes/resources';
+import blogsRoutes from '@/routes/blogs';
 import adminResourcesRoutes from '@/routes/admin/resources';
 import adminUniversitiesRoutes from '@/routes/admin/universities';
 import adminFacultiesRoutes from '@/routes/admin/faculties';
@@ -15,6 +16,7 @@ import adminCareersRoutes from '@/routes/admin/careers';
 import adminCareerPlansRoutes from '@/routes/admin/career-plans';
 import adminSubjectsRoutes from '@/routes/admin/subjects';
 import adminStatsRoutes from '@/routes/admin/stats';
+import adminBlogsRoutes from '@/routes/admin/blogs';
 import { env } from '@/env';
 import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
@@ -54,6 +56,13 @@ app.use(
 
 app.get('/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
+// En modo local (STORAGE_PROVIDER=local) los archivos viven en el filesystem y
+// se sirven desde acá. En producción (r2) las URLs son del bucket, no del server.
+if (env.STORAGE_PROVIDER === 'local') {
+  const { serveLocalFile } = await import('@/services/storage/serve-local-file');
+  app.get('/local-files/*', serveLocalFile);
+}
+
 app.notFound((c) => c.json({ error: 'Ruta no encontrada' }, 404));
 
 const api = app.basePath('/api/v1');
@@ -64,6 +73,7 @@ api.route('/careers', careersRoutes);
 api.route('/career-plans', careerPlansRoutes);
 api.route('/subjects', subjectsRoutes);
 api.route('/resources', resourcesRoutes);
+api.route('/blogs', blogsRoutes);
 api.route('/admin/resources', adminResourcesRoutes);
 api.route('/admin/universities', adminUniversitiesRoutes);
 api.route('/admin/faculties', adminFacultiesRoutes);
@@ -71,6 +81,7 @@ api.route('/admin/careers', adminCareersRoutes);
 api.route('/admin/career-plans', adminCareerPlansRoutes);
 api.route('/admin/subjects', adminSubjectsRoutes);
 api.route('/admin/stats', adminStatsRoutes);
+api.route('/admin/blogs', adminBlogsRoutes);
 
 // ─── OpenAPI ──────────────────────────────────────────────────────────────────
 // Se monta DESPUÉS de las rutas: generateSpecs recorre el router de `app` y

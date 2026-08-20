@@ -10,6 +10,7 @@ import {
   primaryKey,
   index,
   unique,
+  type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -27,6 +28,13 @@ export const resourceSubtypeEnum = pgEnum('resource_subtype', [
   'prefinal',
   'parcialito',
 ]);
+
+export const postAuthorityEnum = pgEnum('post_authority', ['visible', 'anonymous']);
+
+export const postStatusEnum = pgEnum('post_status', ['published', 'deleted']);
+
+export const voteTargetEnum = pgEnum('vote_target', ['post', 'comment']);
+export const imageTargetEnum = pgEnum('image_target', ['post', 'comment']);
 
 // ─── JERARQUÍA ────────────────────────────────────────────────────────────────
 
@@ -212,6 +220,113 @@ export const resources = pgTable(
   }),
 );
 
+// ─── BLOGS ────────────────────────────────────────────────────────────────────
+
+export const blogSubtopics = pgTable(
+  'blog_subtopics',
+  {
+    id: text('id').primaryKey(),
+    subjectId: text('subject_id')
+      .notNull()
+      .references(() => subjects.id, { onDelete: 'cascade' }),
+    name: varchar('name', { length: 100 }).notNull(),
+    slug: varchar('slug', { length: 100 }).notNull(),
+    isDefault: boolean('is_default').notNull().default(false),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    subjectIdx: index('blog_subtopics_subject_idx').on(t.subjectId),
+    uniqueSubjectSlug: unique().on(t.subjectId, t.slug),
+  }),
+);
+
+export const blogPosts = pgTable(
+  'blog_posts',
+  {
+    id: text('id').primaryKey(),
+    subjectId: text('subject_id')
+      .notNull()
+      .references(() => subjects.id, { onDelete: 'cascade' }),
+    subtopicId: text('subtopic_id')
+      .notNull()
+      .references(() => blogSubtopics.id, { onDelete: 'cascade' }),
+    authorId: text('author_id')
+      .notNull()
+      .references(() => users.id),
+    body: text('body').notNull(),
+    authority: postAuthorityEnum('authority').notNull(),
+    status: postStatusEnum('status').notNull().default('published'),
+    netScore: integer('net_score').notNull().default(0),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    subjectIdx: index('blog_posts_subject_idx').on(t.subjectId),
+    subtopicIdx: index('blog_posts_subtopic_idx').on(t.subtopicId),
+    authorIdx: index('blog_posts_author_idx').on(t.authorId),
+  }),
+);
+
+export const blogImages = pgTable(
+  'blog_images',
+  {
+    id: text('id').primaryKey(),
+    targetType: imageTargetEnum('target_type').notNull(),
+    targetId: text('target_id').notNull(),
+    r2Key: text('r2_key').notNull(),
+    mimeType: varchar('mime_type', { length: 50 }).notNull(),
+    position: smallint('position').notNull().default(0),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    targetIdx: index('blog_images_target_idx').on(t.targetType, t.targetId),
+  }),
+);
+
+export const blogVotes = pgTable(
+  'blog_votes',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id),
+    targetType: voteTargetEnum('target_type').notNull(),
+    targetId: text('target_id').notNull(),
+    value: smallint('value').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    uniqueVote: unique().on(t.userId, t.targetType, t.targetId),
+    targetIdx: index('blog_votes_target_idx').on(t.targetType, t.targetId),
+  }),
+);
+
+export const blogComments = pgTable(
+  'blog_comments',
+  {
+    id: text('id').primaryKey(),
+    postId: text('post_id')
+      .notNull()
+      .references(() => blogPosts.id, { onDelete: 'cascade' }),
+    parentId: text('parent_id').references((): AnyPgColumn => blogComments.id),
+    authorId: text('author_id')
+      .notNull()
+      .references(() => users.id),
+    body: text('body').notNull(),
+    authority: postAuthorityEnum('authority').notNull(),
+    status: postStatusEnum('status').notNull().default('published'),
+    netScore: integer('net_score').notNull().default(0),
+    depth: smallint('depth').notNull().default(1),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+  },
+  (t) => ({
+    postIdx: index('blog_comments_post_idx').on(t.postId),
+    parentIdx: index('blog_comments_parent_idx').on(t.parentId),
+  }),
+);
+
 // ─── RELACIONES ───────────────────────────────────────────────────────────────
 
 export const universitiesRelations = relations(universities, ({ many }) => ({
@@ -245,6 +360,8 @@ export const subjectsRelations = relations(subjects, ({ one, many }) => ({
   prerequisites: many(subjectPrerequisites, { relationName: 'subject' }),
   dependents: many(subjectPrerequisites, { relationName: 'required' }),
   resources: many(resources),
+  blogSubtopics: many(blogSubtopics),
+  blogPosts: many(blogPosts),
 }));
 
 export const careerSubjectsRelations = relations(careerSubjects, ({ one }) => ({
@@ -270,6 +387,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   adminFaculty: one(faculties, { fields: [users.adminFacultyId], references: [faculties.id] }),
   uploadedResources: many(resources, { relationName: 'uploadedBy' }),
   reviewedResources: many(resources, { relationName: 'reviewedBy' }),
+  blogPosts: many(blogPosts),
 }));
 
 export const resourcesRelations = relations(resources, ({ one }) => ({
@@ -284,4 +402,34 @@ export const resourcesRelations = relations(resources, ({ one }) => ({
     references: [users.id],
     relationName: 'reviewedBy',
   }),
+}));
+
+export const blogSubtopicsRelations = relations(blogSubtopics, ({ one, many }) => ({
+  subject: one(subjects, { fields: [blogSubtopics.subjectId], references: [subjects.id] }),
+  posts: many(blogPosts),
+}));
+
+export const blogPostsRelations = relations(blogPosts, ({ one, many }) => ({
+  subject: one(subjects, { fields: [blogPosts.subjectId], references: [subjects.id] }),
+  subtopic: one(blogSubtopics, {
+    fields: [blogPosts.subtopicId],
+    references: [blogSubtopics.id],
+  }),
+  author: one(users, { fields: [blogPosts.authorId], references: [users.id] }),
+  comments: many(blogComments),
+}));
+
+export const blogVotesRelations = relations(blogVotes, ({ one }) => ({
+  user: one(users, { fields: [blogVotes.userId], references: [users.id] }),
+}));
+
+export const blogCommentsRelations = relations(blogComments, ({ one, many }) => ({
+  post: one(blogPosts, { fields: [blogComments.postId], references: [blogPosts.id] }),
+  parent: one(blogComments, {
+    fields: [blogComments.parentId],
+    references: [blogComments.id],
+    relationName: 'parent',
+  }),
+  author: one(users, { fields: [blogComments.authorId], references: [users.id] }),
+  replies: many(blogComments, { relationName: 'parent' }),
 }));
