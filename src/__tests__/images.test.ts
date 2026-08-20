@@ -4,6 +4,7 @@ import sharp from 'sharp';
 mock.module('@/services/storage', () => ({
   storage: {
     uploadFile: mock(async () => {}),
+    deleteFile: mock(async () => {}),
   },
 }));
 
@@ -15,7 +16,9 @@ import {
   uploadBlogImages,
   validateBlogImages,
   isPdfMime,
+  isPdfBuffer,
   exceedsPixelLimit,
+  BlogImageError,
   MAX_IMAGE_DIMENSION,
   BLOG_PDF_MAX_BYTES,
   BLOG_IMAGE_MAX_BYTES,
@@ -40,6 +43,18 @@ describe('isPdfMime', () => {
     expect(isPdfMime('application/pdf')).toBe(true);
     expect(isPdfMime('image/png')).toBe(false);
     expect(isPdfMime('')).toBe(false);
+  });
+});
+
+describe('isPdfBuffer', () => {
+  it('reconoce el magic %PDF-', () => {
+    expect(isPdfBuffer(Buffer.from('%PDF-1.7'))).toBe(true);
+  });
+
+  it('rechaza un buffer que no arranca con %PDF-', () => {
+    expect(isPdfBuffer(Buffer.from('hola'))).toBe(false);
+    expect(isPdfBuffer(Buffer.from('%PD'))).toBe(false);
+    expect(isPdfBuffer(Buffer.alloc(0))).toBe(false);
   });
 });
 
@@ -251,7 +266,7 @@ describe('uploadBlogImages', () => {
     const uploadFile = storage.uploadFile as unknown as { mock: { calls: unknown[] } };
     uploadFile.mock.calls.length = 0;
 
-    const pdf = new File([new Uint8Array([0x25, 0x50, 0x44, 0x46])], 'apunte.pdf', {
+    const pdf = new File([new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d])], 'apunte.pdf', {
       type: 'application/pdf',
     });
 
@@ -265,6 +280,52 @@ describe('uploadBlogImages', () => {
     const [key, buffer, mimeType] = uploadFile.mock.calls[0] as [string, Buffer, string];
     expect(key).toMatch(/\.pdf$/);
     expect(mimeType).toBe('application/pdf');
-    expect(Buffer.from(buffer)).toEqual(Buffer.from([0x25, 0x50, 0x44, 0x46]));
+    expect(Buffer.from(buffer)).toEqual(Buffer.from([0x25, 0x50, 0x44, 0x46, 0x2d]));
+  });
+
+  it('rechaza un PDF sin magic bytes (%PDF-) con BlogImageError', async () => {
+    const uploadFile = storage.uploadFile as unknown as { mock: { calls: unknown[] } };
+    uploadFile.mock.calls.length = 0;
+
+    const fake = new File([new Uint8Array([0xde, 0xad, 0xbe, 0xef])], 'apunte.pdf', {
+      type: 'application/pdf',
+    });
+
+    await expect(uploadBlogImages('post', 'p1', [fake])).rejects.toBeInstanceOf(BlogImageError);
+    expect(uploadFile.mock.calls.length).toBe(0);
+  });
+
+  it('rechaza un no-imagen mandado como image/png con BlogImageError', async () => {
+    const uploadFile = storage.uploadFile as unknown as { mock: { calls: unknown[] } };
+    uploadFile.mock.calls.length = 0;
+
+    const notImage = new File([Buffer.from('esto no es una imagen')], 'foto.png', {
+      type: 'image/png',
+    });
+
+    await expect(uploadBlogImages('post', 'p1', [notImage])).rejects.toBeInstanceOf(BlogImageError);
+    expect(uploadFile.mock.calls.length).toBe(0);
+  });
+
+  it('borra los objetos ya subidos si falla un archivo posterior (upload parcial)', async () => {
+    const uploadFile = storage.uploadFile as unknown as { mock: { calls: unknown[] } };
+    const deleteFile = storage.deleteFile as unknown as { mock: { calls: unknown[] } };
+    uploadFile.mock.calls.length = 0;
+    deleteFile.mock.calls.length = 0;
+
+    const png = await sharp({
+      create: { width: 8, height: 8, channels: 3, background: 'red' },
+    })
+      .png()
+      .toBuffer();
+    const good = new File([png], 'a.png', { type: 'image/png' });
+    const bad = new File([Buffer.from('no imagen')], 'b.png', { type: 'image/png' });
+
+    await expect(uploadBlogImages('post', 'p1', [good, bad])).rejects.toBeInstanceOf(
+      BlogImageError,
+    );
+
+    expect(uploadFile.mock.calls.length).toBe(1);
+    expect(deleteFile.mock.calls.length).toBe(1);
   });
 });

@@ -42,6 +42,28 @@ export const MAX_IMAGE_DIMENSION = 2048;
 export const MAX_IMAGE_PIXELS = 50_000_000; // 50 megapíxeles
 const WEBP_QUALITY = 80;
 
+/**
+ * Error de entrada del usuario en el pipeline de adjuntos. Los handlers lo
+ * convierten en un 400 (a diferencia de un error interno, que es 500). Cubre
+ * imágenes corruptas/truncadas, no-imágenes, PDFs sin magic bytes y el tope de
+ * píxeles.
+ */
+export class BlogImageError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'BlogImageError';
+  }
+}
+
+/** Magic bytes de un PDF real (`%PDF-`). El `file.type` lo manda el cliente y no se puede confiar. */
+const PDF_MAGIC = Buffer.from('%PDF-');
+
+export function isPdfBuffer(buffer: Buffer): boolean {
+  return (
+    buffer.length >= PDF_MAGIC.length && buffer.subarray(0, PDF_MAGIC.length).equals(PDF_MAGIC)
+  );
+}
+
 export type BlogImageRow = typeof blogImages.$inferSelect;
 
 export function isAllowedImageMime(mime: string): boolean {
@@ -88,7 +110,7 @@ export function exceedsPixelLimit(
 export async function optimizeImage(buffer: Buffer, inputMime: string): Promise<Buffer> {
   const { hasAlpha = false, width = 0, height = 0 } = await sharp(buffer).metadata();
   if (exceedsPixelLimit(width, height)) {
-    throw new Error('La imagen supera el máximo de 50 megapíxeles');
+    throw new BlogImageError('La imagen supera el máximo de 50 megapíxeles');
   }
   const nearLossless = isNearLosslessCandidate(inputMime, hasAlpha);
   return sharp(buffer, { limitInputPixels: MAX_IMAGE_PIXELS })
@@ -150,27 +172,61 @@ export async function uploadBlogImages(
 ): Promise<BlogImageRow[]> {
   const rows: BlogImageRow[] = [];
   const prefix = targetType === 'post' ? 'blog-posts' : 'blog-comments';
+  const uploadedKeys: string[] = [];
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const original = Buffer.from(await file.arrayBuffer());
-    const isPdf = isPdfMime(file.type);
-    const output = isPdf ? original : await optimizeImage(original, file.type);
-    const mimeType = isPdf ? PDF_MIME : OPTIMIZED_IMAGE_MIME;
-    const ext = isPdf ? 'pdf' : 'webp';
-    const imageId = crypto.randomUUID();
-    const key = `${prefix}/${targetId}/${imageId}.${ext}`;
-    await storage.uploadFile(key, output, mimeType);
-    rows.push({
-      id: imageId,
-      targetType,
-      targetId,
-      r2Key: key,
-      mimeType,
-      position: i,
-      createdAt: new Date(),
-    });
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const original = Buffer.from(await file.arrayBuffer());
+      const isPdf = isPdfMime(file.type);
+
+      let output: Buffer;
+      if (isPdf) {
+        if (!isPdfBuffer(original)) {
+          throw new BlogImageError('El archivo no es un PDF válido');
+        }
+        output = original;
+      } else {
+        try {
+          output = await optimizeImage(original, file.type);
+        } catch (e) {
+          if (e instanceof BlogImageError) throw e;
+          // `sharp` rechaza archivos truncados/corruptos o no-imagen.
+          throw new BlogImageError('No se pudo procesar la imagen');
+        }
+      }
+
+      const mimeType = isPdf ? PDF_MIME : OPTIMIZED_IMAGE_MIME;
+      const ext = isPdf ? 'pdf' : 'webp';
+      const imageId = crypto.randomUUID();
+      const key = `${prefix}/${targetId}/${imageId}.${ext}`;
+      await storage.uploadFile(key, output, mimeType);
+      uploadedKeys.push(key);
+      rows.push({
+        id: imageId,
+        targetType,
+        targetId,
+        r2Key: key,
+        mimeType,
+        position: i,
+        createdAt: new Date(),
+      });
+    }
+  } catch (e) {
+    // Upload parcial (falló el archivo N de M): borrar lo ya subido para no
+    // dejar objetos huérfanos en el bucket.
+    await Promise.all(uploadedKeys.map((key) => storage.deleteFile(key).catch(() => {})));
+    throw e;
   }
 
   return rows;
+}
+
+/**
+ * Borra los objetos de storage de un set de filas `blogImages`. Es el cleanup
+ * del caso en que el upload salió bien pero la transacción de DB que inserta
+ * las filas falla después: sin esto, los objetos quedan huérfanos en R2.
+ */
+export async function deleteBlogImageObjects(rows: BlogImageRow[]): Promise<void> {
+  await Promise.all(rows.map((row) => storage.deleteFile(row.r2Key).catch(() => {})));
 }
