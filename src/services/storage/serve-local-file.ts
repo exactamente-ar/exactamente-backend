@@ -32,8 +32,10 @@ export async function serveLocalFile(c: Context): Promise<Response> {
   const resolved = path.resolve(root, key);
 
   // path.resolve normaliza `..`, así que esto también cierra el traversal:
-  // una key que escape de STORAGE_PATH queda fuera de `root`.
-  if (!resolved.startsWith(root)) {
+  // una key que escape de STORAGE_PATH queda fuera de `root`. El chequeo usa
+  // `root + sep` (y no `startsWith(root)`) porque un prefijo de string dejaría
+  // pasar `/storage-secrets/x` cuando root es `/storage`.
+  if (resolved !== root && !resolved.startsWith(root + path.sep)) {
     return c.json({ error: 'Archivo no encontrado' }, 404);
   }
 

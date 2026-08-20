@@ -23,7 +23,9 @@ export class LocalStorageProvider implements StorageService {
 
   private resolveKey(key: string): string {
     const resolved = path.resolve(this.root, key);
-    if (!resolved.startsWith(this.root)) {
+    // `root + sep`, no `startsWith(root)`: un prefijo de string dejaría pasar
+    // una key que resuelva a un hermano (`/storage-secrets/x` con root `/storage`).
+    if (resolved !== this.root && !resolved.startsWith(this.root + path.sep)) {
       throw new Error(`Key fuera del storage local: ${key}`);
     }
     return resolved;
