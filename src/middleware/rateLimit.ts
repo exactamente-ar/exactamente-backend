@@ -19,12 +19,24 @@ interface RateLimitOptions {
   keyByUser?: boolean;
 }
 
+const rateLimitStores: Map<string, RateLimitEntry>[] = [];
+
+/**
+ * Limpia todos los almacenes de rate limit (útil para tests).
+ */
+export function resetAllRateLimits() {
+  for (const store of rateLimitStores) {
+    store.clear();
+  }
+}
+
 /**
  * Rate limiter en memoria con ventana fija.
  * Nota: no comparte estado entre instancias. Apto para deployments de una sola instancia.
  */
 export function rateLimit({ limit, windowMs, keyByUser = false }: RateLimitOptions) {
   const store = new Map<string, RateLimitEntry>();
+  rateLimitStores.push(store);
 
   // Limpiar entradas expiradas para no acumular memoria indefinidamente
   setInterval(() => {

@@ -14,7 +14,7 @@ import {
 } from '@/db/schema';
 import { rateLimit } from '@/middleware/rateLimit';
 import { verifyToken, optionalAuth } from '@/middleware/auth';
-import { containsForbiddenWord } from '@/middleware/blacklist';
+import { evaluateContent, recordPublishedContent } from '@/services/moderation';
 import { createPostSchema, createCommentSchema, voteSchema } from '@/validators/blogs.validators';
 import { applyVote } from '@/services/votes';
 import {
@@ -42,7 +42,7 @@ const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 });
 // el otro. Un voto es un request cada uno (y un toggle cuesta dos), así que si
 // compartieran el Map con las escrituras, upvotear un hilo te dejaría sin poder
 // escribir un post por el resto del minuto.
-const postWriteIpLimit = rateLimit({ limit: 30, windowMs: 60 * 1000 });
+const postWriteIpLimit = rateLimit({ limit: 5, windowMs: 60 * 1000 });
 // Las escrituras se limitan también por usuario: una IP rotativa no tendría
 // techo si solo contara la IP. Corre después de verifyToken para tener el sub.
 const postWriteUserLimit = rateLimit({ limit: 30, windowMs: 60 * 1000, keyByUser: true });
@@ -170,6 +170,7 @@ app.post(
   verifyToken,
   postWriteUserLimit,
   async (c) => {
+    const user = c.get('user');
     const subjectId = c.req.param('subjectId');
     const formData = await c.req.formData();
 
@@ -183,8 +184,9 @@ app.post(
       return c.json({ error: parsed.error.issues[0].message }, 400);
     }
 
-    if (containsForbiddenWord(parsed.data.body)) {
-      return c.json({ error: 'El contenido no cumple con las normas de la comunidad' }, 400);
+    const modDecision = evaluateContent(parsed.data.body, user.sub);
+    if (!modDecision.allowed) {
+      return c.json({ error: modDecision.message }, 400);
     }
 
     const imageError = validateBlogImages(imageFiles, 'post');
@@ -203,7 +205,6 @@ app.post(
     });
     if (!subtopic) return c.json({ error: 'Subtema no encontrado' }, 404);
 
-    const user = c.get('user');
     const postId = crypto.randomUUID();
 
     let imageRows: BlogImageRow[] = [];
@@ -243,6 +244,8 @@ app.post(
     const authorRecord = await db.query.users.findFirst({
       where: eq(users.id, user.sub),
     });
+
+    recordPublishedContent(user.sub, parsed.data.body);
 
     return c.json(
       postToResponse(post, authorRecord?.displayName ?? null, imageRows, [], user.sub),
@@ -319,6 +322,7 @@ app.post(
   verifyToken,
   postWriteUserLimit,
   async (c) => {
+    const user = c.get('user');
     const { postId } = c.req.param() as { postId: string };
     const formData = await c.req.formData();
 
@@ -332,14 +336,13 @@ app.post(
       return c.json({ error: parsed.error.issues[0].message }, 400);
     }
 
-    if (containsForbiddenWord(parsed.data.body)) {
-      return c.json({ error: 'El contenido no cumple con las normas de la comunidad' }, 400);
+    const modDecision = evaluateContent(parsed.data.body, user.sub);
+    if (!modDecision.allowed) {
+      return c.json({ error: modDecision.message }, 400);
     }
 
     const imageError = validateBlogImages(imageFiles, 'comentario');
     if (imageError) return c.json({ error: imageError }, 400);
-
-    const user = c.get('user');
 
     const post = await db.query.blogPosts.findFirst({
       where: eq(blogPosts.id, postId),
@@ -404,6 +407,8 @@ app.post(
     const authorRecord = await db.query.users.findFirst({
       where: eq(users.id, user.sub),
     });
+
+    recordPublishedContent(user.sub, parsed.data.body);
 
     return c.json(
       commentToResponse(comment, authorRecord?.displayName ?? null, imageRows, user.sub),

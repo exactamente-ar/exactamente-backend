@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'bun:test';
+import { describe, it, expect, beforeEach } from 'bun:test';
 import blogsApp from '@/routes/blogs';
 import { signToken } from '@/services/auth.service';
+import { resetAllRateLimits } from '@/middleware/rateLimit';
 
 async function token(role: 'user' | 'admin' = 'user') {
   return signToken({ sub: 'u1', role, facultyId: null });
@@ -15,6 +16,9 @@ async function post(fields: Record<string, string>, authRole: 'user' | 'admin' |
 }
 
 describe('blogs — crear post', () => {
+  beforeEach(() => {
+    resetAllRateLimits();
+  });
   it('rechaza sin token (401)', async () => {
     const res = await post({}, null);
     expect(res.status).toBe(401);
@@ -62,6 +66,10 @@ describe('blogs — votar post', () => {
 });
 
 describe('blogs — comentar', () => {
+  beforeEach(() => {
+    resetAllRateLimits();
+  });
+
   it('rechaza sin token (401)', async () => {
     const formData = new FormData();
     formData.append('body', 'hola');

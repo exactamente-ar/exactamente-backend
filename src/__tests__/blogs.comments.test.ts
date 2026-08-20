@@ -1,5 +1,6 @@
-import { describe, it, expect, mock } from 'bun:test';
+import { describe, it, expect, mock, beforeEach } from 'bun:test';
 import { signToken } from '@/services/auth.service';
+import { resetAllRateLimits } from '@/middleware/rateLimit';
 
 mock.module('@/db', () => ({
   db: {
@@ -82,6 +83,10 @@ async function token() {
 }
 
 describe('blogs — crear comentario', () => {
+  beforeEach(() => {
+    resetAllRateLimits();
+  });
+
   it('devuelve 201 con el comentario creado', async () => {
     const formData = new FormData();
     formData.append('body', 'hola');
