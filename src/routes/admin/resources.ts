@@ -4,7 +4,8 @@ import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { eq, ne, and, sql, inArray, desc } from 'drizzle-orm';
 import { db } from '@/db';
-import { resources, subjects, careerSubjects, careers, careerPlans } from '@/db/schema';
+import { resources, subjects, users, careerSubjects, careers, careerPlans } from '@/db/schema';
+import { sendApprovalEmail, sendBulkApprovalEmail } from '@/services/email';
 import { verifyToken } from '@/middleware/auth';
 import { requireRole } from '@/middleware/requireRole';
 import { storage } from '@/services/storage';
@@ -297,6 +298,22 @@ app.patch(
       if (!foundIds.has(id)) errors.push({ id, reason: 'Recurso no encontrado' });
     }
 
+    // Agrupar aprobados por uploader y mandar un solo email por persona
+    if (approved.length > 0) {
+      const approvedRows = rows.filter((r) => approved.includes(r.id));
+      const byUploader = new Map<string, string[]>();
+      for (const r of approvedRows) {
+        if (!byUploader.has(r.uploadedBy)) byUploader.set(r.uploadedBy, []);
+        byUploader.get(r.uploadedBy)!.push(r.title);
+      }
+      const uploaderIds = [...byUploader.keys()];
+      const uploaders = await db.query.users.findMany({ where: inArray(users.id, uploaderIds) });
+      for (const uploader of uploaders) {
+        const titles = byUploader.get(uploader.id)!;
+        sendBulkApprovalEmail(uploader.email, uploader.displayName, titles);
+      }
+    }
+
     return c.json({ approved, errors });
   },
 );
@@ -440,6 +457,13 @@ app.patch(
       })
       .where(eq(resources.id, id))
       .returning();
+
+    db.query.users
+      .findFirst({ where: eq(users.id, resource.uploadedBy) })
+      .then((uploader) => {
+        if (uploader) sendApprovalEmail(uploader.email, uploader.displayName, updated.title);
+      })
+      .catch(() => {});
 
     return c.json(rowToAdminResource(updated));
   },
