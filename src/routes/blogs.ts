@@ -14,7 +14,7 @@ import {
 } from '@/db/schema';
 import { rateLimit } from '@/middleware/rateLimit';
 import { verifyToken, optionalAuth } from '@/middleware/auth';
-import { evaluateContent, recordPublishedContent } from '@/services/moderation';
+import { evaluateContentForPublication } from '@/services/moderation';
 import { createPostSchema, createCommentSchema, voteSchema } from '@/validators/blogs.validators';
 import { applyVote } from '@/services/votes';
 import {
@@ -36,6 +36,8 @@ import {
 } from '@/schemas';
 import { json, errors, bearerAuth } from '@/openapi/helpers';
 import type { AppContext, JwtPayload } from '@/types';
+import { z } from 'zod';
+import { buildPaginatedResponse, getPaginationParams } from '@/utils/paginate';
 
 const publicReadLimit = rateLimit({ limit: 100, windowMs: 60 * 1000 });
 // Presupuestos de escritura separados: posts+comentarios por un lado y votos por
@@ -48,6 +50,12 @@ const postWriteIpLimit = rateLimit({ limit: 5, windowMs: 60 * 1000 });
 const postWriteUserLimit = rateLimit({ limit: 30, windowMs: 60 * 1000, keyByUser: true });
 const voteWriteIpLimit = rateLimit({ limit: 60, windowMs: 60 * 1000 });
 const voteWriteUserLimit = rateLimit({ limit: 60, windowMs: 60 * 1000, keyByUser: true });
+const BLOG_COMMENT_LIMIT = 100;
+
+const blogQuery = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+});
 
 const app = new Hono<AppContext>();
 
@@ -67,31 +75,42 @@ app.get(
   }),
   publicReadLimit,
   optionalAuth,
+  zValidator('query', blogQuery),
   async (c) => {
     const subjectId = c.req.param('subjectId');
     const userId = (c.get('user') as JwtPayload | undefined)?.sub ?? null;
+    const { page, limit } = c.req.valid('query');
+    const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
 
     const subject = await db.query.subjects.findFirst({
       where: eq(subjects.id, subjectId),
     });
     if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
 
-    const subtopics = await db.query.blogSubtopics.findMany({
-      where: eq(blogSubtopics.subjectId, subjectId),
-      orderBy: [asc(blogSubtopics.name)],
-    });
-
-    const posts = await db.query.blogPosts.findMany({
-      where: eq(blogPosts.subjectId, subjectId),
-      orderBy: [desc(blogPosts.netScore), desc(blogPosts.createdAt), desc(blogPosts.id)],
-      with: {
-        author: true,
-        comments: {
-          with: { author: true },
-          orderBy: [desc(blogComments.netScore), desc(blogComments.createdAt)],
+    const [subtopics, posts, countResult] = await Promise.all([
+      db.query.blogSubtopics.findMany({
+        where: eq(blogSubtopics.subjectId, subjectId),
+        orderBy: [asc(blogSubtopics.name)],
+      }),
+      db.query.blogPosts.findMany({
+        where: eq(blogPosts.subjectId, subjectId),
+        orderBy: [desc(blogPosts.netScore), desc(blogPosts.createdAt), desc(blogPosts.id)],
+        limit: safeLimit,
+        offset,
+        with: {
+          author: true,
+          comments: {
+            with: { author: true },
+            orderBy: [desc(blogComments.netScore), desc(blogComments.createdAt)],
+            limit: BLOG_COMMENT_LIMIT,
+          },
         },
-      },
-    });
+      }),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(blogPosts)
+        .where(eq(blogPosts.subjectId, subjectId)),
+    ]);
 
     const targetIds = [
       ...posts.map((p) => p.id),
@@ -122,6 +141,22 @@ app.get(
       }
     }
 
+    const data = posts.map((p) =>
+      postToResponse(
+        p,
+        p.author?.displayName ?? null,
+        imageMap.get(`post:${p.id}`) ?? [],
+        p.comments.map((cmt) => ({
+          row: cmt as CommentRow,
+          authorName: cmt.author?.displayName ?? null,
+          images: imageMap.get(`comment:${cmt.id}`) ?? [],
+          myVote: voteMap.get(`comment:${cmt.id}`) ?? 0,
+        })),
+        userId,
+        voteMap.get(`post:${p.id}`) ?? 0,
+      ),
+    );
+
     return c.json({
       subjectId,
       subtopics: subtopics.map((s) => ({
@@ -130,21 +165,7 @@ app.get(
         slug: s.slug,
         isDefault: s.isDefault,
       })),
-      posts: posts.map((p) =>
-        postToResponse(
-          p,
-          p.author?.displayName ?? null,
-          imageMap.get(`post:${p.id}`) ?? [],
-          p.comments.map((cmt) => ({
-            row: cmt as CommentRow,
-            authorName: cmt.author?.displayName ?? null,
-            images: imageMap.get(`comment:${cmt.id}`) ?? [],
-            myVote: voteMap.get(`comment:${cmt.id}`) ?? 0,
-          })),
-          userId,
-          voteMap.get(`post:${p.id}`) ?? 0,
-        ),
-      ),
+      ...buildPaginatedResponse(data, countResult[0]?.count ?? 0, safePage, safeLimit),
     });
   },
 );
@@ -184,73 +205,75 @@ app.post(
       return c.json({ error: parsed.error.issues[0].message }, 400);
     }
 
-    const modDecision = evaluateContent(parsed.data.body, user.sub);
-    if (!modDecision.allowed) {
-      return c.json({ error: modDecision.message }, 400);
-    }
-
     const imageError = validateBlogImages(imageFiles, 'post');
     if (imageError) return c.json({ error: imageError }, 400);
 
-    const subject = await db.query.subjects.findFirst({
-      where: eq(subjects.id, subjectId),
-    });
-    if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
+    const modDecision = evaluateContentForPublication(parsed.data.body, user.sub);
+    if (!modDecision.allowed) return c.json({ error: modDecision.message }, 400);
 
-    const subtopic = await db.query.blogSubtopics.findFirst({
-      where: and(
-        eq(blogSubtopics.id, parsed.data.subtopicId),
-        eq(blogSubtopics.subjectId, subjectId),
-      ),
-    });
-    if (!subtopic) return c.json({ error: 'Subtema no encontrado' }, 404);
-
-    const postId = crypto.randomUUID();
-
-    let imageRows: BlogImageRow[] = [];
+    let published = false;
     try {
-      imageRows = await uploadBlogImages('post', postId, imageFiles);
-    } catch (e) {
-      if (e instanceof BlogImageError) return c.json({ error: e.message }, 400);
-      throw e;
-    }
-
-    const [post] = await db
-      .transaction(async (tx) => {
-        const [created] = await tx
-          .insert(blogPosts)
-          .values({
-            id: postId,
-            subjectId,
-            subtopicId: parsed.data.subtopicId,
-            authorId: user.sub,
-            body: parsed.data.body,
-            authority: parsed.data.authority,
-            netScore: 0,
-          })
-          .returning();
-
-        if (imageRows.length > 0) {
-          await tx.insert(blogImages).values(imageRows);
-        }
-
-        return [created];
-      })
-      .catch(async (e) => {
-        await deleteBlogImageObjects(imageRows);
-        throw e;
+      const subject = await db.query.subjects.findFirst({
+        where: eq(subjects.id, subjectId),
       });
+      if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
 
-    const authorRecord = await db.query.users.findFirst({
-      where: eq(users.id, user.sub),
-    });
+      const subtopic = await db.query.blogSubtopics.findFirst({
+        where: and(
+          eq(blogSubtopics.id, parsed.data.subtopicId),
+          eq(blogSubtopics.subjectId, subjectId),
+        ),
+      });
+      if (!subtopic) return c.json({ error: 'Subtema no encontrado' }, 404);
 
-    recordPublishedContent(user.sub, parsed.data.body);
+      const authorRecord = await db.query.users.findFirst({
+        where: eq(users.id, user.sub),
+      });
+      const postId = crypto.randomUUID();
 
-    return c.json(
-      postToResponse(post, authorRecord?.displayName ?? null, imageRows, [], user.sub),
-      201,
-    );
+      let imageRows: BlogImageRow[] = [];
+      try {
+        imageRows = await uploadBlogImages('post', postId, imageFiles);
+      } catch (e) {
+        if (e instanceof BlogImageError) return c.json({ error: e.message }, 400);
+        throw e;
+      }
+
+      const [post] = await db
+        .transaction(async (tx) => {
+          const [created] = await tx
+            .insert(blogPosts)
+            .values({
+              id: postId,
+              subjectId,
+              subtopicId: parsed.data.subtopicId,
+              authorId: user.sub,
+              body: parsed.data.body,
+              authority: parsed.data.authority,
+              netScore: 0,
+            })
+            .returning();
+
+          if (imageRows.length > 0) {
+            await tx.insert(blogImages).values(imageRows);
+          }
+
+          return [created];
+        })
+        .catch(async (e) => {
+          await deleteBlogImageObjects(imageRows);
+          throw e;
+        });
+
+      modDecision.reservation.commit();
+      published = true;
+      return c.json(
+        postToResponse(post, authorRecord?.displayName ?? null, imageRows, [], user.sub),
+        201,
+      );
+    } finally {
+      if (!published) modDecision.reservation.release();
+    }
   },
 );
 
@@ -336,84 +359,85 @@ app.post(
       return c.json({ error: parsed.error.issues[0].message }, 400);
     }
 
-    const modDecision = evaluateContent(parsed.data.body, user.sub);
-    if (!modDecision.allowed) {
-      return c.json({ error: modDecision.message }, 400);
-    }
-
     const imageError = validateBlogImages(imageFiles, 'comentario');
     if (imageError) return c.json({ error: imageError }, 400);
 
-    const post = await db.query.blogPosts.findFirst({
-      where: eq(blogPosts.id, postId),
-    });
-    if (!post) return c.json({ error: 'Post no encontrado' }, 404);
-    if (post.status === 'deleted') {
-      return c.json({ error: 'No se puede comentar una publicación eliminada' }, 400);
-    }
+    const modDecision = evaluateContentForPublication(parsed.data.body, user.sub);
+    if (!modDecision.allowed) return c.json({ error: modDecision.message }, 400);
 
-    let depth = 1;
-
-    if (parsed.data.parentId) {
-      const parent = await db.query.blogComments.findFirst({
-        where: and(eq(blogComments.id, parsed.data.parentId), eq(blogComments.postId, postId)),
-      });
-      if (!parent) return c.json({ error: 'Comentario no encontrado' }, 404);
-      if (parent.status === 'deleted') {
-        return c.json({ error: 'No se puede responder a un comentario eliminado' }, 400);
-      }
-      if (parent.depth >= 20) {
-        return c.json({ error: 'Máximo 20 niveles de profundidad' }, 400);
-      }
-      depth = parent.depth + 1;
-    }
-
-    const commentId = crypto.randomUUID();
-
-    let imageRows: BlogImageRow[] = [];
+    let published = false;
     try {
-      imageRows = await uploadBlogImages('comment', commentId, imageFiles);
-    } catch (e) {
-      if (e instanceof BlogImageError) return c.json({ error: e.message }, 400);
-      throw e;
-    }
-
-    const [comment] = await db
-      .transaction(async (tx) => {
-        const [created] = await tx
-          .insert(blogComments)
-          .values({
-            id: commentId,
-            postId,
-            parentId: parsed.data.parentId ?? null,
-            authorId: user.sub,
-            body: parsed.data.body,
-            authority: parsed.data.authority,
-            netScore: 0,
-            depth,
-          })
-          .returning();
-
-        if (imageRows.length > 0) {
-          await tx.insert(blogImages).values(imageRows);
-        }
-        return [created];
-      })
-      .catch(async (e) => {
-        await deleteBlogImageObjects(imageRows);
-        throw e;
+      const post = await db.query.blogPosts.findFirst({
+        where: eq(blogPosts.id, postId),
       });
+      if (!post) return c.json({ error: 'Post no encontrado' }, 404);
+      if (post.status === 'deleted') {
+        return c.json({ error: 'No se puede comentar una publicación eliminada' }, 400);
+      }
 
-    const authorRecord = await db.query.users.findFirst({
-      where: eq(users.id, user.sub),
-    });
+      let depth = 1;
+      if (parsed.data.parentId) {
+        const parent = await db.query.blogComments.findFirst({
+          where: and(eq(blogComments.id, parsed.data.parentId), eq(blogComments.postId, postId)),
+        });
+        if (!parent) return c.json({ error: 'Comentario no encontrado' }, 404);
+        if (parent.status === 'deleted') {
+          return c.json({ error: 'No se puede responder a un comentario eliminado' }, 400);
+        }
+        if (parent.depth >= 20) {
+          return c.json({ error: 'Máximo 20 niveles de profundidad' }, 400);
+        }
+        depth = parent.depth + 1;
+      }
 
-    recordPublishedContent(user.sub, parsed.data.body);
+      const authorRecord = await db.query.users.findFirst({
+        where: eq(users.id, user.sub),
+      });
+      const commentId = crypto.randomUUID();
 
-    return c.json(
-      commentToResponse(comment, authorRecord?.displayName ?? null, imageRows, user.sub),
-      201,
-    );
+      let imageRows: BlogImageRow[] = [];
+      try {
+        imageRows = await uploadBlogImages('comment', commentId, imageFiles);
+      } catch (e) {
+        if (e instanceof BlogImageError) return c.json({ error: e.message }, 400);
+        throw e;
+      }
+
+      const [comment] = await db
+        .transaction(async (tx) => {
+          const [created] = await tx
+            .insert(blogComments)
+            .values({
+              id: commentId,
+              postId,
+              parentId: parsed.data.parentId ?? null,
+              authorId: user.sub,
+              body: parsed.data.body,
+              authority: parsed.data.authority,
+              netScore: 0,
+              depth,
+            })
+            .returning();
+
+          if (imageRows.length > 0) {
+            await tx.insert(blogImages).values(imageRows);
+          }
+          return [created];
+        })
+        .catch(async (e) => {
+          await deleteBlogImageObjects(imageRows);
+          throw e;
+        });
+
+      modDecision.reservation.commit();
+      published = true;
+      return c.json(
+        commentToResponse(comment, authorRecord?.displayName ?? null, imageRows, user.sub),
+        201,
+      );
+    } finally {
+      if (!published) modDecision.reservation.release();
+    }
   },
 );
 

@@ -7,7 +7,11 @@ import {
 } from 'obscenity';
 import { env } from '@/env';
 import { ES_AR_BANNED_TERMS, ES_AR_WHITELISTED_TERMS } from './corpus/es-ar';
-import { checkDuplicateContent } from './duplicate';
+import {
+  reserveDuplicateContent,
+  type DuplicateReservationDecision,
+  type DuplicateTracker,
+} from './duplicate';
 import { checkSpam } from './spam';
 import type { ModerationDecision } from './types';
 
@@ -78,26 +82,18 @@ const matcher = new RegExpMatcher({
 /**
  * Evalúa las reglas completas de moderación de texto (mensajes duplicados, spam, enlaces, insultos, leet-speak y evasiones).
  */
-export function evaluateContent(text: string, userId?: string): ModerationDecision {
+export function evaluateContent(text: string): ModerationDecision {
   if (!text || text.trim().length === 0) {
     return { allowed: true };
   }
 
-  // 1. Detección de mensajes duplicados / flood del mismo usuario
-  if (userId) {
-    const dupDecision = checkDuplicateContent(userId, text);
-    if (!dupDecision.allowed) {
-      return dupDecision;
-    }
-  }
-
-  // 2. Detección de spam y exceso de enlaces
+  // 1. Detección de spam y exceso de enlaces
   const spamDecision = checkSpam(text);
   if (!spamDecision.allowed) {
     return spamDecision;
   }
 
-  // 3. Coincidencia con matcher de Obscenity en texto original
+  // 2. Coincidencia con matcher de Obscenity en texto original
   if (matcher.hasMatch(text)) {
     return {
       allowed: false,
@@ -106,7 +102,7 @@ export function evaluateContent(text: string, userId?: string): ModerationDecisi
     };
   }
 
-  // 4. Coincidencia con letras espaciadas / puntuación entre caracteres
+  // 3. Coincidencia con letras espaciadas / puntuación entre caracteres
   const collapsed = collapseSpacedLetters(text);
   if (collapsed !== text && matcher.hasMatch(collapsed)) {
     return {
@@ -116,7 +112,7 @@ export function evaluateContent(text: string, userId?: string): ModerationDecisi
     };
   }
 
-  // 5. Chequeo fallback exacto por token normalizado (mantiene compatibilidad con blacklist existente)
+  // 4. Chequeo fallback exacto por token normalizado (mantiene compatibilidad con blacklist existente)
   if (customEnvSet.size > 0) {
     const words = normalizeSimple(text).split(/[^a-z0-9ñ]+/);
     if (words.some((w) => customEnvSet.has(w))) {
@@ -129,6 +125,20 @@ export function evaluateContent(text: string, userId?: string): ModerationDecisi
   }
 
   return { allowed: true };
+}
+
+/**
+ * Evalúa el texto y, si es válido, reserva atómicamente su publicación. La
+ * reserva debe confirmarse tras persistir o liberarse ante cualquier fallo.
+ */
+export function evaluateContentForPublication(
+  text: string,
+  userId: string,
+  tracker?: DuplicateTracker,
+): DuplicateReservationDecision {
+  const decision = evaluateContent(text);
+  if (!decision.allowed) return decision;
+  return reserveDuplicateContent(userId, text, tracker);
 }
 
 /**

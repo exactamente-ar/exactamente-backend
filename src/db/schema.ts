@@ -10,6 +10,7 @@ import {
   primaryKey,
   index,
   unique,
+  foreignKey,
   type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
@@ -237,6 +238,7 @@ export const blogSubtopics = pgTable(
   },
   (t) => ({
     subjectIdx: index('blog_subtopics_subject_idx').on(t.subjectId),
+    uniqueIdSubject: unique().on(t.id, t.subjectId),
     uniqueSubjectSlug: unique().on(t.subjectId, t.slug),
   }),
 );
@@ -248,9 +250,7 @@ export const blogPosts = pgTable(
     subjectId: text('subject_id')
       .notNull()
       .references(() => subjects.id, { onDelete: 'cascade' }),
-    subtopicId: text('subtopic_id')
-      .notNull()
-      .references(() => blogSubtopics.id, { onDelete: 'cascade' }),
+    subtopicId: text('subtopic_id').notNull(),
     authorId: text('author_id')
       .notNull()
       .references(() => users.id),
@@ -263,8 +263,13 @@ export const blogPosts = pgTable(
   },
   (t) => ({
     subjectIdx: index('blog_posts_subject_idx').on(t.subjectId),
+    subjectScoreIdx: index('blog_posts_subject_score_idx').on(t.subjectId, t.netScore.desc()),
     subtopicIdx: index('blog_posts_subtopic_idx').on(t.subtopicId),
     authorIdx: index('blog_posts_author_idx').on(t.authorId),
+    subtopicSubjectFk: foreignKey({
+      columns: [t.subtopicId, t.subjectId],
+      foreignColumns: [blogSubtopics.id, blogSubtopics.subjectId],
+    }).onDelete('cascade'),
   }),
 );
 
@@ -412,8 +417,8 @@ export const blogSubtopicsRelations = relations(blogSubtopics, ({ one, many }) =
 export const blogPostsRelations = relations(blogPosts, ({ one, many }) => ({
   subject: one(subjects, { fields: [blogPosts.subjectId], references: [subjects.id] }),
   subtopic: one(blogSubtopics, {
-    fields: [blogPosts.subtopicId],
-    references: [blogSubtopics.id],
+    fields: [blogPosts.subtopicId, blogPosts.subjectId],
+    references: [blogSubtopics.id, blogSubtopics.subjectId],
   }),
   author: one(users, { fields: [blogPosts.authorId], references: [users.id] }),
   comments: many(blogComments),

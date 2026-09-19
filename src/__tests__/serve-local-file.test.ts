@@ -3,6 +3,7 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import app from '@/app';
 import { env } from '@/env';
+import { signToken } from '@/services/auth.service';
 
 // La ruta /local-files/* sirve los objetos del storage local sin Content-Type,
 // pero securityHeaders agrega X-Content-Type-Options: nosniff a todo. Sin un
@@ -45,5 +46,34 @@ describe('serveLocalFile — Content-Type', () => {
 
     expect(res.status).toBe(200);
     expect(res.headers.get('Content-Type')).toBe('application/octet-stream');
+  });
+});
+
+describe('serveLocalFile — acceso a objetos pendientes', () => {
+  const pendingDir = `pending/${dir}`;
+
+  beforeAll(async () => {
+    await mkdir(path.join(env.STORAGE_PATH, pendingDir), { recursive: true });
+    await writeFile(path.join(env.STORAGE_PATH, pendingDir, 'doc.pdf'), Buffer.from('%PDF-1.7'));
+  });
+
+  afterAll(async () => {
+    await rm(path.join(env.STORAGE_PATH, pendingDir), { recursive: true, force: true });
+  });
+
+  test('rechaza una solicitud pendiente sin Bearer JWT', async () => {
+    const res = await app.request(`/local-files/${pendingDir}/doc.pdf`);
+
+    expect(res.status).toBe(401);
+  });
+
+  test('sirve una solicitud pendiente con Bearer JWT válido', async () => {
+    const token = await signToken({ sub: 'user-1', role: 'user', facultyId: null });
+    const res = await app.request(`/local-files/${pendingDir}/doc.pdf`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toBe('application/pdf');
   });
 });

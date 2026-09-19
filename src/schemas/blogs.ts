@@ -28,7 +28,7 @@ export const BlogAuthorSchema = z
 export const BlogPostImageSchema = z
   .object({
     id: z.string(),
-    url: z.string(),
+    fileUrl: z.string(),
     mimeType: z.string().describe('image/webp o application/pdf según el adjunto'),
   })
   .meta({ id: 'BlogPostImage' });
@@ -36,7 +36,7 @@ export const BlogPostImageSchema = z
 export const BlogCommentImageSchema = z
   .object({
     id: z.string(),
-    url: z.string(),
+    fileUrl: z.string(),
     mimeType: z.string().describe('image/webp o application/pdf según el adjunto'),
   })
   .meta({ id: 'BlogCommentImage' });
@@ -87,7 +87,10 @@ export const BlogResponseSchema = z
   .object({
     subjectId: z.string(),
     subtopics: z.array(BlogSubtopicSchema),
-    posts: z.array(BlogPostSchema),
+    data: z.array(BlogPostSchema),
+    total: z.number().int(),
+    page: z.number().int(),
+    totalPages: z.number().int(),
   })
   .meta({ id: 'BlogResponse' });
 
@@ -122,13 +125,19 @@ export const BlogActivityItemSchema = z
 export const BlogActivityResponseSchema = z
   .object({
     data: z.array(BlogActivityItemSchema),
+    total: z.number().int(),
+    page: z.number().int(),
+    totalPages: z.number().int(),
   })
   .meta({ id: 'BlogActivityResponse' });
 
 /** Listado de subtemas de un blog para el panel admin. */
 export const BlogSubtopicListSchema = z
   .object({
-    subtopics: z.array(BlogSubtopicSchema),
+    data: z.array(BlogSubtopicSchema),
+    total: z.number().int(),
+    page: z.number().int(),
+    totalPages: z.number().int(),
   })
   .meta({ id: 'BlogSubtopicList' });
 

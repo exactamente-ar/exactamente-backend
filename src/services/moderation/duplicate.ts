@@ -6,6 +6,17 @@ interface RecentMessage {
   timestamp: number;
 }
 
+export interface DuplicateReservation {
+  /** Conserva la reserva como registro de una publicación exitosa. */
+  commit(): void;
+  /** Elimina la reserva cuando la publicación no llegó a persistirse. */
+  release(): void;
+}
+
+export type DuplicateReservationDecision =
+  | { allowed: true; reservation: DuplicateReservation }
+  | Exclude<ModerationDecision, { allowed: true }>;
+
 const DEFAULT_DUPLICATE_WINDOW_MS = 60 * 1000; // 60 segundos
 
 /**
@@ -38,7 +49,7 @@ export class DuplicateTracker {
   /**
    * Chequea si el usuario ya envió un mensaje idéntico en la ventana reciente.
    */
-  isDuplicate(userId: string, text: string): boolean {
+  private isDuplicate(userId: string, text: string): boolean {
     const normalized = this.normalize(text);
     if (!normalized) return false;
 
@@ -49,23 +60,19 @@ export class DuplicateTracker {
   }
 
   /**
-   * Registra un mensaje publicado en el historial de envíos recientes.
+   * Reserva un mensaje de forma sincrónica: ningún segundo request puede pasar
+   * el chequeo antes de que el primero termine su trabajo asíncrono.
    */
-  record(userId: string, text: string): void {
+  reserve(userId: string, text: string): DuplicateReservationDecision {
     const normalized = this.normalize(text);
-    if (!normalized) return;
+    if (!normalized) {
+      return {
+        allowed: true,
+        reservation: { commit() {}, release() {} },
+      };
+    }
 
-    this.recentMessages.push({
-      userId,
-      normalizedText: normalized,
-      timestamp: Date.now(),
-    });
-  }
-
-  /**
-   * Chequea y devuelve la decisión de moderación.
-   */
-  check(userId: string, text: string): ModerationDecision {
+    this.cleanup();
     if (this.isDuplicate(userId, text)) {
       return {
         allowed: false,
@@ -73,7 +80,29 @@ export class DuplicateTracker {
         message: 'No podés enviar el mismo mensaje repetidas veces. Por favor esperá un momento.',
       };
     }
-    return { allowed: true };
+
+    const message = {
+      userId,
+      normalizedText: normalized,
+      timestamp: Date.now(),
+    };
+    this.recentMessages.push(message);
+
+    let active = true;
+    return {
+      allowed: true,
+      reservation: {
+        commit() {
+          active = false;
+        },
+        release: () => {
+          if (!active) return;
+          active = false;
+          const index = this.recentMessages.indexOf(message);
+          if (index !== -1) this.recentMessages.splice(index, 1);
+        },
+      },
+    };
   }
 
   reset() {
@@ -90,18 +119,10 @@ export class DuplicateTracker {
 
 export const duplicateTracker = new DuplicateTracker();
 
-export function checkDuplicateContent(
+export function reserveDuplicateContent(
   userId: string,
   text: string,
   tracker = duplicateTracker,
-): ModerationDecision {
-  return tracker.check(userId, text);
-}
-
-export function recordPublishedContent(
-  userId: string,
-  text: string,
-  tracker = duplicateTracker,
-): void {
-  tracker.record(userId, text);
+): DuplicateReservationDecision {
+  return tracker.reserve(userId, text);
 }

@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 export const createPostSchema = z.object({
   subtopicId: z.string().min(1, 'subtopicId es requerido'),
-  body: z.string().min(1, 'El cuerpo no puede estar vacío').max(50_000, 'El cuerpo es muy largo'),
+  body: z
+    .string()
+    .max(50_000, 'El cuerpo es muy largo')
+    .refine((value) => value.trim().length > 0, 'El cuerpo no puede estar vacío'),
   authority: z.enum(['visible', 'anonymous']),
 });
 
@@ -15,14 +18,23 @@ export const voteSchema = z.object({
 
 export const createCommentSchema = z.object({
   parentId: z.string().nullable().optional(),
-  body: z.string().min(1, 'El cuerpo no puede estar vacío').max(50_000, 'El cuerpo es muy largo'),
+  body: z
+    .string()
+    .max(50_000, 'El cuerpo es muy largo')
+    .refine((value) => value.trim().length > 0, 'El cuerpo no puede estar vacío'),
   authority: z.enum(['visible', 'anonymous']),
 });
 
 export const createSubtopicSchema = z.object({
-  name: z.string().min(1, 'El nombre no puede estar vacío').max(100),
+  name: z
+    .string()
+    .max(100)
+    .refine((value) => value.trim().length > 0, 'El nombre no puede estar vacío'),
 });
 
 export const updateSubtopicSchema = z.object({
-  name: z.string().min(1, 'El nombre no puede estar vacío').max(100),
+  name: z
+    .string()
+    .max(100)
+    .refine((value) => value.trim().length > 0, 'El nombre no puede estar vacío'),
 });

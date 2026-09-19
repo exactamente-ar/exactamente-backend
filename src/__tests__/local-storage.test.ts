@@ -46,16 +46,18 @@ describe('LocalStorageProvider', () => {
     expect(entries).toHaveLength(0);
   });
 
-  test('getPublicUrl y getSignedUrl apuntan al server local', async () => {
-    const key = 'pending/uuid.pdf';
-    const expected = `http://localhost:${process.env.PORT ?? 3000}/local-files/${key}`;
+  test('getPublicUrl solo expone objetos publicados y getSignedUrl permite solicitar pendientes', async () => {
+    const publishedKey = 'public/materia/uuid.pdf';
+    const pendingKey = 'pending/uuid.pdf';
+    const origin = process.env.API_ORIGIN!;
 
-    expect(provider.getPublicUrl(key)).toBe(expected);
-    expect(await provider.getSignedUrl(key)).toBe(expected);
+    expect(provider.getPublicUrl(publishedKey)).toBe(`${origin}/local-files/${publishedKey}`);
+    expect(() => provider.getPublicUrl(pendingKey)).toThrow('no tienen una URL pública');
+    expect(await provider.getSignedUrl(pendingKey)).toBe(`${origin}/local-files/${pendingKey}`);
   });
 
   test('uploadFile rechaza keys que escapan del root', async () => {
-    expect(
+    await expect(
       provider.uploadFile('../fuera.pdf', Buffer.from('x'), 'application/pdf'),
     ).rejects.toThrow('fuera del storage');
   });

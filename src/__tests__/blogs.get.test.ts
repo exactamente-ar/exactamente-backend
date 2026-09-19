@@ -33,6 +33,17 @@ const votes = [
   { userId: 'u1', targetType: 'comment', targetId: 'c1', value: -1 },
 ];
 
+const findPosts = mock((_query: unknown) =>
+  Promise.resolve([
+    {
+      ...postRow,
+      author: { displayName: 'Otro' },
+      images: [],
+      comments: [{ ...commentRow, author: { displayName: 'Otro' } }],
+    },
+  ]),
+);
+
 mock.module('@/db', () => ({
   db: {
     query: {
@@ -43,16 +54,7 @@ mock.module('@/db', () => ({
         findMany: mock(() => Promise.resolve([])),
       },
       blogPosts: {
-        findMany: mock(() =>
-          Promise.resolve([
-            {
-              ...postRow,
-              author: { displayName: 'Otro' },
-              images: [],
-              comments: [{ ...commentRow, author: { displayName: 'Otro' } }],
-            },
-          ]),
-        ),
+        findMany: findPosts,
       },
       blogVotes: {
         findMany: mock(() => Promise.resolve(votes)),
@@ -61,6 +63,11 @@ mock.module('@/db', () => ({
         findMany: mock(() => Promise.resolve([])),
       },
     },
+    select: mock(() => ({
+      from: mock(() => ({
+        where: mock(() => Promise.resolve([{ count: 1 }])),
+      })),
+    })),
   },
 }));
 
@@ -78,10 +85,27 @@ describe('blogs — GET /:subjectId hidrata myVote', () => {
     expect(res.status).toBe(200);
 
     const body = (await res.json()) as {
-      posts: { myVote: number; comments: { myVote: number }[] }[];
+      data: { myVote: number; comments: { myVote: number }[] }[];
+      total: number;
+      page: number;
+      totalPages: number;
     };
-    expect(body.posts[0].myVote).toBe(1);
-    expect(body.posts[0].comments[0].myVote).toBe(-1);
+    expect(body.data[0].myVote).toBe(1);
+    expect(body.data[0].comments[0].myVote).toBe(-1);
+    expect({ total: body.total, page: body.page, totalPages: body.totalPages }).toEqual({
+      total: 1,
+      page: 1,
+      totalPages: 1,
+    });
+
+    const query = findPosts.mock.calls.at(-1)?.[0] as {
+      limit: number;
+      offset: number;
+      with: { comments: { limit: number } };
+    };
+    expect(query.limit).toBe(20);
+    expect(query.offset).toBe(0);
+    expect(query.with.comments.limit).toBe(100);
   });
 
   it('devuelve myVote 0 sin token', async () => {
@@ -89,9 +113,9 @@ describe('blogs — GET /:subjectId hidrata myVote', () => {
     expect(res.status).toBe(200);
 
     const body = (await res.json()) as {
-      posts: { myVote: number; comments: { myVote: number }[] }[];
+      data: { myVote: number; comments: { myVote: number }[] }[];
     };
-    expect(body.posts[0].myVote).toBe(0);
-    expect(body.posts[0].comments[0].myVote).toBe(0);
+    expect(body.data[0].myVote).toBe(0);
+    expect(body.data[0].comments[0].myVote).toBe(0);
   });
 });

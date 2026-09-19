@@ -13,20 +13,24 @@ CREATE TABLE "blog_subtopics" (
   "slug" varchar(100) NOT NULL,
   "is_default" boolean DEFAULT false NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT now(),
-  "updated_at" timestamp NOT NULL DEFAULT now()
+  "updated_at" timestamp NOT NULL DEFAULT now(),
+  CONSTRAINT "blog_subtopics_id_subject_id_unique" UNIQUE("id", "subject_id")
 );
 
 CREATE TABLE "blog_posts" (
   "id" text PRIMARY KEY NOT NULL,
   "subject_id" text NOT NULL REFERENCES "subjects"("id") ON DELETE CASCADE,
-  "subtopic_id" text NOT NULL REFERENCES "blog_subtopics"("id") ON DELETE CASCADE,
+  "subtopic_id" text NOT NULL,
   "author_id" text NOT NULL REFERENCES "users"("id"),
   "body" text NOT NULL,
   "authority" "post_authority" NOT NULL,
   "status" "post_status" DEFAULT 'published' NOT NULL,
   "net_score" integer DEFAULT 0 NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT now(),
-  "updated_at" timestamp NOT NULL DEFAULT now()
+  "updated_at" timestamp NOT NULL DEFAULT now(),
+  CONSTRAINT "blog_posts_subtopic_id_subject_id_blog_subtopics_id_subject_id_fk"
+    FOREIGN KEY ("subtopic_id", "subject_id")
+    REFERENCES "blog_subtopics"("id", "subject_id") ON DELETE CASCADE
 );
 
 CREATE UNIQUE INDEX "blog_subtopics_subject_slug_unique" ON "blog_subtopics" ("subject_id", "slug");

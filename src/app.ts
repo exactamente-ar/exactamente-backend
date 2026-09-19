@@ -21,6 +21,7 @@ import { env } from '@/env';
 import { requestId } from '@/middleware/requestId';
 import { httpLogger } from '@/middleware/httpLogger';
 import { securityHeaders } from '@/middleware/securityHeaders';
+import { verifyToken } from '@/middleware/auth';
 import type { AppContext } from '@/types';
 import { generateSpecs } from 'hono-openapi';
 import { Scalar } from '@scalar/hono-api-reference';
@@ -60,6 +61,7 @@ app.get('/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOStri
 // se sirven desde acá. En producción (r2) las URLs son del bucket, no del server.
 if (env.STORAGE_PROVIDER === 'local') {
   const { serveLocalFile } = await import('@/services/storage/serve-local-file');
+  app.get('/local-files/pending/*', verifyToken, serveLocalFile);
   app.get('/local-files/*', serveLocalFile);
 }
 

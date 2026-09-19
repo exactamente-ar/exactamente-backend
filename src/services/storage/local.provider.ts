@@ -9,16 +9,17 @@ import type { StorageService } from './types';
  * HTTP desde `/local-files/*` (montada en app.ts solo con STORAGE_PROVIDER=local).
  *
  * Imita el contrato de StorageService, no el comportamiento de R2: no hay
- * firmado de URLs ni CDN. `getSignedUrl` y `getPublicUrl` devuelven la URL del
- * server local; en descargas el `Content-Disposition` con nombre bonito se
- * pierde y el navegador guarda el archivo con el nombre de la key.
+ * firmado de URLs ni CDN. Las URLs pendientes requieren que el cliente mande
+ * su Bearer JWT a `/local-files/*`; las publicadas admiten acceso anónimo.
  */
 export class LocalStorageProvider implements StorageService {
   private root: string;
+  private origin: string;
 
-  /** `root` es opcional para tests; sin él usa STORAGE_PATH del env. */
-  constructor(root?: string) {
+  /** `root` y `origin` son opcionales para tests. */
+  constructor(root?: string, origin = env.API_ORIGIN ?? new URL(env.GOOGLE_REDIRECT_URI).origin) {
     this.root = path.resolve(root ?? env.STORAGE_PATH);
+    this.origin = new URL(origin).origin;
   }
 
   private resolveKey(key: string): string {
@@ -49,14 +50,17 @@ export class LocalStorageProvider implements StorageService {
   }
 
   async getSignedUrl(key: string): Promise<string> {
-    return this.publicUrl(key);
+    return this.resourceUrl(key);
   }
 
   getPublicUrl(key: string): string {
-    return this.publicUrl(key);
+    if (key.startsWith('pending/')) {
+      throw new Error('Los objetos pendientes no tienen una URL pública');
+    }
+    return this.resourceUrl(key);
   }
 
-  private publicUrl(key: string): string {
-    return `http://localhost:${env.PORT}/local-files/${key}`;
+  private resourceUrl(key: string): string {
+    return new URL(`/local-files/${key}`, this.origin).toString();
   }
 }

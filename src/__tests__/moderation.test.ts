@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'bun:test';
 import {
   evaluateContent,
+  evaluateContentForPublication,
   containsForbiddenWord,
   DuplicateTracker,
-  recordPublishedContent,
 } from '@/services/moderation';
 
 describe('evaluateContent - Texto limpio', () => {
@@ -163,64 +163,51 @@ describe('containsForbiddenWord - retrocompatibilidad', () => {
 });
 
 describe('DuplicateTracker - Bloqueo de mensajes idénticos (Anti-Flood)', () => {
-  it('permite el primer envío de un mensaje', () => {
+  it('reserva atómicamente el primer envío y bloquea otro igual', () => {
     const tracker = new DuplicateTracker(1000);
-    expect(tracker.isDuplicate('user-1', 'Primer mensaje')).toBe(false);
-    expect(tracker.check('user-1', 'Primer mensaje').allowed).toBe(true);
-    tracker.record('user-1', 'Primer mensaje');
-    tracker.destroy();
-  });
+    const first = evaluateContentForPublication(
+      '¿Cómo resolver el ejercicio 3?',
+      'user-1',
+      tracker,
+    );
+    expect(first.allowed).toBe(true);
 
-  it('bloquea el reenvío del mismo mensaje dentro de la ventana de tiempo', () => {
-    const tracker = new DuplicateTracker(1000);
-    tracker.record('user-1', 'Mensaje repetido');
-    expect(tracker.isDuplicate('user-1', 'Mensaje repetido')).toBe(true);
-    const res = tracker.check('user-1', 'Mensaje repetido');
-    expect(res.allowed).toBe(false);
-    if (!res.allowed) {
-      expect(res.code).toBe('DUPLICATE_CONTENT');
-      expect(res.message).toContain('No podés enviar el mismo mensaje');
+    const second = evaluateContentForPublication(
+      '   ¿como resolver el   ejercicio 3?   ',
+      'user-1',
+      tracker,
+    );
+    expect(second.allowed).toBe(false);
+    if (!second.allowed) {
+      expect(second.code).toBe('DUPLICATE_CONTENT');
+      expect(second.message).toContain('No podés enviar el mismo mensaje');
     }
+
+    if (first.allowed) first.reservation.commit();
     tracker.destroy();
   });
 
-  it('ignora diferencias de mayúsculas, acentos y espacios al comparar duplicados', () => {
+  it('libera la reserva cuando la publicación falla', () => {
     const tracker = new DuplicateTracker(1000);
-    tracker.record('user-1', '¿Cómo resolver el ejercicio 3?');
-    const res2 = tracker.check('user-1', '   ¿como resolver el   ejercicio 3?   ');
-    expect(res2.allowed).toBe(false);
-    if (!res2.allowed) {
-      expect(res2.code).toBe('DUPLICATE_CONTENT');
-    }
+    const first = evaluateContentForPublication('Consulta sobre el TP', 'user-1', tracker);
+    expect(first.allowed).toBe(true);
+    if (first.allowed) first.reservation.release();
+
+    const retry = evaluateContentForPublication('Consulta sobre el TP', 'user-1', tracker);
+    expect(retry.allowed).toBe(true);
+    if (retry.allowed) retry.reservation.commit();
     tracker.destroy();
   });
 
-  it('permite el mismo mensaje si es de usuarios distintos', () => {
+  it('permite el mismo mensaje para usuarios distintos', () => {
     const tracker = new DuplicateTracker(1000);
-    tracker.record('user-1', 'Hola a todos');
-    const res2 = tracker.check('user-2', 'Hola a todos');
-    expect(res2.allowed).toBe(true);
+    const first = evaluateContentForPublication('Hola a todos', 'user-1', tracker);
+    const second = evaluateContentForPublication('Hola a todos', 'user-2', tracker);
+
+    expect(first.allowed).toBe(true);
+    expect(second.allowed).toBe(true);
+    if (first.allowed) first.reservation.commit();
+    if (second.allowed) second.reservation.commit();
     tracker.destroy();
-  });
-
-  it('permite mensajes diferentes del mismo usuario', () => {
-    const tracker = new DuplicateTracker(1000);
-    tracker.record('user-1', 'Primer duda');
-    const res2 = tracker.check('user-1', 'Segunda duda distinta');
-    expect(res2.allowed).toBe(true);
-    tracker.destroy();
-  });
-
-  it('evaluateContent con userId detecta si ya fue publicado', () => {
-    const res1 = evaluateContent('Consulta sobre el TP', 'user-unique-test');
-    expect(res1.allowed).toBe(true);
-
-    recordPublishedContent('user-unique-test', 'Consulta sobre el TP');
-
-    const res2 = evaluateContent('Consulta sobre el TP', 'user-unique-test');
-    expect(res2.allowed).toBe(false);
-    if (!res2.allowed) {
-      expect(res2.code).toBe('DUPLICATE_CONTENT');
-    }
   });
 });

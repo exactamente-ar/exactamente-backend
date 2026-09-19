@@ -6,7 +6,8 @@ import type { Context } from 'hono';
 /**
  * Sirve un archivo del storage local. Solo se monta cuando
  * STORAGE_PROVIDER=local: en producción los objetos viven en R2 y esta ruta
- * no existe.
+ * no existe. app.ts exige un Bearer JWT para `pending/*`; el resto se sirve
+ * anónimamente.
  */
 
 // El Content-Type se declara a partir de la extensión. Es obligatorio aunque

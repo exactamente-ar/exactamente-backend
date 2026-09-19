@@ -86,11 +86,6 @@ async function run() {
       await db.delete(blogComments).where(inArray(blogComments.postId, postIds));
       await db.delete(blogPosts).where(inArray(blogPosts.id, postIds));
     }
-
-    // No borramos el Subtema general que haya creado la migracion, pero borramos los demás
-    await db
-      .delete(blogSubtopics)
-      .where(and(eq(blogSubtopics.subjectId, SUBJECT_ID), eq(blogSubtopics.isDefault, false)));
   }
 
   // 4. Crear subtemas
@@ -112,27 +107,37 @@ async function run() {
     await db.insert(blogSubtopics).values(generalSubtopic);
   }
 
-  const subDudas = {
-    id: crypto.randomUUID(),
-    subjectId: SUBJECT_ID,
-    name: 'Dudas y Ejercicios',
-    slug: 'dudas',
-    isDefault: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  // Estos dos subtemas pertenecen al seed visual. Se actualizan por slug sin
+  // borrar los subtemas curriculares creados por seed-subtemas.ts.
+  const [subDudas] = await db
+    .insert(blogSubtopics)
+    .values({
+      id: crypto.randomUUID(),
+      subjectId: SUBJECT_ID,
+      name: 'Dudas y Ejercicios',
+      slug: 'dudas',
+      isDefault: false,
+    })
+    .onConflictDoUpdate({
+      target: [blogSubtopics.subjectId, blogSubtopics.slug],
+      set: { name: 'Dudas y Ejercicios', updatedAt: new Date() },
+    })
+    .returning();
 
-  const subParciales = {
-    id: crypto.randomUUID(),
-    subjectId: SUBJECT_ID,
-    name: 'Parciales y Finales',
-    slug: 'parciales',
-    isDefault: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-
-  await db.insert(blogSubtopics).values([subDudas, subParciales]);
+  const [subParciales] = await db
+    .insert(blogSubtopics)
+    .values({
+      id: crypto.randomUUID(),
+      subjectId: SUBJECT_ID,
+      name: 'Parciales y Finales',
+      slug: 'parciales',
+      isDefault: false,
+    })
+    .onConflictDoUpdate({
+      target: [blogSubtopics.subjectId, blogSubtopics.slug],
+      set: { name: 'Parciales y Finales', updatedAt: new Date() },
+    })
+    .returning();
 
   // 5. Crear posts
   console.log('📝 Creando posts y comentarios...');

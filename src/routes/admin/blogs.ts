@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { describeRoute } from 'hono-openapi';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
-import { and, asc, desc, eq, ne } from 'drizzle-orm';
+import { and, asc, desc, eq, ne, sql } from 'drizzle-orm';
 import { db } from '@/db';
 import { blogSubtopics, blogPosts, blogComments, subjects } from '@/db/schema';
 import { verifyToken } from '@/middleware/auth';
@@ -12,6 +12,7 @@ import { createSubtopicSchema, updateSubtopicSchema } from '@/validators/blogs.v
 import type { AppContext } from '@/types';
 import { BlogActivityResponseSchema, BlogSubtopicListSchema, BlogSubtopicSchema } from '@/schemas';
 import { json, errors, bearerAuth } from '@/openapi/helpers';
+import { buildPaginatedResponse, getPaginationParams } from '@/utils/paginate';
 
 const app = new Hono<AppContext>();
 const adminGuard = [verifyToken, requireRole('admin')] as const;
@@ -30,7 +31,8 @@ function isUniqueViolation(e: unknown): boolean {
 // ─── GET /activity — actividad reciente para moderar ─────────────────────────
 
 const activityQuery = z.object({
-  limit: z.coerce.number().int().min(1).max(100).default(50),
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
 });
 
 app.get(
@@ -47,19 +49,23 @@ app.get(
   ...adminGuard,
   zValidator('query', activityQuery),
   async (c) => {
-    const { limit } = c.req.valid('query');
+    const { page, limit } = c.req.valid('query');
+    const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
+    const candidateLimit = offset + safeLimit;
 
-    const [posts, comments] = await Promise.all([
+    const [posts, comments, postCount, commentCount] = await Promise.all([
       db.query.blogPosts.findMany({
         orderBy: [desc(blogPosts.createdAt)],
-        limit,
+        limit: candidateLimit,
         with: { author: true, subject: true },
       }),
       db.query.blogComments.findMany({
         orderBy: [desc(blogComments.createdAt)],
-        limit,
+        limit: candidateLimit,
         with: { author: true, post: { with: { subject: true } } },
       }),
+      db.select({ count: sql<number>`count(*)::int` }).from(blogPosts),
+      db.select({ count: sql<number>`count(*)::int` }).from(blogComments),
     ]);
 
     const items = [
@@ -101,7 +107,10 @@ app.get(
 
     items.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 
-    return c.json({ data: items.slice(0, limit) });
+    const total = (postCount[0]?.count ?? 0) + (commentCount[0]?.count ?? 0);
+    return c.json(
+      buildPaginatedResponse(items.slice(offset, offset + safeLimit), total, safePage, safeLimit),
+    );
   },
 );
 
@@ -116,20 +125,41 @@ app.get(
     responses: { 200: json(BlogSubtopicListSchema, 'Subtemas'), ...errors(401, 403, 404) },
   }),
   ...adminGuard,
+  zValidator('query', activityQuery),
   async (c) => {
     const subjectId = c.req.param('subjectId');
-    const subtopics = await db.query.blogSubtopics.findMany({
-      where: eq(blogSubtopics.subjectId, subjectId),
-      orderBy: [asc(blogSubtopics.name)],
-    });
-    return c.json({
-      subtopics: subtopics.map((s) => ({
-        id: s.id,
-        name: s.name,
-        slug: s.slug,
-        isDefault: s.isDefault,
-      })),
-    });
+    const { page, limit } = c.req.valid('query');
+    const { offset, limit: safeLimit, page: safePage } = getPaginationParams(page, limit);
+
+    const subject = await db.query.subjects.findFirst({ where: eq(subjects.id, subjectId) });
+    if (!subject) return c.json({ error: 'Materia no encontrada' }, 404);
+
+    const [subtopics, countResult] = await Promise.all([
+      db.query.blogSubtopics.findMany({
+        where: eq(blogSubtopics.subjectId, subjectId),
+        orderBy: [asc(blogSubtopics.name)],
+        limit: safeLimit,
+        offset,
+      }),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(blogSubtopics)
+        .where(eq(blogSubtopics.subjectId, subjectId)),
+    ]);
+
+    return c.json(
+      buildPaginatedResponse(
+        subtopics.map((s) => ({
+          id: s.id,
+          name: s.name,
+          slug: s.slug,
+          isDefault: s.isDefault,
+        })),
+        countResult[0]?.count ?? 0,
+        safePage,
+        safeLimit,
+      ),
+    );
   },
 );
 

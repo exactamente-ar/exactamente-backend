@@ -35,7 +35,7 @@ export function commentToResponse(
       ? []
       : images.map((img) => ({
           id: img.id,
-          url: storage.getPublicUrl(img.r2Key),
+          fileUrl: storage.getPublicUrl(img.r2Key),
           mimeType: img.mimeType,
         })),
     mine: userId !== null && userId === comment.authorId,
@@ -71,7 +71,7 @@ export function postToResponse(
       ? []
       : images.map((img) => ({
           id: img.id,
-          url: storage.getPublicUrl(img.r2Key),
+          fileUrl: storage.getPublicUrl(img.r2Key),
           mimeType: img.mimeType,
         })),
     comments: comments.map((c) =>

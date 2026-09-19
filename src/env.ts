@@ -6,6 +6,7 @@ const envSchema = z
     JWT_SECRET: z.string().min(32, 'JWT_SECRET debe tener al menos 32 caracteres'),
     PORT: z.coerce.number().int().positive().default(3000),
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+    API_ORIGIN: z.string().url('API_ORIGIN debe ser una URL válida').optional(),
     CORS_ORIGIN: z.string().min(1, 'CORS_ORIGIN es requerida'),
     ADMIN_ORIGIN: z.string().min(1, 'ADMIN_ORIGIN es requerida'),
     // Storage: `local` (filesystem, dev/tests) o `r2` (Cloudflare R2, prod).

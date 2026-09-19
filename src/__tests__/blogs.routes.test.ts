@@ -2,6 +2,12 @@ import { describe, it, expect, beforeEach } from 'bun:test';
 import blogsApp from '@/routes/blogs';
 import { signToken } from '@/services/auth.service';
 import { resetAllRateLimits } from '@/middleware/rateLimit';
+import {
+  createCommentSchema,
+  createPostSchema,
+  createSubtopicSchema,
+  updateSubtopicSchema,
+} from '@/validators/blogs.validators';
 
 async function token(role: 'user' | 'admin' = 'user') {
   return signToken({ sub: 'u1', role, facultyId: null });
@@ -14,6 +20,29 @@ async function post(fields: Record<string, string>, authRole: 'user' | 'admin' |
   for (const [k, v] of Object.entries(fields)) form.append(k, v);
   return blogsApp.request('/s1/posts', { method: 'POST', headers, body: form });
 }
+
+describe('blogs — validación de texto', () => {
+  it('rechaza cuerpos y nombres compuestos solo por espacios', () => {
+    expect(
+      createPostSchema.safeParse({ subtopicId: 'st1', body: '   ', authority: 'visible' }).success,
+    ).toBe(false);
+    expect(createCommentSchema.safeParse({ body: '\n\t', authority: 'visible' }).success).toBe(
+      false,
+    );
+    expect(createSubtopicSchema.safeParse({ name: '   ' }).success).toBe(false);
+    expect(updateSubtopicSchema.safeParse({ name: '\t' }).success).toBe(false);
+  });
+
+  it('conserva los espacios de un valor válido', () => {
+    const parsed = createPostSchema.parse({
+      subtopicId: 'st1',
+      body: '  contenido  ',
+      authority: 'visible',
+    });
+
+    expect(parsed.body).toBe('  contenido  ');
+  });
+});
 
 describe('blogs — crear post', () => {
   beforeEach(() => {

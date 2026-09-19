@@ -1177,7 +1177,7 @@
           "id": {
             "type": "string"
           },
-          "url": {
+          "fileUrl": {
             "type": "string"
           },
           "mimeType": {
@@ -1187,7 +1187,7 @@
         },
         "required": [
           "id",
-          "url",
+          "fileUrl",
           "mimeType"
         ],
         "additionalProperties": false
@@ -1199,7 +1199,7 @@
           "id": {
             "type": "string"
           },
-          "url": {
+          "fileUrl": {
             "type": "string"
           },
           "mimeType": {
@@ -1209,7 +1209,7 @@
         },
         "required": [
           "id",
-          "url",
+          "fileUrl",
           "mimeType"
         ],
         "additionalProperties": false
@@ -1227,17 +1227,35 @@
               "$ref": "#/components/schemas/BlogSubtopic"
             }
           },
-          "posts": {
+          "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BlogPost"
             }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "page": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "totalPages": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
           }
         },
         "required": [
           "subjectId",
           "subtopics",
-          "posts"
+          "data",
+          "total",
+          "page",
+          "totalPages"
         ],
         "additionalProperties": false
       },
@@ -1444,10 +1462,28 @@
             "items": {
               "$ref": "#/components/schemas/BlogActivityItem"
             }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "page": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "totalPages": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
           }
         },
         "required": [
-          "data"
+          "data",
+          "total",
+          "page",
+          "totalPages"
         ],
         "additionalProperties": false
       },
@@ -1455,15 +1491,33 @@
         "id": "BlogSubtopicList",
         "type": "object",
         "properties": {
-          "subtopics": {
+          "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BlogSubtopic"
             }
+          },
+          "total": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "page": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "totalPages": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
           }
         },
         "required": [
-          "subtopics"
+          "data",
+          "total",
+          "page",
+          "totalPages"
         ],
         "additionalProperties": false
       },
@@ -3128,17 +3182,35 @@
                         "$ref": "#/components/schemas/BlogSubtopic"
                       }
                     },
-                    "posts": {
+                    "data": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/BlogPost"
                       }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "page": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
                     }
                   },
                   "required": [
                     "subjectId",
                     "subtopics",
-                    "posts"
+                    "data",
+                    "total",
+                    "page",
+                    "totalPages"
                   ]
                 }
               }
@@ -9677,10 +9749,28 @@
                       "items": {
                         "$ref": "#/components/schemas/BlogActivityItem"
                       }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "page": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
                     }
                   },
                   "required": [
-                    "data"
+                    "data",
+                    "total",
+                    "page",
+                    "totalPages"
                   ]
                 }
               }
@@ -9747,15 +9837,33 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "subtopics": {
+                    "data": {
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/BlogSubtopic"
                       }
+                    },
+                    "total": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "page": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
                     }
                   },
                   "required": [
-                    "subtopics"
+                    "data",
+                    "total",
+                    "page",
+                    "totalPages"
                   ]
                 }
               }
