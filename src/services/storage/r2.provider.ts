@@ -15,15 +15,24 @@ export class R2StorageProvider implements StorageService {
   private bucket: string;
 
   constructor() {
+    const accountId = env.R2_ACCOUNT_ID;
+    const accessKeyId = env.R2_ACCESS_KEY_ID;
+    const secretAccessKey = env.R2_SECRET_ACCESS_KEY;
+    const bucket = env.R2_BUCKET_NAME;
+    const publicUrl = env.R2_PUBLIC_URL;
+
+    if (!accountId || !accessKeyId || !secretAccessKey || !bucket || !publicUrl) {
+      throw new Error(
+        'Configuración R2 incompleta: STORAGE_PROVIDER=r2 exige R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME y R2_PUBLIC_URL',
+      );
+    }
+    this.bucket = bucket;
+
     this.client = new S3Client({
       region: 'auto',
-      endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-      credentials: {
-        accessKeyId: env.R2_ACCESS_KEY_ID,
-        secretAccessKey: env.R2_SECRET_ACCESS_KEY,
-      },
+      endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+      credentials: { accessKeyId, secretAccessKey },
     });
-    this.bucket = env.R2_BUCKET_NAME;
   }
 
   async uploadFile(key: string, buffer: Buffer, mimeType: string): Promise<void> {

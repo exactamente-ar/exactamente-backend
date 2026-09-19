@@ -13,6 +13,7 @@ export * from './subjects';
 export * from './resources';
 export * from './auth';
 export * from './stats';
+export * from './blogs';
 
 import { paginated } from './common';
 import { UniversitySchema, FacultySchema, CareerSchema, CareerPlanSchema } from './catalog';

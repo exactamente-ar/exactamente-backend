@@ -182,7 +182,7 @@ auth.get(
     tags: ['Auth'],
     summary: 'Callback de Google',
     description:
-      'Canjea el code por un JWT propio y redirige al frontend con un código de un solo uso. Ante error redirige a `/upload?error=...`.',
+      'Canjea el code por un JWT propio y redirige al frontend con un código de un solo uso. Ante error redirige al inicio con `?error=...`.',
     responses: { 302: { description: 'Redirige al frontend' }, ...errors(429) },
   }),
   oauthRateLimit,
@@ -194,7 +194,7 @@ auth.get(
     const frontendUrl = env.CORS_ORIGIN.split(',')[0].trim();
 
     if (error || !code || !state || !validateAndConsumeState(state)) {
-      return c.redirect(`${frontendUrl}/upload?error=oauth_denied`);
+      return c.redirect(`${frontendUrl}/?error=oauth_denied`);
     }
 
     try {
@@ -243,7 +243,7 @@ auth.get(
       return c.redirect(`${frontendUrl}/auth/callback?code=${oauthCode}`);
     } catch (err) {
       console.error('[oauth/callback] error:', err);
-      return c.redirect(`${frontendUrl}/upload?error=oauth_failed`);
+      return c.redirect(`${frontendUrl}/?error=oauth_failed`);
     }
   },
 );

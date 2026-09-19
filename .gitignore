@@ -1,6 +1,8 @@
 node_modules/
 .env
 uploads/
+/storage/
+.idea/
 *.js
 *.d.ts
 .DS_Store

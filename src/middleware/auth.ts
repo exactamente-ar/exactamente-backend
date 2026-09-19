@@ -21,3 +21,22 @@ export const verifyToken = createMiddleware<AppContext>(async (c, next) => {
     return c.json({ error: 'Token inválido o expirado' }, 401);
   }
 });
+
+/**
+ * Igual que `verifyToken` pero no exige el token: si viene y es válido, setea
+ * `user`; si no viene o es inválido, sigue como lectura pública. Sirve para que
+ * el GET del blog marque `mine` sin romper la lectura anónima.
+ */
+export const optionalAuth = createMiddleware<AppContext>(async (c, next) => {
+  const authHeader = c.req.header('Authorization');
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.slice(7);
+    try {
+      const payload = (await verify(token, env.JWT_SECRET, 'HS256')) as unknown as JwtPayload;
+      c.set('user', payload);
+    } catch {
+      // token inválido: seguimos como anónimo
+    }
+  }
+  await next();
+});
