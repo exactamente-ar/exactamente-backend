@@ -12,3 +12,7 @@ src/db/migrations
 # Generado por `bun run gen:openapi`. Su formato lo define el script, no
 # Prettier — si ambos lo tocan, se pelean y el gate de CI nunca queda verde.
 openapi.json
+
+# Lo escribe release-please en cada Release PR; si Prettier lo reformatea,
+# el siguiente release vuelve a pisarlo.
+CHANGELOG.md

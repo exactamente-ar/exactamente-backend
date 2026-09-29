@@ -1,0 +1,27 @@
+name: Release
+
+# El Release PR se arma sobre develop: al mergearlo queda el tag y el GitHub
+# Release en develop, y el PR develop → main lleva ese commit a producción.
+# Ver "Releases" en el README.
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      # No usa GITHUB_TOKEN por dos motivos: la org no deja que Actions abra
+      # PRs, y un PR abierto con ese token no dispara el CI. El secret de org
+      # RELEASE_PLEASE_TOKEN es un PAT con contents y pull-requests en escritura.
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          target-branch: develop
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
