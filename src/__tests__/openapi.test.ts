@@ -91,6 +91,15 @@ describe('GET /openapi.json', () => {
     const committed = readFileSync('openapi.json', 'utf-8');
     expect(served).toBe(committed);
   });
+
+  it('el blog de una materia está en el contrato', () => {
+    expect(Object.keys(spec.paths), 'falta /blogs/{subjectId}').toContain(
+      '/api/v1/blogs/{subjectId}',
+    );
+    for (const schema of ['BlogSubtopic', 'BlogPost', 'BlogResponse']) {
+      expect(Object.keys(spec.components.schemas), `falta ${schema}`).toContain(schema);
+    }
+  });
 });
 
 describe('GET /docs', () => {

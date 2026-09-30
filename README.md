@@ -40,6 +40,7 @@ bun seed               # datos de ejemplo (opcional)
 | `JWT_SECRET`           | Sí        | Clave secreta para firmar JWTs                         | —                                                           |
 | `PORT`                 | No        | Puerto del servidor                                    | `3000`                                                      |
 | `NODE_ENV`             | No        | Entorno de ejecución                                   | `development`                                               |
+| `API_ORIGIN`           | No        | Origen público de la API para URLs del storage local   | Origen de `GOOGLE_REDIRECT_URI`                             |
 | `CORS_ORIGIN`          | No        | Origen(es) permitido(s) para CORS (separados por coma) | `http://localhost:4321`                                     |
 | `GOOGLE_CLIENT_ID`     | No        | Client ID de Google OAuth                              | —                                                           |
 | `GOOGLE_CLIENT_SECRET` | No        | Client Secret de Google OAuth                          | —                                                           |

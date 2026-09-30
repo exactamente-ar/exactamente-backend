@@ -16,6 +16,7 @@ export const PLACEHOLDER_ENV: Record<string, string> = {
   NODE_ENV: 'test',
   DATABASE_URL: 'postgresql://test:test@localhost:5432/test_db',
   JWT_SECRET: 'test-secret-that-is-at-least-32-characters-long',
+  API_ORIGIN: 'http://localhost:3000',
   CORS_ORIGIN: 'http://localhost:4321',
   ADMIN_ORIGIN: 'http://localhost:5173',
 
@@ -34,6 +35,8 @@ export const PLACEHOLDER_ENV: Record<string, string> = {
 
   RESEND_API_KEY: 'test-resend-api-key',
   APP_URL: 'http://localhost:4321',
+
+  BLOG_BLACKLIST: 'spam,palabraprohibida',
 };
 
 /**
