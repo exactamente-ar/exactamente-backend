@@ -70,6 +70,42 @@ psql $DATABASE_URL -c "CREATE EXTENSION IF NOT EXISTS unaccent;"
 
 ---
 
+## Ramas y releases
+
+`main` es producción: cada push despliega a `api.exactamente.com.ar`. Por eso el
+trabajo diario no va a `main`, va a `develop`.
+
+| Rama              | Sale de   | PR a      | Para qué                                 |
+| ----------------- | --------- | --------- | ---------------------------------------- |
+| `<usuario>/<...>` | `develop` | `develop` | Features y fixes normales                |
+| `develop`         | —         | `main`    | Release: lo que se despliega             |
+| `<usuario>/<...>` | `main`    | `main`    | Hotfix urgente de producción (ver abajo) |
+
+### Cómo se hace un release
+
+1. Cada merge a `develop` actualiza un PR `chore(develop): release X.Y.Z` que
+   abre [release-please](https://github.com/googleapis/release-please). Junta el
+   `CHANGELOG.md` y sube la versión según los commits: `feat` → minor,
+   `fix` → patch, `!` o `BREAKING CHANGE` → major.
+2. Mergear ese PR crea el tag `vX.Y.Z` y el GitHub Release en `develop`.
+3. Abrir el PR `develop` → `main` y mergearlo con **merge commit** (nunca squash
+   ni rebase: el commit del tag tiene que quedar en la historia de `main`). Eso
+   despliega.
+
+Si el cambio toca el contrato, los clientes no pueden mergear hasta el paso 3:
+su `check:api` lee el `openapi.json` de `main`.
+
+### Hotfix
+
+1. Rama desde `main`, PR a `main`. Al mergear, despliega.
+2. PR `main` → `develop` con merge commit, para que el fix no se pierda en el
+   próximo release. **No es opcional**: sin él, el siguiente `develop` → `main`
+   no trae el fix y el CHANGELOG no lo registra.
+
+El hotfix no genera tag propio: sale en el CHANGELOG del próximo release.
+
+---
+
 ## Estructura del proyecto
 
 ```

@@ -111,6 +111,10 @@ Requerida para la búsqueda de materias sin acentos.
 
 `main` despliega solo a `api.exactamente.com.ar` vía Dokploy. Mergear = deployar.
 
+- Las ramas de trabajo salen de **`develop`** y vuelven a `develop`. `main` solo
+  recibe el PR de release (`develop` → `main`, con merge commit) y los hotfixes.
+  Flujo completo en "Ramas y releases" del `README.md`.
+- Versión, tag y `CHANGELOG.md` los maneja release-please: no los edites a mano.
 - Nada de push directo a `main`. Todo por PR con CI en verde.
 - El `Dockerfile` corre `bun run db:migrate` al arrancar: **toda migración que
   llegue a `main` se auto-aplica en producción**, en el camino crítico del
