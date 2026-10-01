@@ -38,6 +38,15 @@ const namedSchemas: Record<string, z.ZodType> = {
   PublicUser: S.PublicUserSchema,
   // Transversales
   AdminStats: S.AdminStatsSchema,
+  StatsGranularity: S.StatsGranularitySchema,
+  ActivityPoint: S.ActivityPointSchema,
+  AdminActivity: S.AdminActivitySchema,
+  TopUploader: S.TopUploaderSchema,
+  TopResource: S.TopResourceSchema,
+  AdminRankings: S.AdminRankingsSchema,
+  ModerationLeadTime: S.ModerationLeadTimeSchema,
+  PendingQueueAge: S.PendingQueueAgeSchema,
+  AdminModeration: S.AdminModerationSchema,
   ErrorResponse: S.ErrorResponseSchema,
 };
 
