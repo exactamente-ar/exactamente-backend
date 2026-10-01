@@ -7,6 +7,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { getSignedUrl as awsGetSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { env } from '@/env';
+import { contentDisposition } from '@/utils/contentDisposition';
 import type { StorageService } from './types';
 
 export class R2StorageProvider implements StorageService {
@@ -61,10 +62,21 @@ export class R2StorageProvider implements StorageService {
     );
   }
 
-  async getSignedUrl(key: string, expiresIn = 900): Promise<string> {
-    return awsGetSignedUrl(this.client, new GetObjectCommand({ Bucket: this.bucket, Key: key }), {
-      expiresIn,
-    });
+  async getSignedUrl(key: string, expiresIn = 900, downloadFilename?: string): Promise<string> {
+    return awsGetSignedUrl(
+      this.client,
+      new GetObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+        // R2 devuelve este header en la respuesta del objeto. Es la única forma
+        // de controlar el nombre con el que se guarda: el atributo `download`
+        // del <a> se ignora cuando el archivo está en otro origen.
+        ...(downloadFilename && {
+          ResponseContentDisposition: contentDisposition(downloadFilename),
+        }),
+      }),
+      { expiresIn },
+    );
   }
 
   getPublicUrl(key: string): string {
