@@ -39,19 +39,30 @@ bun dev   # http://localhost:3000
 
 ## Flujo de trabajo
 
-1. Forkear el repositorio
-2. Crear una rama desde `master`:
+**Si tenés acceso de escritura al repo** (colaborador), trabajás con una rama acá mismo, sin
+forkear. Si venís de afuera, forkeá primero y el resto es igual.
+
+1. Crear una rama desde `main`, prefijada con tu usuario de GitHub:
    ```bash
-   git checkout -b feat/descripcion-corta
-   git checkout -b fix/descripcion-del-bug
+   git checkout -b <tu-usuario>/descripcion-corta
    ```
-3. Hacer los cambios
-4. Verificar que pasen los tests:
+2. Hacer los cambios
+3. Verificar que pasen los gates que después corre el CI:
    ```bash
    bun test
+   bun run typecheck
+   bun run lint
+   bun run format:check
+   bun run check:openapi   # si tocaste algo de src/schemas/
    ```
-5. Commitear y pushear
-6. Abrir un Pull Request contra `master`
+4. Commitear y pushear — [Conventional Commits](https://www.conventionalcommits.org/), los valida
+   commitlint en un hook
+5. Abrir un Pull Request contra `main`
+
+> ⚠️ **`main` es producción.** Al mergear, Dokploy redespliega solo a `api.exactamente.com.ar`, y
+> el contenedor corre `bun run db:migrate` al arrancar — o sea que **toda migración que llegue a
+> `main` se aplica sola en producción**. Por eso el merge está restringido: abrí el PR y pedile a
+> [@JuanPE44](https://github.com/JuanPE44) que lo mergee cuando el CI esté en verde.
 
 ## Convenciones de código
 
