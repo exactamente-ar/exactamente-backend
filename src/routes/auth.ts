@@ -102,6 +102,7 @@ auth.post(
       sub: user.id,
       role: user.role,
       facultyId: user.adminFacultyId ?? null,
+      tokenVersion: user.tokenVersion,
     });
 
     return c.json({ user: toPublicUser(user), token }, 201);
@@ -134,6 +135,7 @@ auth.post(
       sub: user.id,
       role: user.role,
       facultyId: user.adminFacultyId ?? null,
+      tokenVersion: user.tokenVersion,
     });
 
     return c.json({ user: toPublicUser(user), token });
@@ -237,6 +239,7 @@ auth.get(
         sub: user.id,
         role: user.role,
         facultyId: user.adminFacultyId ?? null,
+        tokenVersion: user.tokenVersion,
       });
 
       const oauthCode = storeOneTimeCode(token);

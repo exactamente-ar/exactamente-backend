@@ -24,7 +24,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 }
 
 export async function signToken(
-  payload: Pick<JwtPayload, 'sub' | 'role' | 'facultyId'>,
+  payload: Pick<JwtPayload, 'sub' | 'role' | 'facultyId' | 'tokenVersion'>,
 ): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   return sign({ ...payload, iat: now, exp: now + 60 * 60 * 24 }, env.JWT_SECRET, 'HS256');

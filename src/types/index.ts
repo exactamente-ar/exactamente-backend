@@ -48,6 +48,8 @@ export interface JwtPayload {
   sub: string;
   role: UserRole;
   facultyId: string | null;
+  /** Ver `users.tokenVersion` en db/schema.ts — permite revocar antes del exp. */
+  tokenVersion: number;
   iat: number;
   exp: number;
 }

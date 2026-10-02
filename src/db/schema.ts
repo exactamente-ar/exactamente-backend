@@ -164,6 +164,12 @@ export const users = pgTable(
     role: userRoleEnum('role').notNull().default('user'),
     adminFacultyId: text('admin_faculty_id').references(() => faculties.id),
     emailVerified: boolean('email_verified').notNull().default(false),
+    /**
+     * Corta sesiones sin esperar a que expire el token. Va firmado adentro del
+     * JWT; `requireRole` lo compara contra este valor y rechaza si no coincide.
+     * Bumpear esta columna invalida al instante todos los tokens del usuario.
+     */
+    tokenVersion: integer('token_version').notNull().default(0),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
